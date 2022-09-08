@@ -1,4 +1,4 @@
-package net.bird.tutorialmod;
+package net.bird.projectcataclysm;
 
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;

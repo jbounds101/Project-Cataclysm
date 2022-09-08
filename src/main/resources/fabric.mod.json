@@ -1,29 +1,32 @@
 {
   "schemaVersion": 1,
-  "id": "tutorialmod",
+  "id": "projectcataclysm",
   "version": "${version}",
 
-  "name": "Tutorial Mod",
+  "name": "Project Cataclysm",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
-    "RatherLargeBird!"
+    "Jackson Bounds",
+    "Jackson Douglas",
+    "Ryan Chang",
+    "Eric Li"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.bird.tutorialmod.TutorialMod"
+      "net.bird.projectcataclysm.TutorialMod"
     ]
   },
   "mixins": [
-    "tutorialmod.mixins.json"
+    "projectcataclysm.mixins.json"
   ],
 
   "depends": {

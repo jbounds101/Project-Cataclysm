@@ -1,6 +1,6 @@
-package net.bird.tutorialmod.mixin;
+package net.bird.projectcataclysm.mixin;
 
-import net.bird.tutorialmod.TutorialMod;
+import net.bird.projectcataclysm.TutorialMod;
 import net.minecraft.client.gui.screen.TitleScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
