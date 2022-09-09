@@ -1,5 +1,9 @@
 {
   "item.projectcataclysm.mythril_ingot": "Mythril Ingot",
-  "item.projectcataclysm.mythril_nugget": "Mythril Nugget"
+  "item.projectcataclysm.mythril_nugget": "Mythril Nugget",
+
+  "block.projectcataclysm.mythril_block": "Mythril Block",
+  "block.projectcataclysm.mythril_ore": "Mythril Ore"
+
 
 }

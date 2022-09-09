@@ -1,5 +1,6 @@
 package net.bird.projectcataclysm;
 
+import net.bird.projectcataclysm.block.ModBlocks;
 import net.bird.projectcataclysm.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
@@ -21,5 +22,6 @@ public class ProjectCataclysmMod implements ModInitializer {
 		// Proceed with mild caution.
 
 		ModItems.registerModItems();
+		ModBlocks.registerModBlocks();
 	}
 }

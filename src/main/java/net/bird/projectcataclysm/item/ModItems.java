@@ -27,6 +27,6 @@ public class ModItems {
     }
 
     public static void registerModItems() {
-        ProjectCataclysmMod.LOGGER.info("Registering mod items for " + ProjectCataclysmMod.MOD_ID);
+        ProjectCataclysmMod.LOGGER.info("Registering ModItems for " + ProjectCataclysmMod.MOD_ID);
     }
 }
