@@ -22,7 +22,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.bird.projectcataclysm.TutorialMod"
+      "net.bird.projectcataclysm.ProjectCataclysmMod"
     ]
   },
   "mixins": [
