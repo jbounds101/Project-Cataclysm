@@ -20,6 +20,9 @@ public class ModBlocks {
        2. block model json
        3. block texture png
        4. item model json (can be simple and point to block model json)
+       5. if block requires tool
+            5a. update data.minecraft.tags.blocks.mineable.(tool)
+            5b. update data.minecraft.tags.blocks.mineable.(needs stone/iron/diamond tool)
     */
     public static final Block MYTHRIL_BLOCK = registerBlock("mythril_block",
             new Block(FabricBlockSettings.of(Material.METAL).strength(6f).requiresTool()), ModItemGroup.MYTHRIL);
