@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "ingredient": {
+    "item": "projectcataclysm:raw_mythril"
+  },
+  "result": "projectcataclysm:mythril_ingot"
+}
