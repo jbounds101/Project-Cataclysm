@@ -1,6 +1,7 @@
 package net.bird.projectcataclysm.item;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
+import net.bird.projectcataclysm.item.custom.DowsingRodItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -15,11 +16,14 @@ public class ModItems {
        3. item texture png
     */
     public static final Item MYTHRIL_INGOT = registerItem("mythril_ingot",
-            new Item(new FabricItemSettings().group(ModItemGroup.MYTHRIL)));
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     public static final Item MYTHRIL_NUGGET = registerItem("mythril_nugget",
-            new Item(new FabricItemSettings().group(ModItemGroup.MYTHRIL)));
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     public static final Item RAW_MYTHRIL = registerItem("raw_mythril",
-            new Item(new FabricItemSettings().group(ModItemGroup.MYTHRIL)));
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item DOWSING_ROD = registerItem("dowsing_rod",
+            new DowsingRodItem(new FabricItemSettings().group(ItemGroup.MISC)));
 
 
     private static Item registerItem(String name, Item item) {
