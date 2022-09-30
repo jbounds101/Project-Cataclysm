@@ -23,7 +23,7 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",
-            new DowsingRodItem(new FabricItemSettings().group(ItemGroup.MISC)));
+            new DowsingRodItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
 
     private static Item registerItem(String name, Item item) {
