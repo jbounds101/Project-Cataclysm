@@ -24,11 +24,11 @@ public class ModBlocks {
             5a. update data.minecraft.tags.blocks.mineable.(tool)
             5b. update data.minecraft.tags.blocks.mineable.(needs stone/iron/diamond tool)
     */
-    public static final Block MYTHRIL_BLOCK = registerBlock("mythril_block",
+    public static final Block SILVER_BLOCK = registerBlock("silver_block",
             new Block(FabricBlockSettings.of(Material.METAL).strength(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
 
-    public static final Block MYTHRIL_ORE = registerBlock("mythril_ore",
+    public static final Block SILVER_ORE = registerBlock("silver_ore",
             new Block(FabricBlockSettings.of(Material.STONE).strength(4.5f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
 

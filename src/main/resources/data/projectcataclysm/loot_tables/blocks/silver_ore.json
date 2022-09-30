@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "projectcataclysm:mythril_ore"
+              "name": "projectcataclysm:silver_ore"
             },
             {
               "type": "minecraft:item",
@@ -38,7 +38,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "projectcataclysm:raw_mythril"
+              "name": "projectcataclysm:raw_silver"
             }
           ]
         }
