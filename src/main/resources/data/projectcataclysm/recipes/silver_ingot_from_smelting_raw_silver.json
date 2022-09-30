@@ -3,7 +3,7 @@
   "cookingtime": 200,
   "experience": 0.7,
   "ingredient": {
-    "item": "projectcataclysm:raw_mythril"
+    "item": "projectcataclysm:raw_silver"
   },
-  "result": "projectcataclysm:mythril_ingot"
+  "result": "projectcataclysm:silver_ingot"
 }

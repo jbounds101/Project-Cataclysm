@@ -11,5 +11,5 @@ public class ModItemGroup {
     // This group also needs to be identified in en_us.json
     public static final ItemGroup PROJECT_CATACLYSM =
             FabricItemGroupBuilder.build(new Identifier(ProjectCataclysmMod.MOD_ID,
-            "project_cataclysm_group"), () -> new ItemStack(ModItems.MYTHRIL_INGOT));
+            "project_cataclysm_group"), () -> new ItemStack(ModItems.SILVER_INGOT));
 }

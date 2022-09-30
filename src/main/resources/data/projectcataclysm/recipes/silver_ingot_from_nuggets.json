@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "projectcataclysm:mythril_nugget"
+      "item": "projectcataclysm:silver_nugget"
     }
   },
   "pattern": [
@@ -11,6 +11,6 @@
     "###"
   ],
   "result": {
-    "item": "projectcataclysm:mythril_ingot"
+    "item": "projectcataclysm:silver_ingot"
   }
 }
