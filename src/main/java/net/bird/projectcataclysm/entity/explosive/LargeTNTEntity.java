@@ -10,7 +10,8 @@ import org.jetbrains.annotations.Nullable;
 public class LargeTNTEntity extends ExplosiveBlockEntity {
 
 
-    public LargeTNTEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter, int fuse, CustomExplosion customExplosion) {
+    public LargeTNTEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter, int fuse,
+                          Class<CustomExplosion> customExplosion) throws NoSuchMethodException {
         super(world, x, y, z, igniter, fuse, customExplosion);
     }
 }

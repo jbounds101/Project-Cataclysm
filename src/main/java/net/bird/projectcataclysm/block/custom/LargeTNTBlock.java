@@ -2,6 +2,7 @@ package net.bird.projectcataclysm.block.custom;
 
 import net.bird.projectcataclysm.CustomExplosion;
 import net.bird.projectcataclysm.entity.explosive.ExplosiveBlockEntity;
+import net.bird.projectcataclysm.entity.explosive.LargeTNTEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.world.World;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class LargeTNTBlock extends ExplosiveBlock {
 
-    public LargeTNTBlock(Settings settings, TntEntity explosiveEntity, CustomExplosion customExplosion) {
-        super(settings, null, null);
+    public LargeTNTBlock(Settings settings) throws NoSuchMethodException {
+        super(settings, LargeTNTEntity.class, CustomExplosion.class);
     }
 }

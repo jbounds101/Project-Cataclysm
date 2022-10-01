@@ -15,23 +15,40 @@ import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public abstract class ExplosiveBlock extends TntBlock {
 
-   ExplosiveBlockEntity explosiveBlockEntity;
+   private final Constructor<? extends ExplosiveBlockEntity> explosiveBlockEntityConstructor;
+   private final Class<? extends CustomExplosion> customExplosion;
+   private int fuse = 80;
 
-    public ExplosiveBlock(Settings settings, ExplosiveBlockEntity explosiveBlockEntity) {
+    public ExplosiveBlock(Settings settings, Class<? extends ExplosiveBlockEntity> explosiveBlockEntity,
+                          Class<? extends CustomExplosion> customExplosion) throws NoSuchMethodException {
         super(settings);
-        this.explosiveBlockEntity = explosiveBlockEntity;
+        //World world, double x, double y, double z, @Nullable LivingEntity igniter, int fuse,
+        //                           Class<CustomExplosion> customExplosion
+        /*Class[] parameters = new Class[] { World.class, Double.class, Double.class, Double.class, LivingEntity.class,
+            Integer.class, Class.class};*/
+        this.explosiveBlockEntityConstructor = explosiveBlockEntity.getConstructor(World.class, Double.class,
+                Double.class, Double.class, LivingEntity.class, Integer.class, CustomExplosion.class);
+        this.customExplosion = customExplosion;
     }
 
-    private void primeTnt(World world, BlockPos pos, @Nullable LivingEntity igniter) {
+    private void primeTnt(World world, BlockPos pos, @Nullable LivingEntity igniter)
+            throws InvocationTargetException, InstantiationException, IllegalAccessException {
 
         if (!world.isClient) {
             /*ExplosiveBlockEntity explosiveEntity = new explosiveBlockEntity(world,
                     (double)pos.getX() + 0.5,
                     (double)pos.getY(),
                     (double)pos.getZ() + 0.5, igniter); I might need this later, probably not though*/
+
+            //World world, double x, double y, double z, @Nullable LivingEntity igniter, int fuse,
+            //                           CustomExplosion customExplosion
+            ExplosiveBlockEntity explosiveBlockEntity =
+                    explosiveBlockEntityConstructor.newInstance(world, (double)pos.getX(), (double)pos.getY(),
+                            (double)pos.getZ(), igniter, fuse, customExplosion);
 
             world.spawnEntity(explosiveBlockEntity);
             world.playSound((PlayerEntity)null, explosiveBlockEntity.getX(), explosiveBlockEntity.getY(),

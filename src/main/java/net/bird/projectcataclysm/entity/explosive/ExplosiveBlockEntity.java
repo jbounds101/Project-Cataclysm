@@ -1,29 +1,31 @@
 package net.bird.projectcataclysm.entity.explosive;
 
 import net.bird.projectcataclysm.CustomExplosion;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.TntEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
+import net.minecraft.world.explosion.ExplosionBehavior;
 import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class ExplosiveBlockEntity extends TntEntity {
 
-    CustomExplosion customExplosion;
+    Constructor<? extends CustomExplosion> customExplosionConstructor;
 
     public ExplosiveBlockEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter, int fuse,
-                           CustomExplosion customExplosion) {
+                           Class<CustomExplosion> customExplosion) throws NoSuchMethodException {
         super(world, x, y, z, igniter);
         this.setFuse(fuse);
-        this.customExplosion = customExplosion;
-    }
-
-    public ExplosiveBlockEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter,
-                                CustomExplosion customExplosion) {
-        super(world, x, y, z, igniter);
-        this.setFuse(80);
-        this.customExplosion = customExplosion;
+        this.customExplosionConstructor = customExplosion.getConstructor(World.class, Entity.class, DamageSource.class,
+                ExplosionBehavior.class, Double.class, Double.class, Double.class, Float.class, Boolean.class,
+                Explosion.DestructionType.class);
     }
 
     // TODO Check if this is needed
@@ -55,6 +57,21 @@ public class ExplosiveBlockEntity extends TntEntity {
     }
 
     private void explode() {
+        CustomExplosion customExplosion = null;
+        try {
+            //orld world, @Nullable Entity entity, @Nullable DamageSource damageSource,
+            //                           @Nullable ExplosionBehavior behavior, double x, double y, double z, float power,
+            //                           boolean createFire, DestructionType destructionType
+           // this, this.getX(), this.getBodyY(0.0625), this.getZ(), 4.0F, Explosion.DestructionType.BREAK
+            customExplosion = customExplosionConstructor.newInstance(world, this, this, null, this.getX(),
+                    this.getBodyY(0.0625), this.getZ(), 4.0F, Explosion.DestructionType.BREAK);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
         customExplosion.collectBlocksAndDamageEntities();
         customExplosion.affectWorld(true);
     }
