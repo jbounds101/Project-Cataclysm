@@ -1,6 +1,7 @@
 package net.bird.projectcataclysm.block;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
+import net.bird.projectcataclysm.block.custom.LargeTntBlock;
 import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -31,6 +32,9 @@ public class ModBlocks {
     public static final Block SILVER_ORE = registerBlock("silver_ore",
             new Block(FabricBlockSettings.of(Material.STONE).strength(4.5f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block LARGE_TNT = registerBlock("large_tnt",
+            new LargeTntBlock(FabricBlockSettings.of(Material.TNT)), ModItemGroup.PROJECT_CATACLYSM);
 
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
