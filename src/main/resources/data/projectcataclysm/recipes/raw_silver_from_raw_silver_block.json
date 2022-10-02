@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "projectcataclysm:raw_silver_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "projectcataclysm:raw_silver"
+  }
+}
