@@ -16,11 +16,11 @@ public class ModItems {
        2. item model json
        3. item texture png
     */
-    public static final Item MYTHRIL_INGOT = registerItem("mythril_ingot",
+    public static final Item SILVER_INGOT = registerItem("silver_ingot",
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
-    public static final Item MYTHRIL_NUGGET = registerItem("mythril_nugget",
+    public static final Item SILVER_NUGGET = registerItem("silver_nugget",
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
-    public static final Item RAW_MYTHRIL = registerItem("raw_mythril",
+    public static final Item RAW_SILVER = registerItem("raw_silver",
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",

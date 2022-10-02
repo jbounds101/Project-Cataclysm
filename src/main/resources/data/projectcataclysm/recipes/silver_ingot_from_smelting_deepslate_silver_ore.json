@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "ingredient": {
+    "item": "projectcataclysm:deepslate_silver_ore"
+  },
+  "result": "projectcataclysm:silver_ingot"
+}

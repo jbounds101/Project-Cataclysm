@@ -2,11 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "projectcataclysm:mythril_block"
+      "item": "projectcataclysm:silver_block"
     }
   ],
   "result": {
     "count": 9,
-    "item": "projectcataclysm:mythril_ingot"
+    "item": "projectcataclysm:silver_ingot"
   }
 }
