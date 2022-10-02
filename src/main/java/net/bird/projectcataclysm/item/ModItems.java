@@ -2,7 +2,6 @@ package net.bird.projectcataclysm.item;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.item.custom.DowsingRodItem;
-import net.bird.projectcataclysm.item.custom.PistolItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -25,9 +24,6 @@ public class ModItems {
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",
             new DowsingRodItem(new FabricItemSettings().group(ItemGroup.MISC)));
-
-    public static final Item PISTOL = registerItem("pistol",
-            new PistolItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
 
     private static Item registerItem(String name, Item item) {
