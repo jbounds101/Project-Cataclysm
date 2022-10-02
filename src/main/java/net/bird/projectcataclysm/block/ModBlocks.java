@@ -1,9 +1,7 @@
 package net.bird.projectcataclysm.block;
 
-import net.bird.projectcataclysm.CustomExplosion;
 import net.bird.projectcataclysm.ProjectCataclysmMod;
-import net.bird.projectcataclysm.block.custom.LargeTNTBlock;
-import net.bird.projectcataclysm.entity.explosive.LargeTNTEntity;
+import net.bird.projectcataclysm.block.custom.ExplosiveBlock;
 import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -44,16 +42,10 @@ public class ModBlocks {
             new Block(FabricBlockSettings.of(Material.STONE).hardness(5f).resistance(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
 
-    public static final Block LARGE_TNT;
-    static {
-        try {
-            LARGE_TNT = registerBlock("large_tnt",
-                    new LargeTNTBlock(FabricBlockSettings.of(Material.TNT)),
-                    ModItemGroup.PROJECT_CATACLYSM);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    public static final Block EXPLOSIVE_BLOCK = registerBlock("explosive_block",
+            new ExplosiveBlock(FabricBlockSettings.of(Material.TNT)),
+            ModItemGroup.PROJECT_CATACLYSM);
+
 
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
