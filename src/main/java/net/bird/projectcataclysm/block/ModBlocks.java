@@ -9,6 +9,7 @@ import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -25,11 +26,19 @@ public class ModBlocks {
             5b. update data.minecraft.tags.blocks.mineable.(needs stone/iron/diamond tool)
     */
     public static final Block SILVER_BLOCK = registerBlock("silver_block",
-            new Block(FabricBlockSettings.of(Material.METAL).strength(6f).requiresTool()),
+            new Block(FabricBlockSettings.of(Material.METAL).sounds(BlockSoundGroup.METAL).hardness(3f).resistance(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
 
     public static final Block SILVER_ORE = registerBlock("silver_ore",
-            new Block(FabricBlockSettings.of(Material.STONE).strength(4.5f).requiresTool()),
+            new Block(FabricBlockSettings.of(Material.STONE).strength(3f).requiresTool()),
+            ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block DEEPSLATE_SILVER_ORE = registerBlock("deepslate_silver_ore",
+            new Block(FabricBlockSettings.of(Material.STONE).sounds(BlockSoundGroup.DEEPSLATE).hardness(4.5f).resistance(3f).requiresTool()),
+            ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block RAW_SILVER_BLOCK = registerBlock("raw_silver_block",
+            new Block(FabricBlockSettings.of(Material.STONE).hardness(5f).resistance(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
 
 
