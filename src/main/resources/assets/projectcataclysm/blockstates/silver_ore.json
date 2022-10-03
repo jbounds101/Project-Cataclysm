@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "projectcataclysm:block/silver_ore" }
+    "": {
+      "model": "projectcataclysm:block/silver_ore"
+    }
   }
 }

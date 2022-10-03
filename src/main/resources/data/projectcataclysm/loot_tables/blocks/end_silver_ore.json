@@ -24,11 +24,20 @@
                   }
                 }
               ],
-              "name": "projectcataclysm:silver_ore"
+              "name": "projectcataclysm:end_silver_ore"
             },
             {
               "type": "minecraft:item",
-              "function": "minecraft:explosion_decay",
+              "functions": [
+                {
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops",
+                  "function": "minecraft:apply_bonus"
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ],
               "name": "projectcataclysm:raw_silver"
             }
           ]

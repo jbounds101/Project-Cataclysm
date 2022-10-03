@@ -1,5 +1,6 @@
 package net.bird.projectcataclysm.block.custom;
 
+import net.bird.projectcataclysm.entity.ExplosiveEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -39,16 +40,14 @@ public class ExplosiveBlock extends TntBlock {
         if (world.isClient) {
             return;
         }
-        TntEntity tntEntity = new TntEntity(world, (double)pos.getX() + 0.5, pos.getY(), (double)pos.getZ() + 0.5,
+        ExplosiveEntity explosiveEntity = new ExplosiveEntity(world, (double)pos.getX() + 0.5, pos.getY(),
+                (double)pos.getZ() + 0.5,
                 igniter);
-        world.spawnEntity(tntEntity);
+        world.spawnEntity(explosiveEntity);
 
         // Play sound event
-        //world.playSound(null, tntEntity.getX(), tntEntity.getY(), tntEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED,
-                //SoundCategory.BLOCKS, 1.0f, 1.0f);
-        // TODO remove this, used in testing
-        world.playSound(null, tntEntity.getX(), tntEntity.getY(), tntEntity.getZ(), SoundEvents.ENTITY_AXOLOTL_DEATH,
-                SoundCategory.BLOCKS, 1.0f, 4.0f);
+        world.playSound(null, explosiveEntity.getX(), explosiveEntity.getY(), explosiveEntity.getZ(),
+                SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0f, 1.0f);
 
         // Create game event
         world.emitGameEvent((Entity)igniter, GameEvent.PRIME_FUSE, pos);

@@ -3,7 +3,7 @@
   "cookingtime": 200,
   "experience": 1.0,
   "ingredient": {
-    "item": "projectcataclysm:deepslate_silver_ore"
+    "item": "projectcataclysm:end_silver_ore"
   },
   "result": "projectcataclysm:silver_ingot"
 }

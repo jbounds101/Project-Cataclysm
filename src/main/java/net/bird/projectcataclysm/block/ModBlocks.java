@@ -38,6 +38,10 @@ public class ModBlocks {
             new Block(FabricBlockSettings.of(Material.STONE).sounds(BlockSoundGroup.DEEPSLATE).hardness(4.5f).resistance(3f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
 
+    public static final Block END_SILVER_ORE = registerBlock("end_silver_ore",
+            new Block(FabricBlockSettings.of(Material.STONE).hardness(4.5f).resistance(6f).requiresTool()),
+            ModItemGroup.PROJECT_CATACLYSM);
+
     public static final Block RAW_SILVER_BLOCK = registerBlock("raw_silver_block",
             new Block(FabricBlockSettings.of(Material.STONE).hardness(5f).resistance(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
@@ -45,8 +49,6 @@ public class ModBlocks {
     public static final Block EXPLOSIVE_BLOCK = registerBlock("explosive_block",
             new ExplosiveBlock(FabricBlockSettings.of(Material.TNT)),
             ModItemGroup.PROJECT_CATACLYSM);
-
-
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);
