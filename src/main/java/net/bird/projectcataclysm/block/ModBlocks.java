@@ -46,7 +46,7 @@ public class ModBlocks {
             new Block(FabricBlockSettings.of(Material.STONE).hardness(5f).resistance(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
 
-    public static final Block EXPLOSIVE_BLOCK = registerBlock("explosive_block",
+    public static final Block EXPLOSIVE_BLOCK = registerBlock("large_explosive",
             new ExplosiveBlock(FabricBlockSettings.of(Material.TNT)),
             ModItemGroup.PROJECT_CATACLYSM);
 
