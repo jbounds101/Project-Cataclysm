@@ -18,7 +18,6 @@ import net.minecraft.util.registry.Registry;
 
 public class ModBlocks {
 
-
     /* Every block needs (in assets folder):
        1. en_us.json translation
        2. block model json
