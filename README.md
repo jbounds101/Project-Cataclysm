@@ -3,6 +3,9 @@
 This is a mod that adds many new weapons to Minecraft
 
 ## Current Features:
+### Explosives
+- A larger version of TNT can be crafted and used (~2x larger explosion radius).
+
 ### Silver
 - End Silver Ore generates in the End dimension in small blobs
 - Mining Silver Ore with an iron or better pickaxe without Silk Touch drops Raw Silver
