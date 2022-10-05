@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
-public class ExplosiveEntity extends TntEntity {
+public abstract class ExplosiveEntity extends TntEntity {
 
     public ExplosiveEntity(EntityType<? extends TntEntity> entityType, World world) {
         super(entityType, world);
@@ -46,7 +46,7 @@ public class ExplosiveEntity extends TntEntity {
         }
     }
 
-    private void explode() {
+    public void explode() {
         this.world.createExplosion(this, this.getX(), this.getBodyY(0.0625), this.getZ(), 4.0f,
                 Explosion.DestructionType.BREAK);
     }

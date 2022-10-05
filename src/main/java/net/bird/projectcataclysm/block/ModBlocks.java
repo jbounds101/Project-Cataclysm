@@ -1,7 +1,7 @@
 package net.bird.projectcataclysm.block;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
-import net.bird.projectcataclysm.block.custom.ExplosiveBlock;
+import net.bird.projectcataclysm.block.custom.BigExplosiveBlock;
 import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -13,6 +13,8 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+
 
 public class ModBlocks {
 
@@ -46,8 +48,8 @@ public class ModBlocks {
             new Block(FabricBlockSettings.of(Material.STONE).hardness(5f).resistance(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
 
-    public static final Block EXPLOSIVE_BLOCK = registerBlock("large_explosive",
-            new ExplosiveBlock(FabricBlockSettings.of(Material.TNT)),
+    public static final Block BIG_EXPLOSIVE = registerBlock("big_explosive",
+            new BigExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS)),
             ModItemGroup.PROJECT_CATACLYSM);
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
