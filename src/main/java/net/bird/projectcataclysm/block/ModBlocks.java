@@ -24,9 +24,10 @@ public class ModBlocks {
        2. block model json
        3. block texture png
        4. item model json (can be simple and point to block model json)
-       5. if block requires tool
-            5a. update data.minecraft.tags.blocks.mineable.(tool)
-            5b. update data.minecraft.tags.blocks.mineable.(needs stone/iron/diamond tool)
+       5. blockstates json
+       6. if block requires tool
+            6a. update data.minecraft.tags.blocks.mineable.(tool)
+            6b. update data.minecraft.tags.blocks.mineable.(needs stone/iron/diamond tool)
     */
     public static final Block SILVER_BLOCK = registerBlock("silver_block",
             new Block(FabricBlockSettings.of(Material.METAL).sounds(BlockSoundGroup.METAL).hardness(3f).resistance(6f).requiresTool()),
