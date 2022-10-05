@@ -28,6 +28,7 @@ public class ModBlocks {
             6a. update data.minecraft.tags.blocks.mineable.(tool)
             6b. update data.minecraft.tags.blocks.mineable.(needs stone/iron/diamond tool)
     */
+
     public static final Block SILVER_BLOCK = registerBlock("silver_block",
             new Block(FabricBlockSettings.of(Material.METAL).sounds(BlockSoundGroup.METAL).hardness(3f).resistance(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
