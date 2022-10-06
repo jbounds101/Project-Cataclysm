@@ -55,6 +55,7 @@ public class ProjectCataclysmMod implements ModInitializer {
 
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
+		Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, "silver_scythe"), ModItems.SILVER_SCYTHE);
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE,
 				new Identifier(MOD_ID, "end_silver_ore"), END_SILVER_ORE_CONFIGURED_FEATURE);
 		Registry.register(BuiltinRegistries.PLACED_FEATURE, new Identifier(MOD_ID, "end_silver_ore"),

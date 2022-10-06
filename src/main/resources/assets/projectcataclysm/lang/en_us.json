@@ -10,6 +10,8 @@
   "block.projectcataclysm.end_silver_ore": "End Silver Ore",
   "block.projectcataclysm.raw_silver_block": "Block of Raw Silver",
 
+  "item.projectcataclysm.silver_scythe": "Silver Scythe",
+
   "itemGroup.projectcataclysm.project_cataclysm_group": "Project Cataclysm",
 
   "item.projectcataclysm.downsing_rod.no_valuables": "No valuables found!"
