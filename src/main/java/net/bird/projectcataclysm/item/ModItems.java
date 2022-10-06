@@ -25,7 +25,7 @@ public class ModItems {
 
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",
-            new DowsingRodItem(new FabricItemSettings().group(ItemGroup.MISC)));
+            new DowsingRodItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item PISTOL = registerItem("pistol",
             new PistolItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));

@@ -39,7 +39,7 @@ public class DowsingRodItem extends Item {
             }
 
             if (!foundBlock) {
-                player.sendMessage(Text.translatable("item.projectcataclysm.downsing_rod.no_valuables"), false);
+                player.sendMessage(Text.translatable("item.projectcataclysm.dowsing_rod.no_valuables"), false);
             }
         }
 

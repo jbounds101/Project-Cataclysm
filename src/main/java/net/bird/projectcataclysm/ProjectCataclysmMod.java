@@ -39,12 +39,12 @@ public class ProjectCataclysmMod implements ModInitializer {
 			(Feature.ORE, new OreFeatureConfig(
 					new BlockMatchRuleTest(Blocks.END_STONE),
 					ModBlocks.END_SILVER_ORE.getDefaultState(),
-					4));
+					3));
 
 	public static PlacedFeature END_SILVER_ORE_PLACED_FEATURE = new PlacedFeature(
 			RegistryEntry.of(END_SILVER_ORE_CONFIGURED_FEATURE),
 			Arrays.asList(
-					CountPlacementModifier.of(10),
+					CountPlacementModifier.of(12),
 					SquarePlacementModifier.of(),
 					HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(64))));
 	@Override
