@@ -2,6 +2,8 @@
   "item.projectcataclysm.silver_ingot": "Silver Ingot",
   "item.projectcataclysm.silver_nugget": "Silver Nugget",
   "item.projectcataclysm.raw_silver": "Raw Silver",
+  "item.projectcataclysm.silver_scythe": "Silver Scythe",
+  "item.projectcataclysm.soul_shard": "Soul Shard",
   "item.projectcataclysm.dowsing_rod": "Dowsing Rod",
 
   "block.projectcataclysm.silver_block": "Block of Silver",
@@ -9,8 +11,6 @@
   "block.projectcataclysm.deepslate_silver_ore": "Deepslate Silver Ore",
   "block.projectcataclysm.end_silver_ore": "End Silver Ore",
   "block.projectcataclysm.raw_silver_block": "Block of Raw Silver",
-
-  "item.projectcataclysm.silver_scythe": "Silver Scythe",
 
   "itemGroup.projectcataclysm.project_cataclysm_group": "Project Cataclysm",
 

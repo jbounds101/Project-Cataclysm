@@ -24,6 +24,8 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     public static final Item RAW_SILVER = registerItem("raw_silver",
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+    public static final Item SOUL_SHARD = registerItem("soul_shard",
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     public static final ToolItem SILVER_SCYTHE = new ScytheItem(SilverToolMaterial.INSTANCE, new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM));
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",

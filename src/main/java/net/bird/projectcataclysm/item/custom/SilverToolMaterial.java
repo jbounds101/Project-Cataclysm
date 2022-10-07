@@ -8,7 +8,7 @@ public class SilverToolMaterial implements ToolMaterial {
     public static final SilverToolMaterial INSTANCE = new SilverToolMaterial();
     @Override
     public int getDurability() {
-        return 64;
+        return 59;
     }
 
     @Override

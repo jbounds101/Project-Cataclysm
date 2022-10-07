@@ -2,15 +2,15 @@ package net.bird.projectcataclysm.mixin;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.item.custom.ScytheItem;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.HoeItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin {
@@ -39,5 +39,12 @@ public abstract class PlayerEntityMixin {
             return damageDealt;
         }
         return l;
+    }
+    @Redirect(method = "attack(Lnet/minecraft/entity/Entity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z", ordinal = 1))
+    private boolean scytheBreakCheck(ItemStack stack) {
+        if (((PlayerEntity)(Object)this).getStackInHand(Hand.MAIN_HAND).getItem() instanceof HoeItem) {
+            return false;
+        }
+        return stack.isEmpty();
     }
 }

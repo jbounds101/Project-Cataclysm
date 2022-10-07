@@ -2,20 +2,13 @@ package net.bird.projectcataclysm.item.custom;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.Material;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class ScytheItem extends ToolItem implements Vanishable {
     private final float attackDamage;
@@ -35,9 +28,14 @@ public class ScytheItem extends ToolItem implements Vanishable {
     }
 
     public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        stack.damage(1, attacker, (e) -> {
-            e.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
+        stack.damage(1, attacker, (p) -> {
+            p.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
         });
+        if (stack.isEmpty()) {
+            ItemStack newStack = new ItemStack(Items.NETHERITE_HOE);
+            newStack.setNbt(stack.getNbt());
+            attacker.equipStack(EquipmentSlot.MAINHAND, newStack);
+        }
         return true;
     }
 
