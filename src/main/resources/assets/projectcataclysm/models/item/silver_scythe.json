@@ -1,0 +1,6 @@
+{
+  "parent": "projectcataclysm:item/handheld_large",
+  "textures": {
+    "layer0": "projectcataclysm:item/silver_scythe"
+  }
+}

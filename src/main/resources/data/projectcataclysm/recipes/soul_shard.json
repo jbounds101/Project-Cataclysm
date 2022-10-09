@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "projectcataclysm:soul_essence"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "projectcataclysm:soul_shard"
+  }
+}

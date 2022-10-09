@@ -52,6 +52,9 @@ public class ModBlocks {
     public static final Block BIG_EXPLOSIVE = registerBlock("big_explosive",
             new BigExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS)),
             ModItemGroup.PROJECT_CATACLYSM);
+    public static final Block SOUL_ESSENCE = registerBlock("soul_essence",
+            new Block(FabricBlockSettings.of(Material.AGGREGATE).breakInstantly().luminance(13).noCollision().nonOpaque().sounds(BlockSoundGroup.SCULK_SHRIEKER)),
+            ModItemGroup.PROJECT_CATACLYSM);
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);
