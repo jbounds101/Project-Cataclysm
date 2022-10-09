@@ -30,6 +30,9 @@ public class ModItems {
     public static final Item PISTOL = registerItem("pistol",
             new PistolItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
+    public static final Item BULLET = registerItem("bullet",
+            new PistolItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);
