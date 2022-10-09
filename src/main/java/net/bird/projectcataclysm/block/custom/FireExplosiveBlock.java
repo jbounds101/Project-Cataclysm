@@ -1,7 +1,7 @@
 package net.bird.projectcataclysm.block.custom;
 
 import net.bird.projectcataclysm.entity.custom.ExplosiveEntity;
-import net.bird.projectcataclysm.entity.custom.MassiveExplosiveEntity;
+import net.bird.projectcataclysm.entity.custom.FireExplosiveEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.sound.SoundCategory;
@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-public class MassiveExplosiveBlock extends ExplosiveBlock {
-    public MassiveExplosiveBlock(Settings settings) {
+public class FireExplosiveBlock extends ExplosiveBlock {
+    public FireExplosiveBlock(Settings settings) {
         super(settings);
     }
 
@@ -21,7 +21,7 @@ public class MassiveExplosiveBlock extends ExplosiveBlock {
         if (world.isClient) {
             return;
         }
-        ExplosiveEntity explosiveEntity = new MassiveExplosiveEntity(world, (double)pos.getX() + 0.5, pos.getY(),
+        ExplosiveEntity explosiveEntity = new FireExplosiveEntity(world, (double)pos.getX() + 0.5, pos.getY(),
                 (double)pos.getZ() + 0.5, igniter);
         world.spawnEntity(explosiveEntity);
 
@@ -32,5 +32,4 @@ public class MassiveExplosiveBlock extends ExplosiveBlock {
         // Create game event
         world.emitGameEvent((Entity)igniter, GameEvent.PRIME_FUSE, pos);
     }
-
 }

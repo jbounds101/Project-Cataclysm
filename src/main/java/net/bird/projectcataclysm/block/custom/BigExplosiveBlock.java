@@ -1,7 +1,7 @@
 package net.bird.projectcataclysm.block.custom;
 
-import net.bird.projectcataclysm.entity.BigExplosiveEntity;
-import net.bird.projectcataclysm.entity.ExplosiveEntity;
+import net.bird.projectcataclysm.entity.custom.BigExplosiveEntity;
+import net.bird.projectcataclysm.entity.custom.ExplosiveEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.sound.SoundCategory;

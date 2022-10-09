@@ -1,4 +1,4 @@
-package net.bird.projectcataclysm.entity;
+package net.bird.projectcataclysm.entity.custom;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -8,16 +8,9 @@ import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 public class MassiveExplosiveEntity extends ExplosiveEntity {
-    public MassiveExplosiveEntity(EntityType<? extends TntEntity> entityType, World world) {
-        super(entityType, world);
-    }
 
     public MassiveExplosiveEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter) {
         super(world, x, y, z, igniter);
-    }
-
-    public MassiveExplosiveEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter, int fuse) {
-        super(world, x, y, z, igniter, fuse);
     }
 
     @Override

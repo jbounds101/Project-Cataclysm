@@ -1,6 +1,6 @@
 package net.bird.projectcataclysm.block.custom;
 
-import net.bird.projectcataclysm.entity.ExplosiveEntity;
+import net.bird.projectcataclysm.entity.custom.ExplosiveEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
