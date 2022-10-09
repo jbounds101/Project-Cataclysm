@@ -1,6 +1,5 @@
 package net.bird.projectcataclysm.block.custom;
 
-import net.bird.projectcataclysm.entity.custom.ExplosiveEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -39,14 +38,6 @@ public abstract class ExplosiveBlock extends TntBlock {
         if (world.isClient) {
             return;
         }
-        ExplosiveEntity explosiveEntity = null;
-        world.spawnEntity(explosiveEntity);
-
-        // Play sound event
-        world.playSound(null, explosiveEntity.getX(), explosiveEntity.getY(), explosiveEntity.getZ(),
-                SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0f, 1.0f);
-
-        // Create game event
         world.emitGameEvent((Entity)igniter, GameEvent.PRIME_FUSE, pos);
     }
 

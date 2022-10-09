@@ -1,6 +1,5 @@
 package net.bird.projectcataclysm.block.custom;
 
-import net.bird.projectcataclysm.entity.custom.ExplosiveEntity;
 import net.bird.projectcataclysm.entity.custom.MassiveExplosiveEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -21,7 +20,7 @@ public class MassiveExplosiveBlock extends ExplosiveBlock {
         if (world.isClient) {
             return;
         }
-        ExplosiveEntity explosiveEntity = new MassiveExplosiveEntity(world, (double)pos.getX() + 0.5, pos.getY(),
+        MassiveExplosiveEntity explosiveEntity = new MassiveExplosiveEntity(world, (double)pos.getX() + 0.5, pos.getY(),
                 (double)pos.getZ() + 0.5, igniter);
         world.spawnEntity(explosiveEntity);
 
