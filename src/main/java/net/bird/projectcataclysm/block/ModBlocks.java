@@ -53,6 +53,10 @@ public class ModBlocks {
             new BigExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS)),
             ModItemGroup.PROJECT_CATACLYSM);
 
+    public static final Block MASSIVE_EXPLOSIVE = registerBlock("massive_explosive",
+            new BigExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS)),
+            ModItemGroup.PROJECT_CATACLYSM);
+
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);
         return Registry.register(Registry.BLOCK, new Identifier(ProjectCataclysmMod.MOD_ID, name), block);
