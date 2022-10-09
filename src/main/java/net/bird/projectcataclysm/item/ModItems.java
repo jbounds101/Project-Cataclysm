@@ -2,6 +2,8 @@ package net.bird.projectcataclysm.item;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.item.custom.DowsingRodItem;
+import net.bird.projectcataclysm.item.custom.MachineGunItem;
+import net.bird.projectcataclysm.item.custom.WandItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -25,7 +27,11 @@ public class ModItems {
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",
             new DowsingRodItem(new FabricItemSettings().group(ItemGroup.MISC)));
 
+    public static final Item MACHINE_GUN = registerItem("machine_gun",
+            new MachineGunItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxDamage(16)));
 
+    public static final Item WAND = registerItem("wand",
+            new WandItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM), 10));
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);
         /* Identifier acts as a namespace:object pair, for example, minecraft:iron_ingot, or in this case,

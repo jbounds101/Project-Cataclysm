@@ -9,6 +9,7 @@
 
   "itemGroup.projectcataclysm.project_cataclysm_group": "Project Cataclysm",
 
-  "item.projectcataclysm.downsing_rod.no_valuables": "No valuables found!"
-
+  "item.projectcataclysm.downsing_rod.no_valuables": "No valuables found!",
+  "item.projectcataclysm.machine_gun": "Machine Gun",
+  "item.projectcataclysm.wand": "Wand"
 }
