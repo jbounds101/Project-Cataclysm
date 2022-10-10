@@ -32,4 +32,6 @@ public class MassiveExplosiveBlock extends ExplosiveBlock {
         world.emitGameEvent((Entity)igniter, GameEvent.PRIME_FUSE, pos);
     }
 
+    // TODO fix explosion activated ignition causing tnt entity to spawn
+
 }

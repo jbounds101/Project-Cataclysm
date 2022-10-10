@@ -2,6 +2,7 @@ package net.bird.projectcataclysm.block;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.block.custom.BigExplosiveBlock;
+import net.bird.projectcataclysm.block.custom.FireExplosiveBlock;
 import net.bird.projectcataclysm.block.custom.MassiveExplosiveBlock;
 import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -57,6 +58,11 @@ public class ModBlocks {
     public static final Block MASSIVE_EXPLOSIVE = registerBlock("massive_explosive",
             new MassiveExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS)),
             ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block FIRE_EXPLOSIVE = registerBlock("fire_explosive",
+            new FireExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS)),
+            ModItemGroup.PROJECT_CATACLYSM);
+
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);
