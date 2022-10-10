@@ -29,7 +29,7 @@ public abstract class ExplosiveEntity extends TntEntity {
         this.setPosition(x, y, z);
         double d = world.random.nextDouble() * 6.2831854820251465;
         this.setVelocity(-Math.sin(d) * 0.02, 0.20000000298023224, -Math.cos(d) * 0.02);
-        this.setFuse(80);
+        this.setFuse(DEFAULT_FUSE);
         this.prevX = x;
         this.prevY = y;
         this.prevZ = z;
@@ -99,7 +99,7 @@ public abstract class ExplosiveEntity extends TntEntity {
     }
 
     public int getFuse() {
-        return (Integer)this.dataTracker.get(FUSE);
+        return this.dataTracker.get(FUSE);
     }
 
     public Packet<?> createSpawnPacket() {
