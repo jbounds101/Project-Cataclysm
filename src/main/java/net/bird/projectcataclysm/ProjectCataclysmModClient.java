@@ -10,9 +10,7 @@ public class ProjectCataclysmModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 
-        EntityRendererRegistry.register(ModEntities.BIG_EXPLOSIVE, (context) -> {
-            return new BigExplosiveRenderer(context);
-        });
+        EntityRendererRegistry.register(ModEntities.BIG_EXPLOSIVE, BigExplosiveRenderer::new);
 
 
     }
