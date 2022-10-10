@@ -1,8 +1,10 @@
 package net.bird.projectcataclysm.item;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
+import net.bird.projectcataclysm.item.custom.BulletItem;
 import net.bird.projectcataclysm.item.custom.DowsingRodItem;
 import net.bird.projectcataclysm.item.custom.PistolItem;
+import net.bird.projectcataclysm.item.custom.SniperItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -31,7 +33,10 @@ public class ModItems {
             new PistolItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item BULLET = registerItem("bullet",
-            new PistolItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new BulletItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item SNIPER = registerItem("sniper",
+            new SniperItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
 
     private static Item registerItem(String name, Item item) {

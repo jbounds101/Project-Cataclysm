@@ -2,11 +2,9 @@ package net.bird.projectcataclysm.item.custom;
 
 import net.bird.projectcataclysm.item.ModItems;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.BowAttackGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.*;
-import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -20,15 +18,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-public class PistolItem extends RangedWeaponItem implements Vanishable {
-    public static final int maxAmmo = 10;
-    public static int currAmmo = 10;
-
-    public PistolItem(Settings settings) {
+public class SniperItem extends RangedWeaponItem implements Vanishable {
+    public SniperItem(Settings settings) {
         super(settings);
     }
 
-
+    public static final int maxAmmo = 2;
+    public static int currAmmo = 2;
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
@@ -48,17 +44,17 @@ public class PistolItem extends RangedWeaponItem implements Vanishable {
                 persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 3.0F, 1.0F);
                 persistentProjectileEntity.setCritical(true);
                 double damage = persistentProjectileEntity.getDamage();
-                persistentProjectileEntity.setDamage(damage * 1.25);
+                persistentProjectileEntity.setDamage(damage * 1.75);
 
                 if (currAmmo > 0) {
                     world.spawnEntity(persistentProjectileEntity);
                     currAmmo--;
                     playerEntity.sendMessage(Text.literal("You have:" + currAmmo));
-                    playerEntity.addExhaustion(1);
+                    playerEntity.addExhaustion(4);
                 }
                 else if (currAmmo == 0) {
                     playerEntity.sendMessage(Text.literal("Reloading"));
-                    executorService.schedule(PistolItem::reload, 2, TimeUnit.SECONDS);
+                    executorService.schedule(SniperItem::reload, 4, TimeUnit.SECONDS);
                 }
             }
         }
@@ -87,6 +83,6 @@ public class PistolItem extends RangedWeaponItem implements Vanishable {
 
     @Override
     public int getRange() {
-        return 15;
+        return 25;
     }
 }

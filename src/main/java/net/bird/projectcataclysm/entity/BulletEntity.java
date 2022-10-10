@@ -4,6 +4,7 @@ package net.bird.projectcataclysm.entity;
 
 import com.google.common.collect.Sets;
 import net.bird.projectcataclysm.item.ModItems;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -21,6 +22,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -41,6 +43,8 @@ public class BulletEntity extends PersistentProjectileEntity {
     public BulletEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
         super(type, owner, world);
     }
+
+
 
     @Override
     protected ItemStack asItemStack() {
