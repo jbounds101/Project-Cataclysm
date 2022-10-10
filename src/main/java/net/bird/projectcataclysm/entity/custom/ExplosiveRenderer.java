@@ -1,8 +1,11 @@
 package net.bird.projectcataclysm.entity.custom;
 
 import net.bird.projectcataclysm.block.ModBlocks;
+import net.bird.projectcataclysm.entity.custom.BigExplosiveEntity;
+import net.bird.projectcataclysm.entity.custom.ExplosiveEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.Block;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -15,22 +18,24 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
 @Environment(EnvType.CLIENT)
-public class BigExplosiveRenderer extends EntityRenderer<BigExplosiveEntity> {
+public class ExplosiveRenderer extends EntityRenderer<ExplosiveEntity> {
     private final BlockRenderManager blockRenderManager;
+    private final Block block;
 
-    public BigExplosiveRenderer(EntityRendererFactory.Context context) {
+    public ExplosiveRenderer(EntityRendererFactory.Context context, Block block) {
         super(context);
+        this.block = block;
         this.shadowRadius = 0.5F;
         this.blockRenderManager = context.getBlockRenderManager();
     }
 
-    public void render(BigExplosiveEntity explosiveEntity, float f, float g, MatrixStack matrixStack,
+    public void render(ExplosiveEntity explosiveEntity, float f, float g, MatrixStack matrixStack,
                        VertexConsumerProvider vertexConsumerProvider, int i) {
         matrixStack.push();
         matrixStack.translate(0.0, 0.5, 0.0);
         int j = explosiveEntity.getFuse();
-        if ((float)j - g + 1.0F < 10.0F) {
-            float h = 1.0F - ((float)j - g + 1.0F) / 10.0F;
+        if ((float) j - g + 1.0F < 10.0F) {
+            float h = 1.0F - ((float) j - g + 1.0F) / 10.0F;
             h = MathHelper.clamp(h, 0.0F, 1.0F);
             h *= h;
             h *= h;
@@ -42,13 +47,13 @@ public class BigExplosiveRenderer extends EntityRenderer<BigExplosiveEntity> {
         matrixStack.translate(-0.5, -0.5, 0.5);
         matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(90.0F));
         TntMinecartEntityRenderer.renderFlashingBlock(this.blockRenderManager,
-                ModBlocks.BIG_EXPLOSIVE.getDefaultState(),
+                block.getDefaultState(),
                 matrixStack, vertexConsumerProvider, i, j / 5 % 2 == 0);
         matrixStack.pop();
         super.render(explosiveEntity, f, g, matrixStack, vertexConsumerProvider, i);
     }
 
-    public Identifier getTexture(BigExplosiveEntity bigExplosiveEntity) {
+    public Identifier getTexture(ExplosiveEntity explosiveEntity) {
         return SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE;
     }
 }

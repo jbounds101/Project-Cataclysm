@@ -19,13 +19,14 @@ public abstract class ExplosiveEntity extends TntEntity {
     @Nullable
     private LivingEntity causingEntity;
 
-    public ExplosiveEntity(EntityType<BigExplosiveEntity> entityType, World world) {
+    public ExplosiveEntity(EntityType<? extends TntEntity> entityType, World world) {
         super(entityType, world);
         this.intersectionChecked = true;
     }
 
-    public ExplosiveEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter) {
-        this(ModEntities.BIG_EXPLOSIVE, world);
+    public ExplosiveEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter,
+                           EntityType<? extends ExplosiveEntity> entityType) {
+        this(entityType, world);
         this.setPosition(x, y, z);
         double d = world.random.nextDouble() * 6.2831854820251465;
         this.setVelocity(-Math.sin(d) * 0.02, 0.20000000298023224, -Math.cos(d) * 0.02);
