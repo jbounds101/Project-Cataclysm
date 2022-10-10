@@ -30,7 +30,25 @@ import java.util.Set;
 
 
 public class BulletEntity extends PersistentProjectileEntity {
+    public BulletEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+        super(entityType, world);
+    }
 
+    public BulletEntity(EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world) {
+        super(type, x, y, z, world);
+    }
+
+    public BulletEntity(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world) {
+        super(type, owner, world);
+    }
+
+    @Override
+    protected ItemStack asItemStack() {
+        return new ItemStack(ModItems.BULLET);
+    }
+
+
+    /*
     private static final int MAX_POTION_DURATION_TICKS = 600;
     private static final int NO_POTION_COLOR = -1;
     private static final TrackedData<Integer> COLOR;
@@ -255,7 +273,7 @@ public class BulletEntity extends PersistentProjectileEntity {
         COLOR = DataTracker.registerData(ArrowEntity.class, TrackedDataHandlerRegistry.INTEGER);
     }
 
-
+*/
 
 /*
     public BulletEntity(EntityType<? extends BulletEntity> entityType, World world) {
