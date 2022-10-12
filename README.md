@@ -15,4 +15,15 @@ This is a mod that adds many new weapons to Minecraft
 - Silver Ingot can be crafted into Silver Block and vice versa
 - Silver Ingot can be crafted into Silver Nugget and vice versa
 
-Silver is a base crafting material
+### Silver Scythe
+- Netherite Hoe + Silver Ingots + Chorus Fruit can be crafted into a Silver Scythe
+- Silver Scythe has an attack damage of 10.5 and attack speed of 1.3
+- Silver Scythe has a durability of 59, when broken becomes Netherite Hoe
+- All charged attacks are sweep attacks that deal full damage (including crits and sprint hits)
+- Mobs killed by the Silver Scythe will drop Soul Shards
+- Warden killed by the Silver Scythe will now drop echo shards
+
+### Soul
+- Soul Shards can be crafted into Soul Essence
+- Soul Essence is a block with no collision that emits a light level of 13
+- Soul Essence + Echo shards + Diamond can be crafted into Soul Gem

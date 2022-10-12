@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "projectcataclysm:soul_essence"
+    },
+    "E": {
+      "item": "minecraft:echo_shard"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    "SES",
+    "EDE",
+    "SES"
+  ],
+  "result": {
+    "item": "projectcataclysm:soul_gem"
+  }
+}

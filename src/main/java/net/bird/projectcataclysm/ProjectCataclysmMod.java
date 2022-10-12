@@ -5,7 +5,11 @@ import net.bird.projectcataclysm.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.structure.rule.BlockMatchRuleTest;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -47,6 +51,7 @@ public class ProjectCataclysmMod implements ModInitializer {
 					CountPlacementModifier.of(12),
 					SquarePlacementModifier.of(),
 					HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(64))));
+	public static ModelIdentifier SILVER_SCYTHE_INVENTORY = new ModelIdentifier(MOD_ID,"silver_scythe_inventory","inventory");
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -55,6 +60,11 @@ public class ProjectCataclysmMod implements ModInitializer {
 
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
+		Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, "silver_scythe"), ModItems.SILVER_SCYTHE);
+		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+			out.accept(SILVER_SCYTHE_INVENTORY);
+		});
+		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_ESSENCE, RenderLayer.getCutout());
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE,
 				new Identifier(MOD_ID, "end_silver_ore"), END_SILVER_ORE_CONFIGURED_FEATURE);
 		Registry.register(BuiltinRegistries.PLACED_FEATURE, new Identifier(MOD_ID, "end_silver_ore"),
