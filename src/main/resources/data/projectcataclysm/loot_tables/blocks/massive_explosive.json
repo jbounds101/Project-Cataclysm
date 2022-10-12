@@ -13,7 +13,7 @@
           "type": "minecraft:item",
           "conditions": [
             {
-              "block": "minecraft:tnt",
+              "block": "projectcataclysm:massive_explosive",
               "condition": "minecraft:block_state_property",
               "properties": {
                 "unstable": "false"

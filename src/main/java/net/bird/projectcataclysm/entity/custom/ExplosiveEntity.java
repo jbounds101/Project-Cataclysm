@@ -1,6 +1,5 @@
 package net.bird.projectcataclysm.entity.custom;
 
-import net.bird.projectcataclysm.entity.ModEntities;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;

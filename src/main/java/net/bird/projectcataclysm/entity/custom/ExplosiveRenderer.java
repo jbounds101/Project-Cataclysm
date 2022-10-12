@@ -1,8 +1,5 @@
 package net.bird.projectcataclysm.entity.custom;
 
-import net.bird.projectcataclysm.block.ModBlocks;
-import net.bird.projectcataclysm.entity.custom.BigExplosiveEntity;
-import net.bird.projectcataclysm.entity.custom.ExplosiveEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;

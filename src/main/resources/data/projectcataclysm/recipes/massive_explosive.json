@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "tag": "projectcataclysm:big_explosive"
+      "item": "projectcataclysm:big_explosive"
     }
   },
   "pattern": [
