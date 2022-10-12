@@ -1,14 +1,16 @@
 package net.bird.projectcataclysm.item;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
-import net.bird.projectcataclysm.item.custom.BulletItem;
 import net.bird.projectcataclysm.item.custom.DowsingRodItem;
-import net.bird.projectcataclysm.item.custom.PistolItem;
-import net.bird.projectcataclysm.item.custom.SniperItem;
+import net.bird.projectcataclysm.item.custom.ScytheItem;
+import net.bird.projectcataclysm.item.custom.SilverToolMaterial;
+import net.bird.projectcataclysm.item.custom.SoulGemItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ToolItem;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 
 public class ModItems {
@@ -24,19 +26,14 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     public static final Item RAW_SILVER = registerItem("raw_silver",
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
-
+    public static final Item SOUL_SHARD = registerItem("soul_shard",
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+    public static final Item SOUL_GEM = registerItem("soul_gem",
+            new SoulGemItem(new FabricItemSettings().rarity(Rarity.RARE).group(ModItemGroup.PROJECT_CATACLYSM)));
+    public static final ToolItem SILVER_SCYTHE = new ScytheItem(SilverToolMaterial.INSTANCE, new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof().group(ModItemGroup.PROJECT_CATACLYSM));
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",
             new DowsingRodItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
-
-    public static final Item PISTOL = registerItem("pistol",
-            new PistolItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
-
-    public static final Item BULLET = registerItem("bullet",
-            new BulletItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
-
-    public static final Item SNIPER = registerItem("sniper",
-            new SniperItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
 
     private static Item registerItem(String name, Item item) {

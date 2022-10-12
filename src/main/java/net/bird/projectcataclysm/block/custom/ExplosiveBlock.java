@@ -1,12 +1,13 @@
 package net.bird.projectcataclysm.block.custom;
 
-import net.bird.projectcataclysm.entity.ExplosiveEntity;
+import net.bird.projectcataclysm.entity.custom.ExplosiveEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.TntBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
@@ -21,14 +22,20 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public abstract class ExplosiveBlock extends TntBlock {
 
     // When a TntBlock is ignited, it calls prime(), which creates a TntEntity
+    public Class<? extends ExplosiveEntity> explosiveEntity;
 
     public ExplosiveBlock(Settings settings) {
         super(settings);
+        this.explosiveEntity = ExplosiveEntity.class;
     }
 
     public void primeExplosive(World world, BlockPos pos) {
@@ -36,20 +43,43 @@ public abstract class ExplosiveBlock extends TntBlock {
     }
 
     public void primeExplosive(World world, BlockPos pos, @Nullable LivingEntity igniter) {
-        if (world.isClient) {
-            return;
+        if (!world.isClient) {
+            try {
+                Constructor<? extends ExplosiveEntity> builder = explosiveEntity.getConstructor(World.class,
+                        double.class, double.class, double.class, LivingEntity.class);
+                ExplosiveEntity explosiveEntity = builder.newInstance(world, (double)pos.getX() + 0.5,
+                        (double)pos.getY(),
+                        (double)pos.getZ() + 0.5, igniter);
+                world.spawnEntity(explosiveEntity);
+                world.playSound(null, explosiveEntity.getX(), explosiveEntity.getY(),
+                        explosiveEntity.getZ(), SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F,
+                        1.0F);
+                world.emitGameEvent(igniter, GameEvent.PRIME_FUSE, pos);
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                     IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
-        ExplosiveEntity explosiveEntity = null;
-        world.spawnEntity(explosiveEntity);
-
-        // Play sound event
-        world.playSound(null, explosiveEntity.getX(), explosiveEntity.getY(), explosiveEntity.getZ(),
-                SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0f, 1.0f);
-
-        // Create game event
-        world.emitGameEvent((Entity)igniter, GameEvent.PRIME_FUSE, pos);
     }
 
+    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+        if (!world.isClient) {
+            try {
+                Constructor<? extends ExplosiveEntity> builder = explosiveEntity.getConstructor(World.class,
+                        double.class, double.class, double.class, LivingEntity.class);
+                ExplosiveEntity explosiveEntity = builder.newInstance(world, (double)pos.getX() + 0.5,
+                        (double)pos.getY(),
+                        (double)pos.getZ() + 0.5, null);
+                int i = explosiveEntity.getFuse();
+                explosiveEntity.setFuse((short)(world.random.nextInt(i / 4) + i / 8));
+                world.spawnEntity(explosiveEntity);
+
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                     IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
@@ -73,7 +103,7 @@ public abstract class ExplosiveBlock extends TntBlock {
         }
     }
 
-    // Not entirely sure what this one does, but it needs to be overriden regardless to use the ExplosiveBlock
+    // Not entirely sure what this one does, but it needs to be over-ridden regardless to use the ExplosiveBlock
     // .primeExplosive method rather than primeTnt
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {

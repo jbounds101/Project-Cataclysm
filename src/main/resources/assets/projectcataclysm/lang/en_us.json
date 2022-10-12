@@ -2,6 +2,9 @@
   "item.projectcataclysm.silver_ingot": "Silver Ingot",
   "item.projectcataclysm.silver_nugget": "Silver Nugget",
   "item.projectcataclysm.raw_silver": "Raw Silver",
+  "item.projectcataclysm.silver_scythe": "Silver Scythe",
+  "item.projectcataclysm.soul_shard": "Soul Shard",
+  "item.projectcataclysm.soul_gem": "Soul Gem",
   "item.projectcataclysm.dowsing_rod": "Dowsing Rod",
   "item.projectcataclysm.pistol": "Pistol",
   "item.projectcataclysm.bullet": "Bullet",
@@ -13,6 +16,9 @@
   "block.projectcataclysm.end_silver_ore": "End Silver Ore",
   "block.projectcataclysm.raw_silver_block": "Block of Raw Silver",
   "block.projectcataclysm.big_explosive": "Big TNT",
+  "block.projectcataclysm.massive_explosive": "Massive TNT",
+  "block.projectcataclysm.fire_explosive": "Fire Explosive",
+  "block.projectcataclysm.soul_essence": "Soul Essence",
 
   "itemGroup.projectcataclysm.project_cataclysm_group": "Project Cataclysm",
 

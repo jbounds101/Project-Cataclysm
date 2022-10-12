@@ -23,6 +23,9 @@
   "entrypoints": {
     "main": [
       "net.bird.projectcataclysm.ProjectCataclysmMod"
+    ],
+    "client": [
+      "net.bird.projectcataclysm.ProjectCataclysmModClient"
     ]
   },
   "mixins": [

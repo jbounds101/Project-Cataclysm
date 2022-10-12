@@ -2,6 +2,8 @@ package net.bird.projectcataclysm.block;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.block.custom.BigExplosiveBlock;
+import net.bird.projectcataclysm.block.custom.FireExplosiveBlock;
+import net.bird.projectcataclysm.block.custom.MassiveExplosiveBlock;
 import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -29,6 +31,7 @@ public class ModBlocks {
             6b. update data.minecraft.tags.blocks.mineable.(needs stone/iron/diamond tool)
     */
 
+    // --- Silver ---
     public static final Block SILVER_BLOCK = registerBlock("silver_block",
             new Block(FabricBlockSettings.of(Material.METAL).sounds(BlockSoundGroup.METAL).hardness(3f).resistance(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
@@ -48,9 +51,24 @@ public class ModBlocks {
     public static final Block RAW_SILVER_BLOCK = registerBlock("raw_silver_block",
             new Block(FabricBlockSettings.of(Material.STONE).hardness(5f).resistance(6f).requiresTool()),
             ModItemGroup.PROJECT_CATACLYSM);
+    // --------------
 
+    // --- Explosives ---
     public static final Block BIG_EXPLOSIVE = registerBlock("big_explosive",
             new BigExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS)),
+            ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block MASSIVE_EXPLOSIVE = registerBlock("massive_explosive",
+            new MassiveExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS)),
+            ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block FIRE_EXPLOSIVE = registerBlock("fire_explosive",
+            new FireExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS)),
+            ModItemGroup.PROJECT_CATACLYSM);
+    // ------------------
+
+    public static final Block SOUL_ESSENCE = registerBlock("soul_essence",
+            new Block(FabricBlockSettings.of(Material.AGGREGATE).breakInstantly().luminance(13).noCollision().nonOpaque().sounds(BlockSoundGroup.SCULK_SHRIEKER)),
             ModItemGroup.PROJECT_CATACLYSM);
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
