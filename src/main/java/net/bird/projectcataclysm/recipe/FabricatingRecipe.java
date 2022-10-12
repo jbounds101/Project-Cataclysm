@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
 import net.bird.projectcataclysm.ProjectCataclysmMod;
+import net.bird.projectcataclysm.block.ModBlocks;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class FabricatingRecipe implements Recipe<CraftingInventory> {
+public class FabricatingRecipe implements CraftingRecipe {
     final int width;
     final int height;
     final DefaultedList<Ingredient> input;
@@ -38,16 +39,16 @@ public class FabricatingRecipe implements Recipe<CraftingInventory> {
         this.output = output;
     }
 
-    public RecipeType<?> getType() {
-        return ProjectCataclysmMod.FABRICATING;
-    }
+
+
+    public ItemStack createIcon() { return new ItemStack(ModBlocks.FABRICATOR); }
 
     public Identifier getId() {
         return this.id;
     }
 
     public RecipeSerializer<?> getSerializer() {
-        return RecipeSerializer.SHAPED;
+        return ProjectCataclysmMod.FABRICATING_SERIALIZER;
     }
 
     public String getGroup() {

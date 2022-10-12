@@ -50,12 +50,12 @@ public class ProjectCataclysmMod implements ModInitializer {
 			(Feature.ORE, new OreFeatureConfig(
 					new BlockMatchRuleTest(Blocks.END_STONE),
 					ModBlocks.END_SILVER_ORE.getDefaultState(),
-					3));
+					4));
 
 	public static PlacedFeature END_SILVER_ORE_PLACED_FEATURE = new PlacedFeature(
 			RegistryEntry.of(END_SILVER_ORE_CONFIGURED_FEATURE),
 			Arrays.asList(
-					CountPlacementModifier.of(12),
+					CountPlacementModifier.of(10),
 					SquarePlacementModifier.of(),
 					HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(64))));
 	public static ModelIdentifier SILVER_SCYTHE_INVENTORY = new ModelIdentifier(MOD_ID,"silver_scythe_inventory","inventory");

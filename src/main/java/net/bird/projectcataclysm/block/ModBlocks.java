@@ -58,7 +58,7 @@ public class ModBlocks {
             ModItemGroup.PROJECT_CATACLYSM);
 
     public static final Block FABRICATOR = registerBlock("fabricator",
-            new FabricatorBlock(FabricBlockSettings.of(Material.METAL).hardness(10f).resistance(10f)),
+            new FabricatorBlock(FabricBlockSettings.of(Material.METAL).luminance(10).hardness(50f).resistance(12000f).requiresTool().sounds(BlockSoundGroup.METAL)),
             ModItemGroup.PROJECT_CATACLYSM);
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {

@@ -6,7 +6,9 @@
   "mixins": [
     "PlayerEntityMixin",
     "LivingEntityMixin",
-    "ItemRendererMixin"
+    "ItemRendererMixin",
+    "ShapelessRecipeMixin",
+    "ShapedRecipeMixin"
   ],
   "client": [
     "ExampleMixin"
