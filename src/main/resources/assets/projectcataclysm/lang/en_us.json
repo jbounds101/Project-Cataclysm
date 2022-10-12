@@ -14,6 +14,9 @@
   "block.projectcataclysm.raw_silver_block": "Block of Raw Silver",
   "block.projectcataclysm.big_explosive": "Big TNT",
   "block.projectcataclysm.soul_essence": "Soul Essence",
+  "block.projectcataclysm.fabricator": "Fabricator",
+
+  "container.fabricating": "Fabricating",
 
   "itemGroup.projectcataclysm.project_cataclysm_group": "Project Cataclysm",
 

@@ -2,6 +2,8 @@ package net.bird.projectcataclysm;
 
 import net.bird.projectcataclysm.block.ModBlocks;
 import net.bird.projectcataclysm.item.ModItems;
+import net.bird.projectcataclysm.recipe.FabricatingRecipe;
+import net.bird.projectcataclysm.screen.FabricatingScreenHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -10,6 +12,11 @@ import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.book.RecipeBookCategory;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.structure.rule.BlockMatchRuleTest;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -52,6 +59,14 @@ public class ProjectCataclysmMod implements ModInitializer {
 					SquarePlacementModifier.of(),
 					HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(64))));
 	public static ModelIdentifier SILVER_SCYTHE_INVENTORY = new ModelIdentifier(MOD_ID,"silver_scythe_inventory","inventory");
+	public static RecipeSerializer<FabricatingRecipe> FABRICATING_SERIALIZER = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MOD_ID, "fabricating"), new FabricatingRecipe.Serializer());
+
+	public static RecipeType<FabricatingRecipe> FABRICATING = Registry.register(Registry.RECIPE_TYPE, new Identifier(MOD_ID, "fabricating"), new RecipeType<FabricatingRecipe>() {
+		public String toString() {
+			return "fabricating";
+		}
+	});
+	public static final ScreenHandlerType<FabricatingScreenHandler> FABRICATING_HANDLER = Registry.register(Registry.SCREEN_HANDLER, new Identifier(MOD_ID, "fabricating"), new ScreenHandlerType<>(FabricatingScreenHandler::new));
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
