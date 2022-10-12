@@ -1,6 +1,8 @@
 package net.bird.projectcataclysm.item.custom;
 
 import net.bird.projectcataclysm.item.ModItems;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.BowAttackGoal;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,12 +11,15 @@ import net.minecraft.item.*;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.tag.TagKey;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -48,17 +53,19 @@ public class PistolItem extends RangedWeaponItem implements Vanishable {
                 persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 3.0F, 1.0F);
                 persistentProjectileEntity.setCritical(true);
                 double damage = persistentProjectileEntity.getDamage();
-                persistentProjectileEntity.setDamage(damage * 1.25);
+                persistentProjectileEntity.setDamage(damage * 1);
+
+                if (currAmmo == 0) {
+                    playerEntity.sendMessage(Text.literal("Reloading"));
+                    executorService.schedule(PistolItem::reload, 2, TimeUnit.SECONDS);
+                }
 
                 if (currAmmo > 0) {
                     world.spawnEntity(persistentProjectileEntity);
                     currAmmo--;
                     playerEntity.sendMessage(Text.literal("You have:" + currAmmo));
+                    //playerEntity.sendMessage(Text.literal("Damage: " + persistentProjectileEntity.getDamage()));
                     playerEntity.addExhaustion(1);
-                }
-                else if (currAmmo == 0) {
-                    playerEntity.sendMessage(Text.literal("Reloading"));
-                    executorService.schedule(PistolItem::reload, 2, TimeUnit.SECONDS);
                 }
             }
         }
@@ -75,6 +82,16 @@ public class PistolItem extends RangedWeaponItem implements Vanishable {
         user.setCurrentHand(hand);
         return TypedActionResult.consume(itemStack);
 
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (Screen.hasShiftDown()) {
+            tooltip.add(Text.literal("Ammo in Clip: " + currAmmo).formatted(Formatting.BLUE));
+        }
+        else {
+            tooltip.add(Text.literal("Press Shift for Ammo Count").formatted(Formatting.YELLOW));
+        }
     }
 
     public static final TagKey<Item> BULLET = TagKey.of(Registry.ITEM_KEY, new Identifier("bullet"));
