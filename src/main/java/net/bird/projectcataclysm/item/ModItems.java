@@ -31,7 +31,7 @@ public class ModItems {
             new MachineGunItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxDamage(16)));
 
     public static final Item WAND = registerItem("wand",
-            new WandItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM), 10));
+            new WandItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);
         /* Identifier acts as a namespace:object pair, for example, minecraft:iron_ingot, or in this case,
