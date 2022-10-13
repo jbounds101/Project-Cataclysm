@@ -4,6 +4,7 @@ import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.block.custom.BigExplosiveBlock;
 import net.bird.projectcataclysm.block.custom.FireExplosiveBlock;
 import net.bird.projectcataclysm.block.custom.MassiveExplosiveBlock;
+import net.bird.projectcataclysm.block.custom.FabricatorBlock;
 import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
@@ -69,6 +70,10 @@ public class ModBlocks {
 
     public static final Block SOUL_ESSENCE = registerBlock("soul_essence",
             new Block(FabricBlockSettings.of(Material.AGGREGATE).breakInstantly().luminance(13).noCollision().nonOpaque().sounds(BlockSoundGroup.SCULK_SHRIEKER)),
+            ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block FABRICATOR = registerBlock("fabricator",
+            new FabricatorBlock(FabricBlockSettings.of(Material.METAL).luminance(10).hardness(50f).resistance(12000f).requiresTool().sounds(BlockSoundGroup.METAL)),
             ModItemGroup.PROJECT_CATACLYSM);
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {

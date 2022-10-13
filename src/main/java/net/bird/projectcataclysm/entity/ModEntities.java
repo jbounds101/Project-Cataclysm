@@ -1,13 +1,12 @@
 package net.bird.projectcataclysm.entity;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
-import net.bird.projectcataclysm.entity.custom.BigExplosiveEntity;
-import net.bird.projectcataclysm.entity.custom.ExplosiveEntity;
-import net.bird.projectcataclysm.entity.custom.FireExplosiveEntity;
-import net.bird.projectcataclysm.entity.custom.MassiveExplosiveEntity;
+import net.bird.projectcataclysm.entity.custom.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.*;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -34,6 +33,13 @@ public class ModEntities implements ModInitializer {
                 .trackRangeBlocks(10).trackedUpdateRate(10).build());
     }
     // ------------------
+
+    public static final EntityType<BulletEntity> BulletEntityType = Registry.register(Registry.ENTITY_TYPE,
+            new Identifier(ProjectCataclysmMod.MOD_ID, "bullet"),
+            FabricEntityTypeBuilder.<BulletEntity>create(SpawnGroup.MISC, BulletEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
+                    .trackRangeBlocks(100).trackedUpdateRate(10).build());
+
 
     @Override
     public void onInitialize() {

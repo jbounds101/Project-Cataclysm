@@ -6,6 +6,11 @@
   "item.projectcataclysm.soul_shard": "Soul Shard",
   "item.projectcataclysm.soul_gem": "Soul Gem",
   "item.projectcataclysm.dowsing_rod": "Dowsing Rod",
+  "item.projectcataclysm.pistol": "Pistol",
+  "item.projectcataclysm.bullet": "Bullet",
+  "item.projectcataclysm.sniper": "Sniper",
+  "item.projectcataclysm.life_swap": "Life Swap",
+  "item.projectcataclysm.wand_life_swap": "Life Swap Wand",
 
   "block.projectcataclysm.silver_block": "Block of Silver",
   "block.projectcataclysm.silver_ore": "Silver Ore",
@@ -16,6 +21,9 @@
   "block.projectcataclysm.massive_explosive": "Massive TNT",
   "block.projectcataclysm.fire_explosive": "Fire Explosive",
   "block.projectcataclysm.soul_essence": "Soul Essence",
+  "block.projectcataclysm.fabricator": "Fabricator",
+
+  "container.fabricating": "Fabricating",
 
   "itemGroup.projectcataclysm.project_cataclysm_group": "Project Cataclysm",
 
