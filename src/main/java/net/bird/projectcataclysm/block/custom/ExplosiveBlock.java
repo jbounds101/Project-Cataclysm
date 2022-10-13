@@ -7,7 +7,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.TntBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
@@ -73,7 +72,6 @@ public abstract class ExplosiveBlock extends TntBlock {
                 int i = explosiveEntity.getFuse();
                 explosiveEntity.setFuse((short)(world.random.nextInt(i / 4) + i / 8));
                 world.spawnEntity(explosiveEntity);
-
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                      IllegalAccessException e) {
                 throw new RuntimeException(e);
@@ -103,7 +101,7 @@ public abstract class ExplosiveBlock extends TntBlock {
         }
     }
 
-    // Not entirely sure what this one does, but it needs to be over-ridden regardless to use the ExplosiveBlock
+    // Not entirely sure what this one does, but it needs to be over-Sridden regardless to use the ExplosiveBlock
     // .primeExplosive method rather than primeTnt
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
