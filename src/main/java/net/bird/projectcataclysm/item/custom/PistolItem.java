@@ -58,6 +58,7 @@ public class PistolItem extends RangedWeaponItem implements Vanishable {
                 if (currAmmo == 0) {
                     playerEntity.sendMessage(Text.literal("Reloading"));
                     executorService.schedule(PistolItem::reload, 2, TimeUnit.SECONDS);
+                    playerEntity.addExhaustion(4);
                 }
 
                 if (currAmmo > 0) {

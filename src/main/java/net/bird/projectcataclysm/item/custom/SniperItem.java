@@ -33,6 +33,7 @@ public class SniperItem extends RangedWeaponItem implements Vanishable {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         if (user instanceof PlayerEntity playerEntity) {
             //ItemStack itemStack = playerEntity.getArrowType(stack);
             ItemStack itemStack;
@@ -41,14 +42,9 @@ public class SniperItem extends RangedWeaponItem implements Vanishable {
                 itemStack = new ItemStack(Items.ARROW);
             }*/
 
-            if (world.isClient) {
-                if (currAmmo == 0) {
-                    playerEntity.sendMessage(Text.literal("Reloading"));
-                }
-            }
+
             if (!world.isClient) {
                 BulletItem bulletItem = (BulletItem) (itemStack.getItem() instanceof BulletItem ? itemStack.getItem() : ModItems.BULLET);
-                ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
                 //ArrowItem arrowItem = (ArrowItem) (itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
                 //PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack, playerEntity);
                 PersistentProjectileEntity persistentProjectileEntity = bulletItem.createBullet(world, itemStack, playerEntity);
@@ -58,8 +54,9 @@ public class SniperItem extends RangedWeaponItem implements Vanishable {
                 persistentProjectileEntity.setDamage(damage * 2.75);
 
                 if (currAmmo == 0) {
-                    playerEntity.sendMessage(Text.literal("Reloading"));
                     executorService.schedule(SniperItem::reload, 1, TimeUnit.SECONDS);
+                    playerEntity.sendMessage(Text.literal("Reloading"));
+                    playerEntity.addExhaustion(8);
                 }
 
                 if (currAmmo > 0) {
@@ -67,7 +64,6 @@ public class SniperItem extends RangedWeaponItem implements Vanishable {
                     currAmmo--;
                     playerEntity.sendMessage(Text.literal("You have:" + currAmmo));
                     //playerEntity.sendMessage(Text.literal("Damage: " + persistentProjectileEntity.getDamage()));
-                    playerEntity.addExhaustion(4);
                 }
 
             }

@@ -2,9 +2,13 @@ package net.bird.projectcataclysm;
 
 import net.bird.projectcataclysm.block.ModBlocks;
 import net.bird.projectcataclysm.entity.ModEntities;
+import net.bird.projectcataclysm.entity.custom.BulletEntity;
+import net.bird.projectcataclysm.entity.custom.BulletEntityRenderer;
 import net.bird.projectcataclysm.entity.custom.ExplosiveRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.render.entity.ProjectileEntityRenderer;
+import net.minecraft.util.Identifier;
 
 public class ProjectCataclysmModClient implements ClientModInitializer {
 
@@ -23,7 +27,8 @@ public class ProjectCataclysmModClient implements ClientModInitializer {
 
         // --------------------------
 
-
+        EntityRendererRegistry.register(ModEntities.BulletEntityType,
+                (context) -> new BulletEntityRenderer(context));
 
     }
 }

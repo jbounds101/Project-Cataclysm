@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "projectcataclysm:life_swap"
+    },
+    "i": {
+      "item": "minecraft:stick"
+    }
+
+  },
+  "pattern": [
+    " I ",
+    " i ",
+    " i "
+  ],
+  "result": {
+    "item": "projectcataclysm:wand_life_swap"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "projectcataclysm:silver_ingot"
+    }
+
+  },
+  "pattern": [
+    "II ",
+    "III",
+    "II "
+  ],
+  "result": {
+    "item": "projectcataclysm:pistol"
+  }
+}
