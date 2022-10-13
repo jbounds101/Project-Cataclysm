@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "d": {
+      "item": "minecraft:dirt"
+    }
+  },
+  "pattern": [
+    "d",
+    "s",
+    "s"
+  ],
+  "result": {
+    "item": "projectcataclysm:wall_wand"
+  }
+}

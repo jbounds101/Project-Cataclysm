@@ -3,6 +3,7 @@ package net.bird.projectcataclysm.item;
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.item.custom.DowsingRodItem;
 import net.bird.projectcataclysm.item.custom.MachineGunItem;
+import net.bird.projectcataclysm.item.custom.WallWand;
 import net.bird.projectcataclysm.item.custom.WandItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
@@ -32,6 +33,9 @@ public class ModItems {
 
     public static final Item WAND = registerItem("wand",
             new WandItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item WALL_WAND = registerItem("wall_wand",
+            new WallWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);
         /* Identifier acts as a namespace:object pair, for example, minecraft:iron_ingot, or in this case,
