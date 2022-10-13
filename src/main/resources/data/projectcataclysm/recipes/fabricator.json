@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "projectcataclysm:silver_block"
+    },
+    "G": {
+      "item": "projectcataclysm:soul_gem"
+    },
+    "C": {
+      "item": "minecraft:crafting_table"
+    },
+    "E": {
+      "item": "minecraft:end_rod"
+    }
+  },
+  "pattern": [
+    "GCG",
+    "EGE",
+    "SSS"
+  ],
+  "result": {
+    "item": "projectcataclysm:fabricator"
+  }
+}
