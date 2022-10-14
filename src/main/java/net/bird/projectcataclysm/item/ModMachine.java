@@ -1,5 +1,6 @@
 package net.bird.projectcataclysm.item;
 
+import net.bird.projectcataclysm.item.custom.BulletItem;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -48,8 +49,9 @@ public class ModMachine extends RangedWeaponItem implements Vanishable {
                 if (!world.isClient) {
 
                     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                    ArrowItem arrowItem = (ArrowItem)(itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
-                    PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack, playerEntity);
+                    //ArrowItem arrowItem = (ArrowItem)(itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
+                    BulletItem bulletItem = (BulletItem)(itemStack.getItem() instanceof BulletItem ? itemStack.getItem() : ModItems.BULLET);
+                    PersistentProjectileEntity persistentProjectileEntity = bulletItem.createBullet(world, itemStack, playerEntity);
                     persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 8F, 1.0F);
                     persistentProjectileEntity.setCritical(true);
                     if (currAmmo > 0) {

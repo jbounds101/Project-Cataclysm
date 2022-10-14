@@ -27,7 +27,7 @@ public class WallWand extends Item {
         //positionClicked.add(100, 100, 100);
         float dir = context.getPlayerFacing().asRotation();
         PlayerEntity user = context.getPlayer();
-        user.sendMessage(Text.literal(String.valueOf(dir)));
+        //user.sendMessage(Text.literal(String.valueOf(dir)));
         if (dir == 0 || dir == 180) {
             for (int x2 = 0; x2 < 3; x2++) {
                 for (int y2 = 0; y2 < 5; y2++) {
