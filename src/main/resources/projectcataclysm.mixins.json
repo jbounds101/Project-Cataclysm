@@ -11,7 +11,7 @@
     "ShapedRecipeMixin"
   ],
   "client": [
-    "ExampleMixin"
+    "ClientRecipeBookMixin"
   ],
   "server": [
 
