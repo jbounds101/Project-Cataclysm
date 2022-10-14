@@ -17,10 +17,14 @@ public class WandLifeSwap extends Item {
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
+
+        // Random Damage Generation
         Random random = new Random();
         float randNum = 1 + random.nextFloat(4);
         entity.damage(DamageSource.GENERIC, randNum * 2);
         user.heal(randNum * 2);
+
+
         user.getItemCooldownManager().set(this, 40);
         return super.useOnEntity(stack, user, entity, hand);
     }
