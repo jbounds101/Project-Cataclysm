@@ -27,14 +27,14 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class ExplosiveBlock extends TntBlock {
+public class ExplosiveBlock extends TntBlock {
 
     // When a TntBlock is ignited, it calls prime(), which creates a TntEntity
-    public Class<? extends ExplosiveEntity> explosiveEntity;
+    private final Class<? extends ExplosiveEntity> explosiveEntity;
 
-    public ExplosiveBlock(Settings settings) {
+    public ExplosiveBlock(Settings settings, Class<? extends ExplosiveEntity> explosiveEntity) {
         super(settings);
-        this.explosiveEntity = ExplosiveEntity.class;
+        this.explosiveEntity = explosiveEntity;
     }
 
     public void primeExplosive(World world, BlockPos pos) {

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "projectcataclysm:item/raw_mythril"
+    "layer0": "projectcataclysm:item/raw_silver"
   }
 }
