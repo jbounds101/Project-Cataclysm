@@ -27,6 +27,7 @@ public class DowsingRodItem extends Item {
             PlayerEntity player = context.getPlayer();
             boolean foundBlock = false;
 
+
             for (int i = 0; i <= positionClicked.getY() + 320; i++) {
                 Block blockBelow = context.getWorld().getBlockState(positionClicked.down(i)).getBlock();
 

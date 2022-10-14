@@ -38,6 +38,8 @@ public class SniperItem extends RangedWeaponItem implements Vanishable {
             //ItemStack itemStack = playerEntity.getArrowType(stack);
             ItemStack itemStack;
             itemStack = new ItemStack(ModItems.BULLET);
+
+
             /*if (itemStack.isEmpty()) {
                 itemStack = new ItemStack(Items.ARROW);
             }*/
@@ -48,22 +50,23 @@ public class SniperItem extends RangedWeaponItem implements Vanishable {
                 //ArrowItem arrowItem = (ArrowItem) (itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
                 //PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack, playerEntity);
                 PersistentProjectileEntity persistentProjectileEntity = bulletItem.createBullet(world, itemStack, playerEntity);
-                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 3.0F, 0);
+                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 6.0F, 0);
                 persistentProjectileEntity.setCritical(true);
                 double damage = persistentProjectileEntity.getDamage();
-                persistentProjectileEntity.setDamage(damage * 2.75);
+                persistentProjectileEntity.setDamage(damage * 3);
 
-                if (currAmmo == 0) {
-                    executorService.schedule(SniperItem::reload, 1, TimeUnit.SECONDS);
-                    playerEntity.sendMessage(Text.literal("Reloading"));
-                    playerEntity.addExhaustion(8);
-                }
 
                 if (currAmmo > 0) {
                     world.spawnEntity(persistentProjectileEntity);
                     currAmmo--;
                     playerEntity.sendMessage(Text.literal("You have:" + currAmmo));
+                    ((PlayerEntity) user).getItemCooldownManager().set(this, 20);
                     //playerEntity.sendMessage(Text.literal("Damage: " + persistentProjectileEntity.getDamage()));
+                    if (currAmmo == 0) {
+                        executorService.schedule(SniperItem::reload, 1, TimeUnit.SECONDS);
+                        playerEntity.sendMessage(Text.literal("Reloading"));
+                        playerEntity.addExhaustion(8);
+                    }
                 }
 
             }
