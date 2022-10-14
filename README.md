@@ -29,3 +29,20 @@ This is a mod that adds many new weapons to Minecraft
 - Soul Shards can be crafted into Soul Essence
 - Soul Essence is a block with no collision that emits a light level of 13
 - Soul Essence + Echo shards + Diamond can be crafted into Soul Gem
+- Crafting table + Silver Block + Soul Gem can be crafted into the Fabricator
+
+### Fabricator
+- Fabricator has a 5x5 crafting grid
+- Clicking the blue recipe book shows all the fabricating recipes
+- Base raw materials used in the Fabricator are Silver Nugget, Silver Ingot, Silver Block, Soul Shard, Soul Essence, and Soul Gem
+- Primary materials used by mechanical weapons are Silver Nugget, Silver Ingot, Silver Block
+- Primary materials used by magical weapons are Soul Shard, Soul Essence, and Soul Gem
+
+### Silver Shield
+- Crafted using Soul Shards, Shield, Silver Ingots, and Silver Nuggets in the Fabricator
+- Block attacks like the vanilla shield
+- Silver Shield has a durability of 672
+- The player is not slowed when blocking when using Silver Shield
+- Silver Shield cannot be disabled using an axe
+- Holding it in main hand or offhand gives Resistance 1 effect
+- Incoming damage of more than 30 will not be blocked but will be reduced by 30
