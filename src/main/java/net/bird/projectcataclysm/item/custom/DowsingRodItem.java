@@ -1,17 +1,13 @@
 package net.bird.projectcataclysm.item.custom;
 
-import com.mojang.brigadier.LiteralMessage;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class DowsingRodItem extends Item {
 
@@ -39,6 +35,7 @@ public class DowsingRodItem extends Item {
                 }
             }
 
+
             if (!foundBlock) {
                 player.sendMessage(Text.translatable("item.projectcataclysm.dowsing_rod.no_valuables"), false);
             }
@@ -49,6 +46,7 @@ public class DowsingRodItem extends Item {
 
         return super.useOnBlock(context);
     }
+
 
     private void outputValuableCoordinates(BlockPos blockPos, PlayerEntity player, Block blockBelow) {
         player.sendMessage(Text.literal("Found " + blockBelow.asItem().getName().getString() + " at " +

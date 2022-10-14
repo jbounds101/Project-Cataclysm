@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "a": {
+      "item": "minecraft:arrow"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "g": {
+      "item": "minecraft:gunpowder"
+    }
+  },
+  "pattern": [
+    "iid",
+    "gad",
+    "iid"
+  ],
+  "result": {
+    "item": "projectcataclysm:machine_gun"
+  }
+}

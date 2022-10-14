@@ -1,0 +1,27 @@
+{
+  "type": "projectcataclysm:fabricating",
+  "key": {
+    "I": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "S": {
+      "item": "minecraft:shield"
+    },
+    "N": {
+      "item": "projectcataclysm:silver_nugget"
+    },
+    "O": {
+      "item": "projectcataclysm:soul_shard"
+    }
+  },
+  "pattern": [
+    "  N  ",
+    " OIO ",
+    "NISIN",
+    " OIO ",
+    "  N  "
+  ],
+  "result": {
+    "item": "projectcataclysm:silver_shield"
+  }
+}

@@ -1,16 +1,23 @@
 package net.bird.projectcataclysm.mixin;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
+import net.bird.projectcataclysm.item.ModItems;
 import net.bird.projectcataclysm.item.custom.ScytheItem;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.HoeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin {
@@ -46,5 +53,21 @@ public abstract class PlayerEntityMixin {
             return false;
         }
         return stack.isEmpty();
+    }
+    @Inject(method = "takeShieldHit(Lnet/minecraft/entity/LivingEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;disablesShield()Z"), cancellable = true)
+    private void cancelDisable(CallbackInfo ci) {
+        if (((PlayerEntity)(Object)this).getActiveItem().getItem() == ModItems.SILVER_SHIELD) {
+            ci.cancel();
+        }
+    }
+    @Redirect(method = "damageShield(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean shieldCheck(ItemStack instance, Item item) {
+        return instance.isOf(item) || instance.isOf(ModItems.SILVER_SHIELD);
+    }
+    @Inject(method = "tick()V", at = @At("TAIL"))
+    private void addShieldResistance(CallbackInfo ci) {
+        if (((PlayerEntity)(Object)this).isHolding(ModItems.SILVER_SHIELD)) {
+            ((PlayerEntity)(Object)this).addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 0, false, false, true));
+        }
     }
 }

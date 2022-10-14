@@ -11,6 +11,7 @@
   "item.projectcataclysm.sniper": "Sniper",
   "item.projectcataclysm.life_swap": "Life Swap",
   "item.projectcataclysm.wand_life_swap": "Life Swap Wand",
+  "item.projectcataclysm.silver_shield": "Silver Shield",
 
   "block.projectcataclysm.silver_block": "Block of Silver",
   "block.projectcataclysm.silver_ore": "Silver Ore",
@@ -21,9 +22,14 @@
   "block.projectcataclysm.massive_explosive": "Massive TNT",
   "block.projectcataclysm.fire_explosive": "Fire Explosive",
   "block.projectcataclysm.soul_essence": "Soul Essence",
+  "block.projectcataclysm.fabricator": "Fabricator",
+
+  "container.fabricating": "Fabricating",
 
   "itemGroup.projectcataclysm.project_cataclysm_group": "Project Cataclysm",
 
-  "item.projectcataclysm.dowsing_rod.no_valuables": "No valuables found!"
-
+  "item.projectcataclysm.dowsing_rod.no_valuables": "No valuables found!",
+  "item.projectcataclysm.machine_gun": "Machine Gun",
+  "item.projectcataclysm.wand": "Wand",
+  "item.projectcataclysm.wall_wand": "Wall Wand"
 }

@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ItemRenderer.class)
-public class ItemRendererMixin {
+public abstract class ItemRendererMixin {
     @Shadow private @Final ItemModels models;
     @ModifyVariable(method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformation$Mode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V", at = @At("HEAD"), argsOnly = true)
     private BakedModel scratch_guiModel(BakedModel defaultModel, ItemStack stack, ModelTransformation.Mode renderMode) {

@@ -30,6 +30,8 @@ public class ModItems {
     public static final Item SOUL_GEM = registerItem("soul_gem",
             new SoulGemItem(new FabricItemSettings().rarity(Rarity.RARE).group(ModItemGroup.PROJECT_CATACLYSM)));
     public static final ToolItem SILVER_SCYTHE = new ScytheItem(SilverToolMaterial.INSTANCE, new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof().group(ModItemGroup.PROJECT_CATACLYSM));
+    public static final Item SILVER_SHIELD = registerItem("silver_shield",
+            new SilverShieldItem(new FabricItemSettings().maxDamage(672).group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item PISTOL = registerItem("pistol",
             new PistolItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
@@ -46,7 +48,14 @@ public class ModItems {
     public static final Item WAND_LIFE_SWAP = registerItem("wand_life_swap",
             new WandLifeSwap(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
+    public static final Item MACHINE_GUN = registerItem("machine_gun",
+            new MachineGunItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxDamage(16)));
 
+    public static final Item WAND = registerItem("wand",
+            new WandItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item WALL_WAND = registerItem("wall_wand",
+            new WallWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);
         /* Identifier acts as a namespace:object pair, for example, minecraft:iron_ingot, or in this case,
