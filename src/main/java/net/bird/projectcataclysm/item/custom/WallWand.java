@@ -59,7 +59,8 @@ public class WallWand extends Item {
 
         }
 
-
+        assert user != null;
+        user.getItemCooldownManager().set(this, 20);
         return ActionResult.PASS;
     }
 
