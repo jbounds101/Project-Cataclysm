@@ -10,9 +10,6 @@ import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 
 public class SilverShieldItem extends Item {
-    public static final int field_30918 = 5;
-    public static final float field_30919 = 3.0F;
-
     public SilverShieldItem(Item.Settings settings) {
         super(settings);
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSER_BEHAVIOR);
