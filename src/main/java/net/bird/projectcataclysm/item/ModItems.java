@@ -31,7 +31,7 @@ public class ModItems {
             new SoulGemItem(new FabricItemSettings().rarity(Rarity.RARE).group(ModItemGroup.PROJECT_CATACLYSM)));
     public static final ToolItem SILVER_SCYTHE = new ScytheItem(SilverToolMaterial.INSTANCE, new FabricItemSettings().rarity(Rarity.UNCOMMON).fireproof().group(ModItemGroup.PROJECT_CATACLYSM));
     public static final Item SILVER_SHIELD = registerItem("silver_shield",
-            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new SilverShieldItem(new FabricItemSettings().maxDamage(500).group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item PISTOL = registerItem("pistol",
             new PistolItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
