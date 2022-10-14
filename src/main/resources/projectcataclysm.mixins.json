@@ -4,9 +4,17 @@
   "package": "net.bird.projectcataclysm.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "PlayerEntityMixin",
+    "LivingEntityMixin",
+    "ItemRendererMixin",
+    "ShapelessRecipeMixin",
+    "ShapedRecipeMixin"
   ],
   "client": [
     "ExampleMixin"
+  ],
+  "server": [
+
   ],
   "injectors": {
     "defaultRequire": 1

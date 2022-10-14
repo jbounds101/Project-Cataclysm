@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "C": {
+      "item": "minecraft:chorus_fruit"
+    },
+    "N": {
+      "item": "minecraft:netherite_hoe"
+    }
+  },
+  "pattern": [
+    "SSS",
+    " NC",
+    "  C"
+  ],
+  "result": {
+    "item": "projectcataclysm:silver_scythe"
+  }
+}

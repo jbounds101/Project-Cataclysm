@@ -1,6 +1,10 @@
 {
   "values": [
     "projectcataclysm:silver_block",
-    "projectcataclysm:silver_ore"
+    "projectcataclysm:silver_ore",
+    "projectcataclysm:deepslate_silver_ore",
+    "projectcataclysm:end_silver_ore",
+    "projectcataclysm:raw_silver_block",
+    "projectcataclysm:fabricator"
   ]
 }

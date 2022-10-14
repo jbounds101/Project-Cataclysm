@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "i": {
+      "item": "minecraft:golden_apple"
+    }
+
+  },
+  "pattern": [
+    " I ",
+    "IiI",
+    " I "
+  ],
+  "result": {
+    "item": "projectcataclysm:life_swap"
+  }
+}

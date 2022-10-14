@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "ingredient": {
+    "item": "projectcataclysm:end_silver_ore"
+  },
+  "result": "projectcataclysm:silver_ingot"
+}
