@@ -52,14 +52,14 @@ public class ModMachine extends RangedWeaponItem implements Vanishable {
                     //ArrowItem arrowItem = (ArrowItem)(itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
                     BulletItem bulletItem = (BulletItem)(itemStack.getItem() instanceof BulletItem ? itemStack.getItem() : ModItems.BULLET);
                     PersistentProjectileEntity persistentProjectileEntity = bulletItem.createBullet(world, itemStack, playerEntity);
-                    persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 8F, 1.0F);
+                    persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 10F, 1.0F);
                     persistentProjectileEntity.setCritical(true);
                     double damage = persistentProjectileEntity.getDamage();
                     persistentProjectileEntity.setDamage(damage * 0.25);
                     if (currAmmo > 0) {
                         world.spawnEntity(persistentProjectileEntity);
                         currAmmo--;
-                        playerEntity.sendMessage(Text.translatable("You have: " + currAmmo), false);
+                        playerEntity.sendMessage(Text.translatable("You have: " + currAmmo + " ammo left"), false);
 
                         if (currAmmo == 0) {
                             ((PlayerEntity) user).getItemCooldownManager().set(this, 40);

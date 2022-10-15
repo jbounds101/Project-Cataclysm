@@ -18,6 +18,8 @@ public class WallWand extends Item {
     }
 
     public ActionResult useOnBlock(ItemUsageContext context) {
+        PlayerEntity user = context.getPlayer();
+        user.sendMessage(Text.literal("I AM KAKASHI THE COPY NINJA I KNOW A THOUSAND JUTSU"));
         BlockPos positionClicked = context.getBlockPos();
         int x = positionClicked.getX();
 
@@ -26,7 +28,7 @@ public class WallWand extends Item {
         BlockPos positionClicked2 = new BlockPos(x, y, z);
         //positionClicked.add(100, 100, 100);
         float dir = context.getPlayerFacing().asRotation();
-        PlayerEntity user = context.getPlayer();
+
         //user.sendMessage(Text.literal(String.valueOf(dir)));
         if (dir == 0 || dir == 180) {
             for (int x2 = 0; x2 < 3; x2++) {
