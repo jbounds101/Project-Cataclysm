@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class FabricatingRecipe implements CraftingRecipe {
+public class FabricatingRecipe implements Recipe<CraftingInventory> {
     final int width;
     final int height;
     final DefaultedList<Ingredient> input;
@@ -38,8 +38,9 @@ public class FabricatingRecipe implements CraftingRecipe {
         this.input = input;
         this.output = output;
     }
-
-
+    public RecipeType<?> getType() {
+        return ProjectCataclysmMod.FABRICATING;
+    }
 
     public ItemStack createIcon() { return new ItemStack(ModBlocks.FABRICATOR); }
 
