@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "projectcataclysm:block/protective_barrier_block"
+  }
+}

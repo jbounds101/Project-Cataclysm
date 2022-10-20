@@ -1,5 +1,6 @@
 package net.bird.projectcataclysm.item.custom;
 
+import net.bird.projectcataclysm.block.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -7,6 +8,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -39,7 +42,7 @@ public class ProtectiveBarrierItem extends Item {
                 stack.getOrCreateNbt().putInt("DeployedY", y);
                 z = usedPos.getZ();
                 stack.getOrCreateNbt().putInt("DeployedZ", z);
-                placedBlock = Blocks.OBSIDIAN.getDefaultState();
+                placedBlock = ModBlocks.PROTECTIVE_BARRIER_BLOCK.getDefaultState();
             } else {
                 x = stack.getOrCreateNbt().getInt("DeployedX");
                 y = stack.getOrCreateNbt().getInt("DeployedY");
@@ -99,6 +102,7 @@ public class ProtectiveBarrierItem extends Item {
                 }
             }
         }
+        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1.0F, 1.0F);
         return TypedActionResult.success(stack, world.isClient());
     }
 }
