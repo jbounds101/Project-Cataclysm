@@ -2,7 +2,6 @@ package net.bird.projectcataclysm;
 
 import net.bird.projectcataclysm.block.ModBlocks;
 import net.bird.projectcataclysm.entity.ModEntities;
-import net.bird.projectcataclysm.entity.custom.BulletEntity;
 import net.bird.projectcataclysm.entity.custom.BulletEntityRenderer;
 import net.bird.projectcataclysm.entity.custom.ExplosiveRenderer;
 import net.bird.projectcataclysm.item.ModItems;
@@ -11,7 +10,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.bird.projectcataclysm.screen.FabricatingScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
-import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.util.Identifier;
 
 public class ProjectCataclysmModClient implements ClientModInitializer {
