@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "projectcataclysm:item/protective_barrier"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "deployed": 1
+      },
+      "model" : "projectcataclysm:item/protective_barrier_deployed"
+    }
+  ]
+}

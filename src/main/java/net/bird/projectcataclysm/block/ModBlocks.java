@@ -9,6 +9,7 @@ import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -75,6 +76,9 @@ public class ModBlocks {
     public static final Block FABRICATOR = registerBlock("fabricator",
             new FabricatorBlock(FabricBlockSettings.of(Material.METAL).luminance(10).hardness(50f).resistance(12000f).requiresTool().sounds(BlockSoundGroup.METAL)),
             ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block PROTECTIVE_BARRIER_BLOCK = registerBlock("protective_barrier_block",
+            new Block(FabricBlockSettings.of(Material.STONE).luminance(15).hardness(-1.0f).resistance(3600000.0f).dropsNothing()), ModItemGroup.PROJECT_CATACLYSM);
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);

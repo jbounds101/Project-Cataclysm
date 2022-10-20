@@ -12,6 +12,7 @@
   "item.projectcataclysm.life_swap": "Life Swap",
   "item.projectcataclysm.wand_life_swap": "Life Swap Wand",
   "item.projectcataclysm.silver_shield": "Silver Shield",
+  "item.projectcataclysm.protective_barrier": "Protective Barrier",
 
   "block.projectcataclysm.silver_block": "Block of Silver",
   "block.projectcataclysm.silver_ore": "Silver Ore",
@@ -23,6 +24,7 @@
   "block.projectcataclysm.fire_explosive": "Fire Explosive",
   "block.projectcataclysm.soul_essence": "Soul Essence",
   "block.projectcataclysm.fabricator": "Fabricator",
+  "block.projectcataclysm.protective_barrier": "Protective Barrier Block",
 
   "container.fabricating": "Fabricating",
 

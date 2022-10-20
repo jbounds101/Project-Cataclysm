@@ -1,0 +1,27 @@
+{
+  "type": "projectcataclysm:fabricating",
+  "key": {
+    "B": {
+      "item": "projectcataclysm:silver_block"
+    },
+    "E": {
+      "item": "projectcataclysm:soul_essence"
+    },
+    "G": {
+      "item": "projectcataclysm:soul_gem"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "pattern": [
+    "EOOOE",
+    "OBBBO",
+    "OBGBO",
+    "OBBBO",
+    "EOOOE"
+  ],
+  "result": {
+    "item": "projectcataclysm:protective_barrier"
+  }
+}
