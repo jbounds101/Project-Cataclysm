@@ -46,3 +46,10 @@ This is a mod that adds many new weapons to Minecraft
 - Silver Shield cannot be disabled using an axe
 - Holding it in main hand or offhand gives Resistance 1 effect
 - Incoming damage of more than 30 will not be blocked but will be reduced by 30
+
+### Protective Barrier
+- Crafted using Soul Gem, Silver Blocks, Soul Essence, and Obsidian in the Fabricator
+- Right click to deploy protective barrier of blocks around player
+- Right click again to remove the barrier
+- Player gets Resistance 2 and Slow Fall effects for 5 seconds when deploying and removing barrier
+- Protective barrier blocks cannot be broken
