@@ -39,8 +39,14 @@ public class ModItems {
     public static final Item SNIPER = registerItem("sniper",
             new SniperItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
+    public static final Item SHOTGUN = registerItem("shotgun",
+            new ShotgunItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
     public static final Item BULLET = registerItem("bullet",
             new BulletItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item SLUG = registerItem("slug",
+            new SlugItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",
             new DowsingRodItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
