@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
@@ -21,6 +22,13 @@ public class WandItem extends Item {
     //private final float REACH;
     //private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
     protected static final UUID REACH_ID = UUID.fromString(uuidAsString);
+
+
+
+    static UUID uuid2 = UUID.randomUUID();
+    static String uuidAsString2 = uuid2.toString();
+
+    protected static final UUID RANGE_ID = UUID.fromString(uuidAsString2);
     //protected static final UUID REACH_ID = UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B");
     public WandItem(Settings settings, int reach) {
         super(settings);
@@ -43,8 +51,14 @@ public class WandItem extends Item {
         builder.putAll(modifiers);
         if (slot == EquipmentSlot.MAINHAND) {
             builder.put(ReachEntityAttributes.REACH,
+                    //creative mode reach
                     new EntityAttributeModifier(REACH_ID, "reach Increase", 20,
                             EntityAttributeModifier.Operation.ADDITION));
+                    //survival mode reach
+            builder.put(ReachEntityAttributes.ATTACK_RANGE,
+                    new EntityAttributeModifier(RANGE_ID, "range Increase", 20,
+                            EntityAttributeModifier.Operation.ADDITION));
+
 
         }
         return builder.build();
@@ -66,7 +80,7 @@ public class WandItem extends Item {
         builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier",
                 (double)attackSpeed, EntityAttributeModifier.Operation.ADDITION));
                 */
-
+        user.sendMessage(Text.literal("You switched places with your target!"));
         //user.sendMessage(Text.translatable("You switched places!"), false);
         double x_enemy = entity.getX();
         double y_enemy = entity.getY();

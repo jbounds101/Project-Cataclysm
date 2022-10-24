@@ -24,6 +24,12 @@ public class WebWand extends Item {
 
     protected static final UUID REACH_ID = UUID.fromString(uuidAsString);
 
+
+    static UUID uuid2 = UUID.randomUUID();
+    static String uuidAsString2 = uuid2.toString();
+
+    protected static final UUID RANGE_ID = UUID.fromString(uuidAsString2);
+
     public WebWand(Settings settings) {
         super(settings);
     }
@@ -82,6 +88,9 @@ public class WebWand extends Item {
         if (slot == EquipmentSlot.MAINHAND) {
             builder.put(ReachEntityAttributes.REACH,
                     new EntityAttributeModifier(REACH_ID, "reach Increase", 20,
+                            EntityAttributeModifier.Operation.ADDITION));
+            builder.put(ReachEntityAttributes.ATTACK_RANGE,
+                    new EntityAttributeModifier(RANGE_ID, "range Increase", 20,
                             EntityAttributeModifier.Operation.ADDITION));
 
         }
