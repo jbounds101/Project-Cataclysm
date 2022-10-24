@@ -80,6 +80,8 @@ public class ModBlocks {
     public static final Block PROTECTIVE_BARRIER_BLOCK = registerBlock("protective_barrier_block",
             new Block(FabricBlockSettings.of(Material.STONE).luminance(15).hardness(-1.0f).resistance(3600000.0f).dropsNothing()), ModItemGroup.PROJECT_CATACLYSM);
 
+    public static final Block LAUNCH_PLATFORM = registerBlock("launch_platform",
+            new LaunchPlatformBlock(FabricBlockSettings.of(Material.STONE)), ModItemGroup.PROJECT_CATACLYSM);
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);
         return Registry.register(Registry.BLOCK, new Identifier(ProjectCataclysmMod.MOD_ID, name), block);

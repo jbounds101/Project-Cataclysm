@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "projectcataclysm:block/launch_platform"
+    },
+    "facing=north": {
+      "model": "projectcataclysm:block/launch_platform",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=south": {
+      "model": "projectcataclysm:block/launch_platform",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west": {
+      "model": "projectcataclysm:block/launch_platform",
+      "uvlock": true,
+      "y": 180
+    }
+  }
+}
