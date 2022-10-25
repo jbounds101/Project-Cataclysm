@@ -1,20 +1,68 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "projectcataclysm:block/launch_platform"
+    "facing=east,type=control_panel": {
+      "model": "projectcataclysm:block/launch_platform_control_panel",
+      "y": 270
     },
-    "facing=north": {
-      "model": "projectcataclysm:block/launch_platform",
+    "facing=north,type=control_panel": {
+      "model": "projectcataclysm:block/launch_platform_control_panel",
+      "y": 180
+    },
+    "facing=south,type=control_panel": {
+      "model": "projectcataclysm:block/launch_platform_control_panel"
+    },
+    "facing=west,type=control_panel": {
+      "model": "projectcataclysm:block/launch_platform_control_panel",
+      "y": 90
+    },
+    "facing=east,type=base": {
+      "model": "projectcataclysm:block/launch_platform_base"
+    },
+    "facing=north,type=base": {
+      "model": "projectcataclysm:block/launch_platform_base",
+      "y": 270
+    },
+    "facing=south,type=base": {
+      "model": "projectcataclysm:block/launch_platform_base",
+      "y": 90
+    },
+    "facing=west,type=base": {
+      "model": "projectcataclysm:block/launch_platform_base",
+      "y": 180
+    },
+    "facing=east,type=straight_stairs": {
+      "model": "projectcataclysm:block/launch_platform_stairs"
+    },
+    "facing=north,type=straight_stairs": {
+      "model": "projectcataclysm:block/launch_platform_stairs",
       "uvlock": true,
       "y": 270
     },
-    "facing=south": {
-      "model": "projectcataclysm:block/launch_platform",
+    "facing=south,type=straight_stairs": {
+      "model": "projectcataclysm:block/launch_platform_stairs",
       "uvlock": true,
       "y": 90
     },
-    "facing=west": {
-      "model": "projectcataclysm:block/launch_platform",
+    "facing=west,type=straight_stairs": {
+      "model": "projectcataclysm:block/launch_platform_stairs",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=east,type=outer_stairs": {
+      "model": "projectcataclysm:block/launch_platform_stairs_outer"
+    },
+    "facing=north,type=outer_stairs": {
+      "model": "projectcataclysm:block/launch_platform_stairs_outer",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=south,type=outer_stairs": {
+      "model": "projectcataclysm:block/launch_platform_stairs_outer",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,type=outer_stairs": {
+      "model": "projectcataclysm:block/launch_platform_stairs_outer",
       "uvlock": true,
       "y": 180
     }
