@@ -14,9 +14,12 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
@@ -101,7 +104,7 @@ public class CustomExplosion {
         return (float)i / (float)j;
     }
 
-    public void collectBlocksAndDamageEntities() {
+    public void collectBlocksAndGetEntities() {
         int l;
         int k;
         this.world.emitGameEvent(this.entity, GameEvent.EXPLODE, new Vec3d(this.x, this.y, this.z));
@@ -168,14 +171,19 @@ public class CustomExplosion {
             z /= aa;
             double ab = CustomExplosion.getExposure(vec3d, entity);
             double ac = (1.0 - w) * ab;
-            entity.damage(DamageSource.GENERIC, (int)((ac * ac + ac) / 2.0 * 7.0 * (double)q + 1.0));
+            //entity.damage(DamageSource.GENERIC, (int)((ac * ac + ac) / 2.0 * 7.0 * (double)q + 1.0));
+
             double ad = ac;
             if (entity instanceof LivingEntity) {
                 ad = ProtectionEnchantment.transformExplosionKnockback((LivingEntity)entity, ac);
+                ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, (int)((ac * ac + ac) / 2.0 * 7.0 * (double)q + 1.0), (int)((ac * ac + ac) / 2.0 * 7.0 * (double)q + 1.0), false,
+                        true, true));
             }
+
             entity.setVelocity(entity.getVelocity().add(x * ad, y * ad, z * ad));
-            if (!(entity instanceof PlayerEntity) || (playerEntity = (PlayerEntity)entity).isSpectator() || playerEntity.isCreative() && playerEntity.getAbilities().flying) continue;
-            this.affectedPlayers.put(playerEntity, new Vec3d(x * ac, y * ac, z * ac));
+            //if (!(entity instanceof PlayerEntity) || (playerEntity = (PlayerEntity)entity).isSpectator() ||
+            // playerEntity.isCreative() && playerEntity.getAbilities().flying) continue;
+            //this.affectedPlayers.put(playerEntity, new Vec3d(x * ac, y * ac, z * ac));
         }
     }
 
@@ -238,13 +246,69 @@ public class CustomExplosion {
             // randint was 3
             if (this.random.nextInt(6) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
             //this.world.setBlockState(blockPos3, AbstractFireBlock.getState(this.world, blockPos3));
-            ArrayList<Block> blocks = new ArrayList<>();
-            blocks.add(Blocks.SNOW_BLOCK);
-            blocks.add(Blocks.ICE);
-            blocks.add(Blocks.SNOW);
-            this.world.setBlockState(blockPos, blocks.get(this.random.nextInt(blocks.size() - 1)).getDefaultState());
+
+            for (int x = -3; x < 3; x++) {
+                for (int z = -3; z < 3; z++) {
+                    if (this.random.nextInt(11) > 8) {
+                        if (this.world.getBlockState(blockPos.add(x, -1, z)).isOpaqueFullCube(this.world,
+                                blockPos.add(x, -1, z))) {
+                            this.world.setBlockState(blockPos.add(x, 0, z),
+                                    Blocks.SNOW.getDefaultState());
+                        }
+
+                    }
+                }
+            }
+
+
+            final int minBaseHeight = 1;
+            final int maxBaseHeight = 2;
+            int height = 2 * (random.nextInt(maxBaseHeight - minBaseHeight) + minBaseHeight);
+            for (int i = 0; i < height / 2; i++) {
+                Block icyBlock = this.calculateIcyBlock(height, i);
+                this.world.setBlockState(blockPos, icyBlock.getDefaultState());
+                icyBlock = this.calculateIcyBlock(height, i);
+                this.world.setBlockState(blockPos.east(), icyBlock.getDefaultState());
+                icyBlock = this.calculateIcyBlock(height, i);
+                this.world.setBlockState(blockPos.north(), icyBlock.getDefaultState());
+                icyBlock = this.calculateIcyBlock(height, i);
+                this.world.setBlockState(blockPos.west(), icyBlock.getDefaultState());
+                icyBlock = this.calculateIcyBlock(height, i);
+                this.world.setBlockState(blockPos.south(), icyBlock.getDefaultState());
+                blockPos = blockPos.up();
+                if (i == ((height / 2) - 1)) {
+                    for (int j = height / 2; j < height + random.nextInt(10); j++) {
+                        icyBlock = this.calculateIcyBlock(height, j);
+                        this.world.setBlockState(blockPos, icyBlock.getDefaultState());
+                        blockPos = blockPos.up();
+                    }
+                }
+
+            }
+
+            //this.world.setBlockState(blockPos,
         }
         //}
+    }
+
+    Block calculateIcyBlock(int maxHeight, int currentHeight) {
+        float percentage = ((float)currentHeight / (float)maxHeight);
+        System.out.println(percentage);
+        if (percentage < 0.3 + (float)random.nextInt(15) / 100) {
+            if (random.nextInt(10) < 7) {
+                return Blocks.PACKED_ICE;
+            } else if (random.nextInt(10) < 7) {
+                return Blocks.SNOW_BLOCK;
+            } else return Blocks.ICE;
+        } else if (percentage < 0.5 + (float)random.nextInt(15) / 100) {
+            if (random.nextInt(2) == 0) {
+                return Blocks.ICE;
+            } else return Blocks.SNOW_BLOCK;
+        } else if (percentage < 0.7){
+            if (random.nextInt(10) < 7) {
+                return Blocks.ICE;
+            } else return Blocks.SNOW_BLOCK;
+        } else return Blocks.ICE;
     }
 
     public Map<PlayerEntity, Vec3d> getAffectedPlayers() {

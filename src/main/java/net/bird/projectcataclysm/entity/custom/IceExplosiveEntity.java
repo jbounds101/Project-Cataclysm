@@ -42,7 +42,7 @@ public class IceExplosiveEntity extends ExplosiveEntity {
         BlockPos position = new BlockPos(this.getPos());
         CustomExplosion explosion = new CustomExplosion(this.world, this,
                 null, position.getX(), position. getY(), position.getZ(), 6);
-        explosion.collectBlocksAndDamageEntities();
+        explosion.collectBlocksAndGetEntities();
         explosion.affectWorld(true);
     }
 }
