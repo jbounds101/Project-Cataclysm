@@ -1,33 +1,21 @@
 package net.bird.projectcataclysm.explosion;
 
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.bird.projectcataclysm.block.custom.ExplosiveBlock;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.TntBlock;
 import net.minecraft.enchantment.ProtectionEnchantment;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.TntEntity;
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Util;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -38,13 +26,14 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.EntityExplosionBehavior;
-import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
-public class CustomExplosion {
+public class LightningExplosion {
 
     private static final ExplosionBehavior DEFAULT_BEHAVIOR = new ExplosionBehavior();
     private static final int field_30960 = 16;
@@ -58,10 +47,11 @@ public class CustomExplosion {
     private final float power;
     private final ExplosionBehavior behavior;
     private final ObjectArrayList<BlockPos> affectedBlocks = new ObjectArrayList();
-    private final Map<PlayerEntity, Vec3d> affectedPlayers = Maps.newHashMap();
+    private List<Entity> affectedEntities = new ArrayList<>() {
+    };
 
 
-    public CustomExplosion(World world, @Nullable Entity entity, @Nullable ExplosionBehavior behavior, double x, double y, double z, float power) {
+    public LightningExplosion(World world, @Nullable Entity entity, @Nullable ExplosionBehavior behavior, double x, double y, double z, float power) {
         this.world = world;
         this.entity = entity;
         this.power = power;
@@ -152,56 +142,19 @@ public class CustomExplosion {
         int s = MathHelper.floor(this.y + (double)q + 1.0);
         int t = MathHelper.floor(this.z - (double)q - 1.0);
         int u = MathHelper.floor(this.z + (double)q + 1.0);
-        List<Entity> list = this.world.getOtherEntities(this.entity, new Box(k, r, t, l, s, u));
-        Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
+        affectedEntities = this.world.getOtherEntities(this.entity, new Box(k, r, t, l, s, u));
 
         // TODO separate this entities list from being acted upon immediately, I want to store a list of affected
         //  entities
-        for (int v = 0; v < list.size(); ++v) {
-            PlayerEntity playerEntity;
-            double z;
-            double y;
-            double x;
-            double aa;
-            double w;
-            Entity entity = list.get(v);
-            if (entity.isImmuneToExplosion() || !((w = Math.sqrt(entity.squaredDistanceTo(vec3d)) / (double)q) <= 1.0) || (aa = Math.sqrt((x = entity.getX() - this.x) * x + (y = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - this.y) * y + (z = entity.getZ() - this.z) * z)) == 0.0) continue;
-            x /= aa;
-            y /= aa;
-            z /= aa;
-            double ab = CustomExplosion.getExposure(vec3d, entity);
-            double ac = (1.0 - w) * ab;
-            //entity.damage(DamageSource.GENERIC, (int)((ac * ac + ac) / 2.0 * 7.0 * (double)q + 1.0));
 
-            double ad = ac;
-            if (entity instanceof LivingEntity) {
-                ad = ProtectionEnchantment.transformExplosionKnockback((LivingEntity)entity, ac);
-                ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, (int)((ac * ac + ac) / 2.0 * 7.0 * (double)q + 1.0), (int)((ac * ac + ac) / 2.0 * 7.0 * (double)q + 1.0), false,
-                        true, true));
-            }
-
-            entity.setVelocity(entity.getVelocity().add(x * ad, y * ad, z * ad));
-            //if (!(entity instanceof PlayerEntity) || (playerEntity = (PlayerEntity)entity).isSpectator() ||
-            // playerEntity.isCreative() && playerEntity.getAbilities().flying) continue;
-            //this.affectedPlayers.put(playerEntity, new Vec3d(x * ac, y * ac, z * ac));
-        }
     }
 
-    /**
-     * @param particles whether this explosion should emit explosion or explosion emitter particles around the source of the explosion
-     */
-    public void affectWorld(boolean particles) {
+    public void affectWorld() {
         if (this.world.isClient) {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
         }
-        //boolean bl2 = bl = this.destructionType != Explosion.DestructionType.NONE;
-        if (particles) {
-            if (this.power < 2.0f) {  //|| !bl) {
-                this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
-            } else {
-                this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0, 0.0, 0.0);
-            }
-        }
+        this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
+
         /*if (bl) {
             ObjectArrayList objectArrayList = new ObjectArrayList();
             boolean bl22 = this.getCausingEntity() instanceof PlayerEntity;
@@ -243,76 +196,25 @@ public class CustomExplosion {
                 world.setBlockState(blockPos, Blocks.AIR.getDefaultState()); // Delete a explosion block
             }
 
-            // randint was 3
-            if (this.random.nextInt(6) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
-            //this.world.setBlockState(blockPos3, AbstractFireBlock.getState(this.world, blockPos3));
+            if (this.random.nextInt(20) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
 
-            for (int x = -3; x < 3; x++) {
-                for (int z = -3; z < 3; z++) {
-                    if (this.random.nextInt(11) > 8) {
-                        if (this.world.getBlockState(blockPos.add(x, -1, z)).isOpaqueFullCube(this.world,
-                                blockPos.add(x, -1, z))) {
-                            this.world.setBlockState(blockPos.add(x, 0, z),
-                                    Blocks.SNOW.getDefaultState());
-                        }
-
-                    }
-                }
-            }
+            LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(world);
+            assert lightningEntity != null;
+            lightningEntity.refreshPositionAfterTeleport(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            world.spawnEntity(lightningEntity);
 
 
-            final int minBaseHeight = 1;
-            final int maxBaseHeight = 2;
-            int height = 2 * (random.nextInt(maxBaseHeight - minBaseHeight) + minBaseHeight);
-            for (int i = 0; i < height / 2; i++) {
-                Block icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos, icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.east(), icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.north(), icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.west(), icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.south(), icyBlock.getDefaultState());
-                blockPos = blockPos.up();
-                if (i == ((height / 2) - 1)) {
-                    for (int j = height / 2; j < height + random.nextInt(10); j++) {
-                        icyBlock = this.calculateIcyBlock(height, j);
-                        this.world.setBlockState(blockPos, icyBlock.getDefaultState());
-                        blockPos = blockPos.up();
-                    }
-                }
-
-            }
-
-            //this.world.setBlockState(blockPos,
         }
-        //}
-    }
 
-    Block calculateIcyBlock(int maxHeight, int currentHeight) {
-        float percentage = ((float)currentHeight / (float)maxHeight);
-        System.out.println(percentage);
-        if (percentage < 0.3 + (float)random.nextInt(15) / 100) {
-            if (random.nextInt(10) < 7) {
-                return Blocks.PACKED_ICE;
-            } else if (random.nextInt(10) < 7) {
-                return Blocks.SNOW_BLOCK;
-            } else return Blocks.ICE;
-        } else if (percentage < 0.5 + (float)random.nextInt(15) / 100) {
-            if (random.nextInt(2) == 0) {
-                return Blocks.ICE;
-            } else return Blocks.SNOW_BLOCK;
-        } else if (percentage < 0.7){
-            if (random.nextInt(10) < 7) {
-                return Blocks.ICE;
-            } else return Blocks.SNOW_BLOCK;
-        } else return Blocks.ICE;
-    }
-
-    public Map<PlayerEntity, Vec3d> getAffectedPlayers() {
-        return this.affectedPlayers;
+        for (int v = 0; v < affectedEntities.size(); ++v) {
+            Entity entity = affectedEntities.get(v);
+            if (entity instanceof LivingEntity) {
+                LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(world);
+                assert lightningEntity != null;
+                lightningEntity.refreshPositionAfterTeleport(entity.getX(), entity.getY(), entity.getZ());
+                world.spawnEntity(lightningEntity);
+            }
+        }
     }
 
     /*@Nullable
