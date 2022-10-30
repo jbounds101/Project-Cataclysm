@@ -63,6 +63,17 @@ public class ModItems {
     public static final Item WALL_WAND = registerItem("wall_wand",
             new WallWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
+    public static final Item WATER_TRAP_WAND = registerItem("water_trap_wand",
+            new WaterTrapWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item MASTER_WAND = registerItem("master_wand",
+            new MasterWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item SPELL_SWITCHER = registerItem("spell_switcher",
+            new SpellSwitcher(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+
+
     public static final Item PROTECTIVE_BARRIER = registerItem("protective_barrier",
             new ProtectiveBarrierItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.PROJECT_CATACLYSM)));
     private static Item registerItem(String name, Item item) {
