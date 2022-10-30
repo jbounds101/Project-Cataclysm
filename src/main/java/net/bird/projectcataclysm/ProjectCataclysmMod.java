@@ -1,28 +1,35 @@
 package net.bird.projectcataclysm;
 
 import net.bird.projectcataclysm.block.ModBlocks;
+import net.bird.projectcataclysm.block.custom.LaunchPlatformBlock;
 import net.bird.projectcataclysm.item.ModItems;
 import net.bird.projectcataclysm.recipe.FabricatingRecipe;
+import net.bird.projectcataclysm.screen.ControlPanelScreenHandler;
 import net.bird.projectcataclysm.screen.FabricatingScreenHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.ModelIdentifier;
+import net.minecraft.item.Item;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.structure.rule.BlockMatchRuleTest;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -67,6 +74,10 @@ public class ProjectCataclysmMod implements ModInitializer {
 		}
 	});
 	public static final ScreenHandlerType<FabricatingScreenHandler> FABRICATING_HANDLER = Registry.register(Registry.SCREEN_HANDLER, new Identifier(MOD_ID, "fabricating"), new ScreenHandlerType<>(FabricatingScreenHandler::new));
+
+	public static final ScreenHandlerType<ControlPanelScreenHandler> CONTROL_PANEL_HANDLER = Registry.register(Registry.SCREEN_HANDLER, new Identifier(MOD_ID, "control_panel"), new ScreenHandlerType<>(ControlPanelScreenHandler::new));
+	public static final TagKey<Item> MISSILE_PAYLOADS = TagKey.of(Registry.ITEM_KEY, new Identifier(ProjectCataclysmMod.MOD_ID, "missile_payloads"));
+	public static final Identifier DISMANTLE_PACKET_ID = new Identifier(MOD_ID, "dismantle");
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -87,5 +98,10 @@ public class ProjectCataclysmMod implements ModInitializer {
 		BiomeModifications.addFeature(BiomeSelectors.foundInTheEnd(), GenerationStep.Feature.UNDERGROUND_ORES,
 				RegistryKey.of(Registry.PLACED_FEATURE_KEY,
 						new Identifier(MOD_ID, "end_silver_ore")));
+		ServerPlayNetworking.registerGlobalReceiver(DISMANTLE_PACKET_ID, ((server, player, handler, buf, responseSender) -> {
+			BlockPos pos =  buf.readBlockPos();
+			World world = player.getWorld();
+			LaunchPlatformBlock.breakAndDrop(world.getBlockState(pos), world, pos);
+		}));
 	}
 }

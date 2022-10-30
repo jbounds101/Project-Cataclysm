@@ -5,6 +5,7 @@ import net.bird.projectcataclysm.entity.ModEntities;
 import net.bird.projectcataclysm.entity.custom.BulletEntityRenderer;
 import net.bird.projectcataclysm.entity.custom.ExplosiveRenderer;
 import net.bird.projectcataclysm.item.ModItems;
+import net.bird.projectcataclysm.screen.ControlPanelScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.bird.projectcataclysm.screen.FabricatingScreen;
@@ -28,9 +29,9 @@ public class ProjectCataclysmModClient implements ClientModInitializer {
 
         // --------------------------
 
-        EntityRendererRegistry.register(ModEntities.BulletEntityType,
-                (context) -> new BulletEntityRenderer(context));
+        EntityRendererRegistry.register(ModEntities.BulletEntityType, BulletEntityRenderer::new);
         HandledScreens.register(ProjectCataclysmMod.FABRICATING_HANDLER, FabricatingScreen::new);
+        HandledScreens.register(ProjectCataclysmMod.CONTROL_PANEL_HANDLER, ControlPanelScreen::new);
         ModelPredicateProviderRegistry.register(ModItems.SILVER_SHIELD, new Identifier("blocking"), (itemStack, clientWorld, livingEntity, i) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1 : 0);
         ModelPredicateProviderRegistry.register(ModItems.PROTECTIVE_BARRIER, new Identifier("deployed"), (itemStack, clientWorld, livingEntity, i) -> itemStack.getOrCreateNbt().contains("DeployedX") ? 1 : 0);
     }

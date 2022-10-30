@@ -28,11 +28,14 @@
   "block.projectcataclysm.launch_platform": "Launch Platform",
 
   "container.fabricating": "Fabricating",
+  "container.control_panel": "Control Panel",
 
   "itemGroup.projectcataclysm.project_cataclysm_group": "Project Cataclysm",
 
   "item.projectcataclysm.dowsing_rod.no_valuables": "No valuables found!",
   "block.projectcataclysm.launch_platform.failed_placement": "Not enough space!",
+  "block.projectcataclysm.control_panel.launch": "Launch",
+  "block.projectcataclysm.control_panel.dismantle": "Dismantle",
 
   "item.projectcataclysm.machine_gun": "Machine Gun",
   "item.projectcataclysm.wand": "Wand",

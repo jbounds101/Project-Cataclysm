@@ -1,11 +1,15 @@
 package net.bird.projectcataclysm.block.custom;
 
 import net.bird.projectcataclysm.block.ModBlocks;
+import net.bird.projectcataclysm.screen.ControlPanelScreenHandler;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -40,11 +44,12 @@ public class LaunchPlatformBlock extends HorizontalFacingBlock {
     protected static final VoxelShape WEST_SHAPE;
     protected static final VoxelShape EAST_SHAPE;
     protected static final VoxelShape BASE_SHAPE;
+    private static final Text TITLE = Text.translatable("container.control_panel");
     public LaunchPlatformBlock(AbstractBlock.Settings settings) {
         super(settings);
     }
 
-    public void breakAndDrop(BlockState state, World world, BlockPos blockPos) {
+    public static void breakAndDrop(BlockState state, World world, BlockPos blockPos) {
         Direction forwards = state.get(FACING);
         Direction left = forwards.rotateYCounterclockwise();
         Direction right = forwards.rotateYClockwise();
@@ -63,16 +68,19 @@ public class LaunchPlatformBlock extends HorizontalFacingBlock {
 
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (state.get(TYPE) == LaunchPlatformType.CONTROL_PANEL) {
-            if (world.isClient()) {
-                world.playSound(player, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                return ActionResult.CONSUME;
+            if (world.isClient) {
+                return ActionResult.SUCCESS;
             }
             else {
-                breakAndDrop(state, world, pos);
-                return ActionResult.SUCCESS;
+                player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
+                return ActionResult.CONSUME;
             }
         }
         return ActionResult.PASS;
+    }
+
+    public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
+        return new SimpleNamedScreenHandlerFactory((syncId, inventory, player) -> new ControlPanelScreenHandler(syncId, inventory, ScreenHandlerContext.create(world, pos), pos), TITLE);
     }
 
     public boolean hasSidedTransparency(BlockState state) {

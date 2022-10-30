@@ -34,8 +34,6 @@ public class FabricatorBlock extends Block {
     }
 
     public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-        return new SimpleNamedScreenHandlerFactory((syncId, inventory, player) -> {
-            return new FabricatingScreenHandler(syncId, inventory, ScreenHandlerContext.create(world, pos));
-        }, TITLE);
+        return new SimpleNamedScreenHandlerFactory((syncId, inventory, player) -> new FabricatingScreenHandler(syncId, inventory, ScreenHandlerContext.create(world, pos)), TITLE);
     }
 }

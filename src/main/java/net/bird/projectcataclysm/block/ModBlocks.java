@@ -25,9 +25,7 @@ import java.util.function.ToIntFunction;
 
 public class ModBlocks {
     private static ToIntFunction<BlockState> getLaunchPlatformLuminance() {
-        return (state) -> {
-            return state.get(LaunchPlatformBlock.TYPE) == LaunchPlatformType.CONTROL_PANEL ? 15 : 5;
-        };
+        return (state) -> state.get(LaunchPlatformBlock.TYPE) == LaunchPlatformType.CONTROL_PANEL ? 15 : 5;
     }
 
     /* Every block needs (in assets folder):
