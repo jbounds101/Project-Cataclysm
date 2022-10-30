@@ -27,8 +27,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 public class ModMachine extends RangedWeaponItem implements Vanishable {
-    public static final int field_30855 = 20;
-    public static final int RANGE = 15;
     public static final int maxAmmo = 50;
     public static int currAmmo = 50;
     public ModMachine(Item.Settings settings) {

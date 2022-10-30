@@ -13,14 +13,13 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import com.jamieswhiteshirt.reachentityattributes.ReachEntityAttributes;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
 public class WandItem extends Item {
     static UUID uuid = UUID.randomUUID();
     static String uuidAsString = uuid.toString();
-    //private final float REACH;
-    //private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
     protected static final UUID REACH_ID = UUID.fromString(uuidAsString);
 
 
@@ -32,16 +31,6 @@ public class WandItem extends Item {
     //protected static final UUID REACH_ID = UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B");
     public WandItem(Settings settings, int reach) {
         super(settings);
-        /*
-        this.REACH = reach;
-        ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-
-        this.attributeModifiers = ImmutableMultimap.of(ReachEntityAttributes.REACH, new EntityAttributeModifier(REACH_ID,
-                "Reach modifier", this.REACH, EntityAttributeModifier.Operation.ADDITION));*/
-
-        /*
-        builder.put(ReachEntityAttributes.REACH, new EntityAttributeModifier(REACH_ID, "Reach modifier", this.REACH, EntityAttributeModifier.Operation.ADDITION));
-        this.attributeModifiers = builder.build();*/
 
     }
 
@@ -63,37 +52,41 @@ public class WandItem extends Item {
         }
         return builder.build();
     }
-    /*
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
-
-        var modifiers = super.getAttributeModifiers(stack, slot);
-        modifiers.put(ReachEntityAttributes.REACH, new EntityAttributeModifier(REACH_ID, "reach", 0, EntityAttributeModifier.Operation.ADDITION));
-        return super.getAttributeModifiers(stack, slot);
-        //return modifiers;
-    }*/
 
     @Override
     public ActionResult useOnEntity(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand) {
-                /*
-        builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier",
-                (double)this.attackDamage, EntityAttributeModifier.Operation.ADDITION));
-        builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier",
-                (double)attackSpeed, EntityAttributeModifier.Operation.ADDITION));
-                */
-        user.sendMessage(Text.literal("You switched places with your target!"));
-        //user.sendMessage(Text.translatable("You switched places!"), false);
-        double x_enemy = entity.getX();
-        double y_enemy = entity.getY();
-        double z_enemy = entity.getZ();
+        int cooldown = 200;
+        if (!user.getItemCooldownManager().isCoolingDown(this)) {
+            World world = user.getWorld();
+            if (!world.isClient) {
+                user.sendMessage(Text.literal("You switched places with your target! Cooldown: " + cooldown/20 + " seconds"));
+            }
 
-        double x_user = user.getX();
-        double y_user = user.getY();
-        double z_user = user.getZ();
+            //user.sendMessage(Text.translatable("You switched places!"), false);
+            double x_enemy = entity.getX();
+            double y_enemy = entity.getY();
+            double z_enemy = entity.getZ();
 
-        user.setPos(x_enemy, y_enemy, z_enemy);
-        entity.setPos(x_user, y_user, z_user);
+            double x_user = user.getX();
+            double y_user = user.getY();
+            double z_user = user.getZ();
 
+            user.setPos(x_enemy, y_enemy, z_enemy);
+            entity.setPos(x_user, y_user, z_user);
 
+            user.getItemCooldownManager().set(this, cooldown);
+
+            return super.useOnEntity(stack, user, entity, hand);
+        } else if (user.getItemCooldownManager().isCoolingDown(this)) {
+            World world = user.getWorld();
+
+            if (!world.isClient) {
+                float currCD = user.getItemCooldownManager().getCooldownProgress(this, 0) * (cooldown / 20);
+                String stringCD = String.format("%.1f", currCD);
+                user.sendMessage(Text.literal("You can use this spell in " + stringCD + " seconds!"));
+            }
+            return super.useOnEntity(stack, user, entity, hand);
+        }
 
         return super.useOnEntity(stack, user, entity, hand);
 

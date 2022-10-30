@@ -36,13 +36,15 @@ public class WallWand extends Item {
     boolean isSand;
     boolean isNear;
     public ActionResult useOnBlock(ItemUsageContext context) {
+        int cooldown = 40;
         isStone = false;
         isCobble = false;
         isGravel = false;
         isSand = false;
         isNear = false;
         PlayerEntity user = context.getPlayer();
-        user.sendMessage(Text.literal("I AM KAKASHI THE COPY NINJA I KNOW A THOUSAND JUTSU"));
+        World world = context.getWorld();
+
         BlockPos userPos = user.getBlockPos();
         int userX = userPos.getX();
         int userY = userPos.getY();
@@ -161,9 +163,14 @@ public class WallWand extends Item {
             }
 
         }
-
+        //cooldown
         assert user != null;
-        user.getItemCooldownManager().set(this, 20);
+        user.getItemCooldownManager().set(this, cooldown);
+        if (!world.isClient) {
+            float currCD = user.getItemCooldownManager().getCooldownProgress(this, 0) * (cooldown / 20);
+            String stringCD = String.format("%.0f", currCD);
+            user.sendMessage(Text.literal("You summoned a wall! Cooldown: " + stringCD + " seconds"));
+        }
         return ActionResult.PASS;
     }
 

@@ -59,6 +59,13 @@ public class ModItems {
 
     public static final Item WEB_WAND = registerItem("web_wand",
             new WebWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item BLINK_WAND = registerItem("blink_wand",
+            new BlinkWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item MAGIC_WAND = registerItem("magic_wand",
+            new MagicWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);
         /* Identifier acts as a namespace:object pair, for example, minecraft:iron_ingot, or in this case,

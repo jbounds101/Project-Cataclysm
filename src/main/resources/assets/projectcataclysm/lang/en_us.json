@@ -31,5 +31,8 @@
   "item.projectcataclysm.machine_gun": "Machine Gun",
   "item.projectcataclysm.wand": "Wand",
   "item.projectcataclysm.wall_wand": "Wall Wand",
-  "item.projectcataclysm.web_wand": "Web Wand"
+  "item.projectcataclysm.web_wand": "Web Wand",
+  "item.projectcataclysm.blink_wand": "Blink Wand",
+  "item.projectcataclysm.magic_wand": "Magic Wand",
+  "item.projectcataclysm.spell_switcher": "Spell Switcher"
 }
