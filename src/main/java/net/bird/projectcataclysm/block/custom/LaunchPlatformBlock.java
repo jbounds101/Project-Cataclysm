@@ -2,16 +2,18 @@ package net.bird.projectcataclysm.block.custom;
 
 import net.bird.projectcataclysm.block.ModBlocks;
 import net.bird.projectcataclysm.screen.ControlPanelScreenHandler;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.text.Text;
@@ -80,7 +82,22 @@ public class LaunchPlatformBlock extends HorizontalFacingBlock {
     }
 
     public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-        return new SimpleNamedScreenHandlerFactory((syncId, inventory, player) -> new ControlPanelScreenHandler(syncId, inventory, ScreenHandlerContext.create(world, pos), pos), TITLE);
+        return new ExtendedScreenHandlerFactory() {
+            @Override
+            public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+                buf.writeBlockPos(pos);
+            }
+
+            @Override
+            public Text getDisplayName() {
+                return TITLE;
+            }
+
+            @Override
+            public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+                return new ControlPanelScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos));
+            }
+        };
     }
 
     public boolean hasSidedTransparency(BlockState state) {

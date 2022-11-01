@@ -5,18 +5,31 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.block.BlockModels;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.BlockItem;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 
 import java.util.List;
 
@@ -26,6 +39,8 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
     private static final Text LAUNCH_TEXT = Text.translatable("block.projectcataclysm.control_panel.launch");
     private static final Text DISMANTLE_TEXT = Text.translatable("block.projectcataclysm.control_panel.dismantle");
     private final List<ControlPanelScreen.ControlPanelButtonWidget> buttons = Lists.newArrayList();
+
+    private int[] target;
 
     public ControlPanelScreen(ControlPanelScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -60,6 +75,9 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
 
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
         super.drawForeground(matrices, mouseX, mouseY);
+        if (mouseX - this.x > 120 && mouseY - this.y > 22 && mouseX - this.x <= 217 && mouseY - this.y <= 119) {
+            this.renderTooltip(matrices, Text.literal("X: " + getTargetPos(mouseX - this.x, mouseY - this.y).getX() + " Z: " + getTargetPos(mouseX - this.x, mouseY - this.y).getZ()),mouseX - this.x, mouseY - this.y);
+        }
         for (ControlPanelButtonWidget controlPanelButtonWidget : this.buttons) {
             if (controlPanelButtonWidget.shouldRenderTooltip()) {
                 controlPanelButtonWidget.renderTooltip(matrices, mouseX - this.x, mouseY - this.y);
@@ -76,6 +94,31 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
         int i = this.x;
         int j = (this.height - this.backgroundHeight) / 2;
         this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
+        if (this.handler.hasHead()) {
+            this.drawTexture(matrices, 19 + this.x, 30 + this.y, 234, 0, 16, 24);
+        }
+        if (this.handler.hasTail()) {
+            this.drawTexture(matrices, 15 + this.x, 70 + this.y, 230, 40, 24, 44);
+        }
+        if (this.handler.hasPayload()) {
+            BlockState state = Block.getBlockFromItem(this.handler.getPayload().getItem()).getDefaultState();
+            ModelIdentifier modelIdentifier = BlockModels.getModelId(state);
+            Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getModel(modelIdentifier).getQuads(state, Direction.EAST, Random.create()).get(0).getSprite();
+            RenderSystem.setShaderTexture(0, new Identifier(sprite.getId().getNamespace(), "textures/" + sprite.getId().getPath() + ".png"));
+            drawTexture(matrices, 19 + this.x, 54 + this.y, 0, 0, 16, 16, 16, 16);
+            RenderSystem.setShaderTexture(0, TEXTURE);
+            this.drawTexture(matrices, 19 + this.x, 54 + this.y, 234, 24, 16, 16);
+        }
+        if (target != null) {
+            this.drawTexture(matrices, target[0] + this.x - 3, target[1] + this.y - 3, 104, 221, 5, 5);
+            this.renderTooltip(matrices, Text.literal("X: " + getTargetPos(target[0], target[1]).getX() + " Z: " + getTargetPos(target[0], target[1]).getZ()), target[0] + this.x, target[1] + this.y);
+        }
+        if (mouseX - this.x > 120 && mouseY - this.y > 22 && mouseX - this.x <= 217 && mouseY - this.y <= 119) {
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderTexture(0, TEXTURE);
+            this.drawTexture(matrices, mouseX - 3, mouseY - 3, 104, 221, 5, 5);
+        }
     }
 
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -84,6 +127,23 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
         this.drawMouseoverTooltip(matrices, mouseX, mouseY);
     }
 
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (mouseX - this.x > 120 && mouseY - this.y > 22 && mouseX - this.x <= 217 && mouseY - this.y <= 119) {
+            if (target == null) {
+                target = new int[2];
+            }
+            target[0] = (int)(mouseX - this.x);
+            target[1] = (int)(mouseY - this.y);
+            return true;
+        }
+        else {
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
+    }
+
+    public BlockPos getTargetPos(int x, int y) {
+        return new BlockPos(4*(x-169) + this.handler.getPos().getX(), 0, 4*(y-71) + this.handler.getPos().getZ());
+    }
     @Environment(EnvType.CLIENT)
     interface ControlPanelButtonWidget {
         boolean shouldRenderTooltip();
@@ -102,11 +162,14 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
         public void onPress() {
             assert ControlPanelScreen.this.client != null;
             assert ControlPanelScreen.this.client.player != null;
-            ControlPanelScreen.this.client.player.closeHandledScreen();
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeBlockPos(getTargetPos(target[0], target[1]));
+            buf.writeItemStack(ControlPanelScreen.this.handler.getPayload());
+            ClientPlayNetworking.send(ProjectCataclysmMod.LAUNCH_PACKET_ID, buf);
         }
 
         public void tick() {
-            this.active = ControlPanelScreen.this.handler.canLaunch();
+            this.active = ControlPanelScreen.this.handler.canLaunch() && target != null;
         }
 
         public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -148,11 +211,14 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
         }
 
         public void onPress() {
-            assert ControlPanelScreen.this.client != null;
-            assert ControlPanelScreen.this.client.player != null;
-            assert ControlPanelScreen.this.client.world != null;
-            ControlPanelScreen.this.handler.dismantle(ControlPanelScreen.this.client.player);
-            ControlPanelScreen.this.client.player.closeHandledScreen();
+            MinecraftClient client = ControlPanelScreen.this.client;
+            assert client != null;
+            assert client.player != null;
+            assert client.world != null;
+            client.world.playSound(client.player, ControlPanelScreen.this.handler.getPos(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeBlockPos(ControlPanelScreen.this.handler.getPos());
+            ClientPlayNetworking.send(ProjectCataclysmMod.DISMANTLE_PACKET_ID, buf);
         }
 
         public void tick() {

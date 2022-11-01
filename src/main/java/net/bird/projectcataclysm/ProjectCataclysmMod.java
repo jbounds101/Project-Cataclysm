@@ -12,14 +12,14 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.item.Item;
-import net.minecraft.recipe.Recipe;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.structure.rule.BlockMatchRuleTest;
 import net.minecraft.tag.TagKey;
@@ -75,9 +75,10 @@ public class ProjectCataclysmMod implements ModInitializer {
 	});
 	public static final ScreenHandlerType<FabricatingScreenHandler> FABRICATING_HANDLER = Registry.register(Registry.SCREEN_HANDLER, new Identifier(MOD_ID, "fabricating"), new ScreenHandlerType<>(FabricatingScreenHandler::new));
 
-	public static final ScreenHandlerType<ControlPanelScreenHandler> CONTROL_PANEL_HANDLER = Registry.register(Registry.SCREEN_HANDLER, new Identifier(MOD_ID, "control_panel"), new ScreenHandlerType<>(ControlPanelScreenHandler::new));
+	public static final ExtendedScreenHandlerType<ControlPanelScreenHandler> CONTROL_PANEL_HANDLER = Registry.register(Registry.SCREEN_HANDLER, new Identifier(MOD_ID, "control_panel"), new ExtendedScreenHandlerType<>(ControlPanelScreenHandler::new));
 	public static final TagKey<Item> MISSILE_PAYLOADS = TagKey.of(Registry.ITEM_KEY, new Identifier(ProjectCataclysmMod.MOD_ID, "missile_payloads"));
 	public static final Identifier DISMANTLE_PACKET_ID = new Identifier(MOD_ID, "dismantle");
+	public static final Identifier LAUNCH_PACKET_ID = new Identifier(MOD_ID, "launch");
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -87,9 +88,7 @@ public class ProjectCataclysmMod implements ModInitializer {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, "silver_scythe"), ModItems.SILVER_SCYTHE);
-		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
-			out.accept(SILVER_SCYTHE_INVENTORY);
-		});
+		ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> out.accept(SILVER_SCYTHE_INVENTORY));
 		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_ESSENCE, RenderLayer.getCutout());
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE,
 				new Identifier(MOD_ID, "end_silver_ore"), END_SILVER_ORE_CONFIGURED_FEATURE);
@@ -102,6 +101,15 @@ public class ProjectCataclysmMod implements ModInitializer {
 			BlockPos pos =  buf.readBlockPos();
 			World world = player.getWorld();
 			LaunchPlatformBlock.breakAndDrop(world.getBlockState(pos), world, pos);
+		}));
+		ServerPlayNetworking.registerGlobalReceiver(LAUNCH_PACKET_ID, ((server, player, handler, buf, responseSender) -> {
+			BlockPos pos =  buf.readBlockPos();
+			ItemStack payload = buf.readItemStack();
+			if (player.currentScreenHandler instanceof ControlPanelScreenHandler) {
+				((ControlPanelScreenHandler) player.currentScreenHandler).launch();
+				player.closeHandledScreen();
+			}
+			ProjectCataclysmMod.LOGGER.info("Launching missile with payload " + payload.toString() + " to target " + pos.toShortString());
 		}));
 	}
 }

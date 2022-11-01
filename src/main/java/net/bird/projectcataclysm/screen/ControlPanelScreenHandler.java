@@ -2,12 +2,9 @@ package net.bird.projectcataclysm.screen;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.block.ModBlocks;
-import net.bird.projectcataclysm.block.custom.LaunchPlatformBlock;
 import net.bird.projectcataclysm.item.ModItems;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -17,12 +14,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-
-import static net.minecraft.block.Block.dropStack;
 
 public class ControlPanelScreenHandler extends ScreenHandler {
     private final ScreenHandlerContext context;
@@ -32,15 +24,16 @@ public class ControlPanelScreenHandler extends ScreenHandler {
     private final HeadSlot headSlot;
     private final TailSlot tailSlot;
     private final PayloadSlot payloadSlot;
-    private final BlockPos pos;
+    private BlockPos pos;
 
-    public ControlPanelScreenHandler(int syncId, PlayerInventory inventory) {
-        this(syncId, inventory, ScreenHandlerContext.EMPTY, null);
+    public ControlPanelScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
+        this(syncId, inventory, ScreenHandlerContext.EMPTY);
+        this.pos = buf.readBlockPos();
     }
-    public ControlPanelScreenHandler(int syncId, PlayerInventory inventory, ScreenHandlerContext context, BlockPos pos) {
+    public ControlPanelScreenHandler(int syncId, PlayerInventory inventory, ScreenHandlerContext context) {
         super(ProjectCataclysmMod.CONTROL_PANEL_HANDLER, syncId);
         this.context = context;
-        this.pos = pos;
+
         this.head = new SimpleInventory(1) {
             public boolean isValid(int slot, ItemStack stack) {
                 return stack.isOf(ModItems.MISSILE_HEAD);
@@ -62,7 +55,7 @@ public class ControlPanelScreenHandler extends ScreenHandler {
                 return stack.isIn(ProjectCataclysmMod.MISSILE_PAYLOADS);
             }
             public int getMaxCountPerStack() {
-                return 1;
+                return 64;
             }
         };
         this.headSlot = new HeadSlot(this.head, 0, 47, 35);
@@ -99,7 +92,7 @@ public class ControlPanelScreenHandler extends ScreenHandler {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!this.payloadSlot.hasStack() && this.payloadSlot.canInsert(itemStack2) && itemStack2.getCount() == 1) {
+            else if (!this.payloadSlot.hasStack() && this.payloadSlot.canInsert(itemStack2)) {
                 if (!this.insertItem(itemStack2, 1, 2, false)) {
                     return ItemStack.EMPTY;
                 }
@@ -150,16 +143,30 @@ public class ControlPanelScreenHandler extends ScreenHandler {
         });
     }
 
-    public boolean canLaunch() {
-        return !this.head.getStack(0).isEmpty() && !this.tail.getStack(0).isEmpty() && !this.payload.getStack(0).isEmpty();
+    public void launch() {
+        head.getStack(0).decrement(1);
+        tail.getStack(0).decrement(1);
+        payload.getStack(0).decrement(1);
     }
 
-    public void dismantle(PlayerEntity player) {
-        player.world.playSound(player, pos, SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(pos);
-        ClientPlayNetworking.send(ProjectCataclysmMod.DISMANTLE_PACKET_ID, buf);
+    public boolean canLaunch() {
+        return hasHead() && hasTail() && hasPayload();
+    }
 
+    public boolean hasHead() {
+        return !this.head.getStack(0).isEmpty();
+    }
+
+    public boolean hasTail() {
+        return !this.tail.getStack(0).isEmpty();
+    }
+
+    public boolean hasPayload() {
+        return !this.payload.getStack(0).isEmpty();
+    }
+
+    public ItemStack getPayload() {
+        return this.payload.getStack(0);
     }
 
     private static class HeadSlot extends Slot {
@@ -199,8 +206,9 @@ public class ControlPanelScreenHandler extends ScreenHandler {
             return stack.isIn(ProjectCataclysmMod.MISSILE_PAYLOADS);
         }
 
-        public int getMaxItemCount() {
-            return 1;
-        }
+    }
+
+    public BlockPos getPos() {
+        return pos;
     }
 }
