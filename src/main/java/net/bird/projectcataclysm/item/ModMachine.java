@@ -27,8 +27,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 public class ModMachine extends RangedWeaponItem implements Vanishable {
-    public static final int field_30855 = 20;
-    public static final int RANGE = 15;
     public static final int maxAmmo = 50;
     public static int currAmmo = 50;
     public ModMachine(Item.Settings settings) {
@@ -43,7 +41,7 @@ public class ModMachine extends RangedWeaponItem implements Vanishable {
 
                 ItemStack itemStack = playerEntity.getArrowType(stack);
                 if (itemStack.isEmpty()) {
-                    itemStack = new ItemStack(Items.ARROW);
+                    itemStack = new ItemStack(ModItems.BULLET);
                 }
 
                 if (!world.isClient) {
@@ -52,18 +50,22 @@ public class ModMachine extends RangedWeaponItem implements Vanishable {
                     //ArrowItem arrowItem = (ArrowItem)(itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
                     BulletItem bulletItem = (BulletItem)(itemStack.getItem() instanceof BulletItem ? itemStack.getItem() : ModItems.BULLET);
                     PersistentProjectileEntity persistentProjectileEntity = bulletItem.createBullet(world, itemStack, playerEntity);
-                    persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 8F, 1.0F);
+                    persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 10F, 1.0F);
                     persistentProjectileEntity.setCritical(true);
+                    double damage = persistentProjectileEntity.getDamage();
+                    persistentProjectileEntity.setDamage(damage * 0.25);
                     if (currAmmo > 0) {
                         world.spawnEntity(persistentProjectileEntity);
                         currAmmo--;
-                        playerEntity.sendMessage(Text.translatable("You have: " + currAmmo), false);
+                        playerEntity.sendMessage(Text.translatable("You have: " + currAmmo + " ammo left"), false);
 
+                        if (currAmmo == 0) {
+                            ((PlayerEntity) user).getItemCooldownManager().set(this, 40);
+                            ((PlayerEntity) user).addExhaustion(12);
+                            playerEntity.sendMessage(Text.translatable("Reloading"), false);
+                            executor.schedule(ModMachine::reload, 2, TimeUnit.SECONDS);
 
-                    } else if (currAmmo == 0) {
-                        playerEntity.sendMessage(Text.translatable("Reloading"), false);
-                        executor.schedule(ModMachine::reload, 2, TimeUnit.SECONDS);
-
+                        }
                     }
                 }
             }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "e": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "pattern": [
+    "e",
+    "s",
+    "s"
+  ],
+  "result": {
+    "item": "projectcataclysm:blink_wand"
+  }
+}
