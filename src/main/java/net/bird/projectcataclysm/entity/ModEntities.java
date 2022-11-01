@@ -37,6 +37,9 @@ public class ModEntities implements ModInitializer {
     public static final EntityType<AirExplosiveEntity> AIR_EXPLOSIVE =
             (EntityType<AirExplosiveEntity>) registerExplosive(
                     "air_explosive_entity", AirExplosiveEntity::new);
+    public static final EntityType<FlashExplosiveEntity> FLASH_EXPLOSIVE =
+            (EntityType<FlashExplosiveEntity>) registerExplosive(
+                    "flash_explosive_entity", FlashExplosiveEntity::new);
 
 
     private static EntityType<? extends ExplosiveEntity> registerExplosive(String name,

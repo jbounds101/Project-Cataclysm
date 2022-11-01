@@ -57,7 +57,8 @@ public class WallWand extends Item {
                 context.getWorld().getBlockState(positionClicked).equals(Blocks.TALL_GRASS.getDefaultState()) ||
                 context.getWorld().getBlockState(positionClicked).equals(Blocks.SUNFLOWER.getDefaultState()) ||
                 context.getWorld().getBlockState(positionClicked).equals(Blocks.CORNFLOWER.getDefaultState()) ||
-                context.getWorld().getBlockState(positionClicked).equals(Blocks.MANGROVE_PROPAGULE.getDefaultState())) {
+                context.getWorld().getBlockState(positionClicked).equals(Blocks.MANGROVE_PROPAGULE.getDefaultState()) ||
+                context.getWorld().getBlockState(positionClicked).equals(Blocks.SNOW.getDefaultState())) {
             y = positionClicked.getY();
         }
 

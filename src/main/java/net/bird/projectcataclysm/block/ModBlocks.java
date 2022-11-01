@@ -77,6 +77,10 @@ public class ModBlocks {
     public static final Block AIR_EXPLOSIVE = registerBlock("air_explosive",
             new ExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS),
                     AirExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block FLASH_EXPLOSIVE = registerBlock("flash_explosive",
+            new ExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS),
+                    FlashExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
     // ------------------
 
     public static final Block SOUL_ESSENCE = registerBlock("soul_essence",
