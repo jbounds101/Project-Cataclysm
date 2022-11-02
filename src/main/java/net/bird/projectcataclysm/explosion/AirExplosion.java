@@ -3,15 +3,13 @@ package net.bird.projectcataclysm.explosion;
 
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.block.custom.ExplosiveBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.TntBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -188,31 +186,55 @@ public class AirExplosion {
         //if (this.createFire) {
 
         // This loops through the "affectedBlocks" from the explosion
+
         for (BlockPos blockPos : this.affectedBlocks) {
             BlockState blockState = this.world.getBlockState(blockPos);
             Block block = blockState.getBlock();
+
+            if (!this.world.getBlockState(blockPos).isOpaqueFullCube(this.world, blockPos)) {
+                world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+                continue;
+            }
+
             if ((block.getClass() == ExplosiveBlock.class) || (block.getClass() == TntBlock.class)) {
                 block.onDestroyedByExplosion(this.world, blockPos, null);
                 world.setBlockState(blockPos, Blocks.AIR.getDefaultState()); // Delete a explosion block
             }
 
-            if (this.random.nextInt(20) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
 
-            /*LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(world);
-            assert lightningEntity != null;
-            lightningEntity.refreshPositionAfterTeleport(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-            world.spawnEntity(lightningEntity);*/
+            if (random.nextBetween(0, 2) == 0) {
+                FallingBlockEntity fallingBlock = FallingBlockEntity.spawnFromBlock(world, blockPos,
+                        block.getDefaultState());
+                final double FALLING_BLOCK_VERTICAL_VELOCITY = 1.5;
+                final int FALLING_BLOCK_MINIMUM_VERTICAL_MODIFIER = 0; // Divided by 100
+                final int FALLING_BLOCK_MAXIMUM_VERTICAL_MODIFIER = 100; // Divided by 100
+                float xModify = (float)random.nextBetween(80, 100) / 100;
+                float zModify = (float)random.nextBetween(80, 100) / 100;
+
+                double yVelocity =
+                        (FALLING_BLOCK_VERTICAL_VELOCITY + ((double)random.nextBetween(FALLING_BLOCK_MINIMUM_VERTICAL_MODIFIER, FALLING_BLOCK_MAXIMUM_VERTICAL_MODIFIER) / 100));
+
+                Vec3d fallingBlockVector = new Vec3d(((blockPos.getX() - this.x) / (2 * power)) * xModify, yVelocity,
+                        ((blockPos.getZ() - this.z) / (2 * power)) * zModify);
+
+                fallingBlock.dropItem = false;
+                fallingBlock.setVelocity(fallingBlockVector);
+                world.spawnEntity(fallingBlock);
+            } else {
+                world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+            }
 
 
         }
 
         for (int v = 0; v < affectedEntities.size(); ++v) {
+
             Entity entity = affectedEntities.get(v);
             if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.setVelocity(livingEntity.getVelocity().x, livingEntity.getVelocity().y + 5,
+                //ProjectCataclysmMod.LOGGER.info(livingEntity.getEntityName());
+                livingEntity.setVelocity(livingEntity.getVelocity().x, livingEntity.getVelocity().y + 2,
                         livingEntity.getVelocity().z);
-                livingEntity.setVelocityClient(livingEntity.getVelocity().x, livingEntity.getVelocity().y + 5,
-                        livingEntity.getVelocity().z);
+                livingEntity.velocityModified = true;
             }
         }
     }
