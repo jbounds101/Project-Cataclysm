@@ -85,7 +85,7 @@ public class LaunchPlatformBlock extends HorizontalFacingBlock {
         return new ExtendedScreenHandlerFactory() {
             @Override
             public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-                buf.writeBlockPos(pos);
+                buf.writeBlockPos(pos.offset(state.get(FACING), 3));
             }
 
             @Override

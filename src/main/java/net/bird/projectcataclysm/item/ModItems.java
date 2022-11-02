@@ -65,9 +65,9 @@ public class ModItems {
     public static final BlockItem LAUNCH_PLATFORM = Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, "launch_platform"),
             new BlockItem(ModBlocks.LAUNCH_PLATFORM, new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
     public static final Item MISSILE_HEAD = registerItem("missile_head",
-            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
     public static final Item MISSILE_TAIL = registerItem("missile_tail",
-            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);

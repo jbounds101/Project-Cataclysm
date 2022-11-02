@@ -7,8 +7,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -20,7 +22,6 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.sound.SoundCategory;
@@ -30,6 +31,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -162,8 +164,18 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
         public void onPress() {
             assert ControlPanelScreen.this.client != null;
             assert ControlPanelScreen.this.client.player != null;
+            World world = ControlPanelScreen.this.client.world;
+            assert world != null;
+            BlockPos topPos = getTargetPos(target[0], target[1]).offset(Direction.UP, world.getTopY());;
+            for (int i = world.getTopY(); i > world.getBottomY(); i--) {
+                if (!(world.getBlockState(topPos).getBlock() instanceof AirBlock)) {
+                    break;
+                }
+                topPos = topPos.down();
+            }
             PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBlockPos(getTargetPos(target[0], target[1]));
+            buf.writeBlockPos(ControlPanelScreen.this.handler.getPos());
+            buf.writeBlockPos(topPos);
             buf.writeItemStack(ControlPanelScreen.this.handler.getPayload());
             ClientPlayNetworking.send(ProjectCataclysmMod.LAUNCH_PACKET_ID, buf);
         }
