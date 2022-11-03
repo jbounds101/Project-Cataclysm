@@ -6,6 +6,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.TntEntity;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -27,8 +30,10 @@ import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 public class MissileEntity extends Entity {
-    protected boolean inGround;
     protected ExplosiveEntity payload;
+    protected int launchPhase;
+    private static final TrackedData<BlockPos> TARGET = DataTracker.registerData(MissileEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
+    //protected BlockPos target;
     private int explosionPower = 5;
     @Nullable
     private BlockState inBlockState;
@@ -48,9 +53,6 @@ public class MissileEntity extends Entity {
     public void tick() {
         super.tick();
         Vec3d vec3d2;
-        VoxelShape voxelShape;
-        BlockPos blockPos;
-        BlockState blockState;
         Vec3d currentVelocity = this.getVelocity();
         if (this.prevPitch == 0.0f && this.prevYaw == 0.0f) {
             double d = currentVelocity.horizontalLength();
@@ -58,20 +60,6 @@ public class MissileEntity extends Entity {
             this.setPitch((float)(MathHelper.atan2(currentVelocity.y, d) * 57.2957763671875));
             this.prevYaw = this.getYaw();
             this.prevPitch = this.getPitch();
-        }
-        if (!((blockState = this.world.getBlockState(blockPos = this.getBlockPos())).isAir() || (voxelShape = blockState.getCollisionShape(this.world, blockPos)).isEmpty())) {
-            vec3d2 = this.getPos();
-            for (Box box : voxelShape.getBoundingBoxes()) {
-                if (!box.offset(blockPos).contains(vec3d2)) continue;
-                this.inGround = true;
-                break;
-            }
-        }
-        if (this.inGround) {
-            if (this.inBlockState != blockState && this.shouldFall()) {
-                this.fall();
-            }
-            return;
         }
         Vec3d vec3d3 = this.getPos();
         HitResult hitResult = this.world.raycast(new RaycastContext(vec3d3, vec3d2 = vec3d3.add(currentVelocity), RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
@@ -106,13 +94,43 @@ public class MissileEntity extends Entity {
         double posZ = this.getZ() + velZ;
         double l = currentVelocity.horizontalLength();
         this.setYaw((float)(MathHelper.atan2(velX, velZ) * 57.2957763671875));
-        this.setPitch((float)(MathHelper.atan2(velY, l) * 57.2957763671875));
-        this.setPitch(MissileEntity.updateRotation(this.prevPitch, this.getPitch()));
+        //if (launchPhase == 1) {
+            this.setPitch((float) (MathHelper.atan2(velY, l) * 57.2957763671875));
+            this.setPitch(MissileEntity.updateRotation(this.prevPitch, this.getPitch()));
+        //}
         this.setYaw(MissileEntity.updateRotation(this.prevYaw, this.getYaw()));
         Vec3d vec3d4 = this.getVelocity();
-        this.setVelocity(vec3d4.x, vec3d4.y - (double)0.05f, vec3d4.z);
+        if (launchPhase == 0) {
+            if (posY >= 200) {
+                launchPhase = 1;
+                this.setVelocityRotation(0.0F, this.prevYaw, 0.0F, (float) vec3d4.length());
+                if (inRange(posX, posZ)) {
+                    this.setVelocity(0, 0, 0);
+                    launchPhase = 2;
+                }
+            } else {
+                this.setVelocity(vec3d4.x, vec3d4.y - (double) 0.05f, vec3d4.z);
+                if (vec3d4.y < 2) {
+                    this.setVelocity(vec3d4.x, vec3d4.y + (double) 0.06f, vec3d4.z);
+                }
+            }
+        }
+        else if (launchPhase == 1) {
+            this.setVelocityRotation(0.0F, this.prevYaw, 0.0F, (float) vec3d4.length());
+            if (inRange(posX, posZ)) {
+                this.setVelocity(0, 0, 0);
+                launchPhase = 2;
+            }
+        }
+        else {
+            this.setVelocity(vec3d4.x, vec3d4.y - (double) 0.05f, vec3d4.z);
+        }
         this.setPosition(posX, posY, posZ);
         this.checkBlockCollision();
+    }
+
+    public boolean inRange(double posX, double posZ) {
+        return this.dataTracker.get(TARGET) == null || (MathHelper.abs((float) (posX - this.dataTracker.get(TARGET).getX())) <= 1 && MathHelper.abs((float) (posZ - this.dataTracker.get(TARGET).getZ())) <= 1);
     }
 
     protected void onCollision() {
@@ -132,18 +150,17 @@ public class MissileEntity extends Entity {
         return !entity.isSpectator() && entity.isAlive() && entity.canHit();
     }
 
-    private boolean shouldFall() {
-        return this.inGround && this.world.isSpaceEmpty(new Box(this.getPos(), this.getPos()).expand(0.06));
-    }
-
-    private void fall() {
-        this.inGround = false;
-        Vec3d vec3d = this.getVelocity();
-        this.setVelocity(vec3d.multiply(this.random.nextFloat() * 0.2f, this.random.nextFloat() * 0.2f, this.random.nextFloat() * 0.2f));
-    }
-
     public void setPayload(ExplosiveEntity payload) {
         this.payload = payload;
+    }
+
+    public void setTarget(BlockPos target) {
+        this.dataTracker.set(TARGET, target);
+        //this.target = target;
+    }
+
+    public void setLaunchPhase(int launchPhase) {
+        this.launchPhase = launchPhase;
     }
 
     public void setVelocity(double x, double y, double z, float speed) {
@@ -157,7 +174,7 @@ public class MissileEntity extends Entity {
     }
 
     public void setVelocityRotation(float pitch, float yaw, float roll, float speed) {
-        float f = -MathHelper.sin(yaw * ((float)Math.PI / 180)) * MathHelper.cos(pitch * ((float)Math.PI / 180));
+        float f = MathHelper.sin(yaw * ((float)Math.PI / 180)) * MathHelper.cos(pitch * ((float)Math.PI / 180));
         float g = -MathHelper.sin((pitch + roll) * ((float)Math.PI / 180));
         float h = MathHelper.cos(yaw * ((float)Math.PI / 180)) * MathHelper.cos(pitch * ((float)Math.PI / 180));
         this.setVelocity(f, g, h, speed);
@@ -199,7 +216,7 @@ public class MissileEntity extends Entity {
 
     @Override
     protected void initDataTracker() {
-
+        this.dataTracker.startTracking(TARGET, null);
     }
 
     @Override

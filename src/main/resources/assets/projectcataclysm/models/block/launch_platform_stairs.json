@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/stairs",
   "textures": {
-    "bottom": "projectcataclysm:block/launch_platform_base",
-    "side": "projectcataclysm:block/launch_platform_base",
-    "top": "projectcataclysm:block/launch_platform_base"
+    "bottom": "projectcataclysm:block/silver_block",
+    "side": "projectcataclysm:block/silver_block",
+    "top": "projectcataclysm:block/silver_block"
   }
 }

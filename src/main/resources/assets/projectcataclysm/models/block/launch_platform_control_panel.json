@@ -8,12 +8,12 @@
     }
   },
   "textures": {
-    "particle": "projectcataclysm:block/launch_platform_base",
-    "bottom": "projectcataclysm:block/launch_platform_base",
-    "base": "projectcataclysm:block/launch_platform_base",
-    "front": "projectcataclysm:block/launch_platform_base",
-    "sides": "projectcataclysm:block/launch_platform_base",
-    "top": "projectcataclysm:block/launch_platform_base"
+    "particle": "projectcataclysm:block/silver_block",
+    "bottom": "projectcataclysm:block/silver_block",
+    "base": "projectcataclysm:block/silver_block",
+    "front": "projectcataclysm:block/silver_block",
+    "sides": "projectcataclysm:block/silver_block",
+    "top": "projectcataclysm:block/control_panel_top"
   },
   "elements": [
     {
