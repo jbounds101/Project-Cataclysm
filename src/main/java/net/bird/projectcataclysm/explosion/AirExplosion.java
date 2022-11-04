@@ -2,8 +2,7 @@ package net.bird.projectcataclysm.explosion;
 
 
 import com.google.common.collect.Sets;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.bird.projectcataclysm.ProjectCataclysmMod;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;;
 import net.bird.projectcataclysm.block.custom.ExplosiveBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -117,12 +116,8 @@ public class AirExplosion {
                         BlockState blockState = this.world.getBlockState(blockPos);
                         FluidState fluidState = this.world.getFluidState(blockPos);
                         if (!this.world.isInBuildLimit(blockPos)) continue block2;
-                        /*Optional<Float> optional = this.behavior.getBlastResistance(this, this.world, blockPos,
-                                blockState, fluidState);
-                        if (optional.isPresent()) {
-                            h -= (optional.get().floatValue() + 0.3f) * 0.3f;
-                        }*/
-                        if (h > 0.0f) { // && this.behavior.canDestroyBlock(this, this.world, blockPos, blockState, h)
+
+                        if (h > 0.0f) {
                             set.add(blockPos);
                         }
                         m += d * (double)0.3f;
@@ -142,9 +137,6 @@ public class AirExplosion {
         int u = MathHelper.floor(this.z + (double)q + 1.0);
         affectedEntities = this.world.getOtherEntities(this.entity, new Box(k, r, t, l, s, u));
 
-        // TODO separate this entities list from being acted upon immediately, I want to store a list of affected
-        //  entities
-
     }
 
     public void affectWorld() {
@@ -152,40 +144,6 @@ public class AirExplosion {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
         }
         this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
-
-        /*if (bl) {
-            ObjectArrayList objectArrayList = new ObjectArrayList();
-            boolean bl22 = this.getCausingEntity() instanceof PlayerEntity;
-            Util.shuffle(this.affectedBlocks, this.world.random);
-            for (BlockPos blockPos : this.affectedBlocks) {
-                World world;
-                BlockState blockState = this.world.getBlockState(blockPos);
-                Block block = blockState.getBlock();
-                if (blockState.isAir()) continue;
-                BlockPos blockPos2 = blockPos.toImmutable();
-                this.world.getProfiler().push("explosion_blocks");
-                if (block.shouldDropItemsOnExplosion(this) && (world = this.world) instanceof ServerWorld) {
-                    ServerWorld serverWorld = (ServerWorld)world;
-                    BlockEntity blockEntity = blockState.hasBlockEntity() ? this.world.getBlockEntity(blockPos) : null;
-                    LootContext.Builder builder = new LootContext.Builder(serverWorld).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos)).parameter(LootContextParameters.TOOL, ItemStack.EMPTY).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                    if (this.destructionType == Explosion.DestructionType.DESTROY) {
-                        builder.parameter(LootContextParameters.EXPLOSION_RADIUS, Float.valueOf(this.power));
-                    }
-                    blockState.onStacksDropped(serverWorld, blockPos, ItemStack.EMPTY, bl22);
-                    blockState.getDroppedStacks(builder).forEach(stack -> CustomExplosion.tryMergeStack(objectArrayList, stack,
-                            blockPos2));
-                }
-                this.world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
-                block.onDestroyedByExplosion(this.world, blockPos, this);
-                this.world.getProfiler().pop();
-            }
-            for (Pair pair : objectArrayList) {
-                Block.dropStack(this.world, (BlockPos)pair.getSecond(), (ItemStack)pair.getFirst());
-            }
-        }*/
-        //if (this.createFire) {
-
-        // This loops through the "affectedBlocks" from the explosion
 
         for (BlockPos blockPos : this.affectedBlocks) {
             BlockState blockState = this.world.getBlockState(blockPos);
@@ -231,44 +189,10 @@ public class AirExplosion {
 
             Entity entity = affectedEntities.get(v);
             if (entity instanceof LivingEntity livingEntity) {
-                //ProjectCataclysmMod.LOGGER.info(livingEntity.getEntityName());
                 livingEntity.setVelocity(livingEntity.getVelocity().x, livingEntity.getVelocity().y + 2,
                         livingEntity.getVelocity().z);
                 livingEntity.velocityModified = true;
             }
         }
     }
-
-    /*@Nullable
-    public LivingEntity getCausingEntity() {
-        Entity entity;
-        if (this.entity == null) {
-            return null;
-        }
-        if (this.entity instanceof TntEntity) {
-            return ((TntEntity)this.entity).getCausingEntity();
-        }
-        if (this.entity instanceof LivingEntity) {
-            return (LivingEntity)this.entity;
-        }
-        if (this.entity instanceof ProjectileEntity && (entity = ((ProjectileEntity)this.entity).getOwner()) instanceof LivingEntity) {
-            return (LivingEntity)entity;
-        }
-        return null;
-    }*/
-
-    public void clearAffectedBlocks() {
-        this.affectedBlocks.clear();
-    }
-
-    public List<BlockPos> getAffectedBlocks() {
-        return this.affectedBlocks;
-    }
-
-    /*public static enum DestructionType {
-        NONE,
-        BREAK,
-        DESTROY;
-
-    }*/
 }
