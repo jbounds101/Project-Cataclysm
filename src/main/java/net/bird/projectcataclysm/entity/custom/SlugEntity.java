@@ -4,6 +4,7 @@ import net.bird.projectcataclysm.entity.ModEntities;
 import net.bird.projectcataclysm.item.ModItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,6 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.text.Text;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class SlugEntity extends PersistentProjectileEntity {
@@ -48,6 +52,21 @@ public class SlugEntity extends PersistentProjectileEntity {
             }
         }
 
+    }
+
+    @Override
+    protected void onEntityHit(EntityHitResult entityHitResult) {
+        Entity entity = entityHitResult.getEntity();
+        Entity owner = this.getOwner();
+        Vec3d vec3d = entity.getPos();
+        assert owner != null;
+        Vec3d ownerVec3d = owner.getPos();
+
+        if (ownerVec3d.distanceTo(vec3d) <= 8) {
+            super.onEntityHit(entityHitResult);
+        }
+
+        //super.onEntityHit(entityHitResult);
     }
 
     public void tick() {

@@ -66,6 +66,7 @@ public class PistolItem extends RangedWeaponItem implements Vanishable {
                     ((PlayerEntity) user).getItemCooldownManager().set(this, 5);
                     currAmmo--;
                     playerEntity.sendMessage(Text.literal("You have:" + currAmmo));
+
                     //playerEntity.sendMessage(Text.literal("Damage: " + persistentProjectileEntity.getDamage()));
                     if (currAmmo == 0) {
                         ((PlayerEntity) user).getItemCooldownManager().set(this, 40);

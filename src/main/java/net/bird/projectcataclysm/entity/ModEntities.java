@@ -45,7 +45,7 @@ public class ModEntities implements ModInitializer {
             new Identifier(ProjectCataclysmMod.MOD_ID, "slug"),
             FabricEntityTypeBuilder.<SlugEntity>create(SpawnGroup.MISC, SlugEntity::new)
                     .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
-                    .trackRangeBlocks(5).trackedUpdateRate(10).build());
+                    .trackRangeBlocks(10).trackedUpdateRate(10).build());
 
     @Override
     public void onInitialize() {

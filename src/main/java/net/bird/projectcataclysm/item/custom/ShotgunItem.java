@@ -40,20 +40,20 @@ public class ShotgunItem extends RangedWeaponItem implements Vanishable {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
             ItemStack itemStack;
-            //itemStack = new ItemStack(ModItems.BULLET);
             itemStack = new ItemStack(ModItems.SLUG);
 
             if (!world.isClient) {
-                //BulletItem bulletItem = (BulletItem) (itemStack.getItem() instanceof BulletItem ? itemStack.getItem() : ModItems.BULLET);
+
                 SlugItem slugItem = (SlugItem) (itemStack.getItem() instanceof SlugItem ? itemStack.getItem() : ModItems.SLUG);
                 ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-                //PersistentProjectileEntity persistentProjectileEntity = bulletItem.createBullet(world, itemStack, playerEntity);
                 PersistentProjectileEntity persistentProjectileEntity = slugItem.createSlug(world, itemStack, playerEntity);
-                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 2.0F, 1.0F);
+                persistentProjectileEntity.setOwner(user);
+                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5F, 1.0F);
                 persistentProjectileEntity.setCritical(true);
                 double damage = persistentProjectileEntity.getDamage();
-                persistentProjectileEntity.setDamage(damage * 2.5);
+                persistentProjectileEntity.setDamage(damage * 3);
+                persistentProjectileEntity.setPunch(3);
 
                 if (currAmmo == 0) {
                     playerEntity.sendMessage(Text.literal("Reloading"));
@@ -63,14 +63,14 @@ public class ShotgunItem extends RangedWeaponItem implements Vanishable {
 
                 if (currAmmo > 0) {
                     world.spawnEntity(persistentProjectileEntity);
-                    ((PlayerEntity) user).getItemCooldownManager().set(this, 5);
+                    ((PlayerEntity) user).getItemCooldownManager().set(this, 40);
                     currAmmo--;
                     playerEntity.sendMessage(Text.literal("You have:" + currAmmo));
                     //playerEntity.sendMessage(Text.literal("Damage: " + persistentProjectileEntity.getDamage()));
                     if (currAmmo == 0) {
-                        ((PlayerEntity) user).getItemCooldownManager().set(this, 40);
+                        ((PlayerEntity) user).getItemCooldownManager().set(this, 20);
                         playerEntity.sendMessage(Text.literal("Reloading"));
-                        executorService.schedule(ShotgunItem::reload, 2, TimeUnit.SECONDS);
+                        executorService.schedule(ShotgunItem::reload, 1, TimeUnit.SECONDS);
                         playerEntity.addExhaustion(4);
                     }
                 }

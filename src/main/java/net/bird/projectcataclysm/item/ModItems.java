@@ -42,6 +42,9 @@ public class ModItems {
     public static final Item SHOTGUN = registerItem("shotgun",
             new ShotgunItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
+    public static final Item RECOIL_GUN = registerItem("recoil_gun",
+            new PropelItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
     public static final Item BULLET = registerItem("bullet",
             new BulletItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 

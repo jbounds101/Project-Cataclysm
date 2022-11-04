@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "i": {
+      "item": "minecraft:water_bucket"
+    },
+    "x": {
+      "item": "minecraft:iron_bars"
+    }
+
+  },
+  "pattern": [
+    "xix",
+    " I ",
+    " I "
+  ],
+  "result": {
+    "item": "projectcataclysm:water_trap_wand"
+  }
+}
