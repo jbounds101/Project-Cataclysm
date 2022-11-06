@@ -54,7 +54,11 @@ public class ModEntities implements ModInitializer {
                     .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
                     .trackRangeBlocks(100).trackedUpdateRate(10).build());
 
-
+    public static final EntityType<MissileEntity> MISSILE = Registry.register(
+            Registry.ENTITY_TYPE,
+            new Identifier(ProjectCataclysmMod.MOD_ID, "missile"),
+            FabricEntityTypeBuilder.<MissileEntity>create(SpawnGroup.MISC, MissileEntity::new).dimensions(EntityDimensions.fixed(1,3)).build()
+    );
     @Override
     public void onInitialize() {
     }

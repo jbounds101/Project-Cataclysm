@@ -7,18 +7,24 @@ import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.function.ToIntFunction;
 
 
 public class ModBlocks {
+    private static ToIntFunction<BlockState> getLaunchPlatformLuminance() {
+        return (state) -> state.get(LaunchPlatformBlock.TYPE) == LaunchPlatformType.CONTROL_PANEL ? 15 : 5;
+    }
 
     /* Every block needs (in assets folder):
        1. en_us.json translation
@@ -87,8 +93,11 @@ public class ModBlocks {
             new FabricatorBlock(FabricBlockSettings.of(Material.METAL).luminance(10).hardness(50f).resistance(12000f).requiresTool().sounds(BlockSoundGroup.METAL)),
             ModItemGroup.PROJECT_CATACLYSM);
 
-    public static final Block PROTECTIVE_BARRIER_BLOCK = registerBlock("protective_barrier_block",
-            new Block(FabricBlockSettings.of(Material.STONE).luminance(15).hardness(-1.0f).resistance(3600000.0f).dropsNothing()), ModItemGroup.PROJECT_CATACLYSM);
+    public static final Block PROTECTIVE_BARRIER_BLOCK = Registry.register(Registry.BLOCK, new Identifier(ProjectCataclysmMod.MOD_ID, "protective_barrier_block"),
+            new Block(FabricBlockSettings.of(Material.STONE).luminance(15).hardness(-1.0f).resistance(3600000.0f).dropsNothing()));
+
+    public static final Block LAUNCH_PLATFORM = Registry.register(Registry.BLOCK, new Identifier(ProjectCataclysmMod.MOD_ID, "launch_platform"),
+            new LaunchPlatformBlock(FabricBlockSettings.of(Material.METAL).luminance(getLaunchPlatformLuminance()).hardness(-1.0f).resistance(12000f).sounds(BlockSoundGroup.ANVIL)));
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);
