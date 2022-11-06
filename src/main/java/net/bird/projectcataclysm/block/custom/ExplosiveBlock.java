@@ -143,4 +143,8 @@ public class ExplosiveBlock extends TntBlock {
             }
         }
     }
+
+    public final Class<? extends ExplosiveEntity> getExplosiveEntity() {
+        return this.explosiveEntity;
+    }
 }

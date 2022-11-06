@@ -2,15 +2,13 @@ package net.bird.projectcataclysm.explosion;
 
 
 import com.google.common.collect.Sets;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;;
 import net.bird.projectcataclysm.block.custom.ExplosiveBlock;
-import net.minecraft.block.*;
-import net.minecraft.enchantment.ProtectionEnchantment;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.TntEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.TntBlock;
+import net.minecraft.entity.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -28,9 +26,11 @@ import net.minecraft.world.explosion.EntityExplosionBehavior;
 import net.minecraft.world.explosion.ExplosionBehavior;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
-public class IceExplosion {
+public class AirExplosion {
 
     private static final ExplosionBehavior DEFAULT_BEHAVIOR = new ExplosionBehavior();
     private static final int field_30960 = 16;
@@ -48,7 +48,7 @@ public class IceExplosion {
     };
 
 
-    public IceExplosion(World world, @Nullable Entity entity, @Nullable ExplosionBehavior behavior, double x, double y, double z, float power) {
+    public AirExplosion(World world, @Nullable Entity entity, @Nullable ExplosionBehavior behavior, double x, double y, double z, float power) {
         this.world = world;
         this.entity = entity;
         this.power = power;
@@ -116,6 +116,7 @@ public class IceExplosion {
                         BlockState blockState = this.world.getBlockState(blockPos);
                         FluidState fluidState = this.world.getFluidState(blockPos);
                         if (!this.world.isInBuildLimit(blockPos)) continue block2;
+
                         if (h > 0.0f) {
                             set.add(blockPos);
                         }
@@ -135,6 +136,7 @@ public class IceExplosion {
         int t = MathHelper.floor(this.z - (double)q - 1.0);
         int u = MathHelper.floor(this.z + (double)q + 1.0);
         affectedEntities = this.world.getOtherEntities(this.entity, new Box(k, r, t, l, s, u));
+
     }
 
     public void affectWorld() {
@@ -143,102 +145,54 @@ public class IceExplosion {
         }
         this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
 
-        // This loops through the "affectedBlocks" from the explosion
         for (BlockPos blockPos : this.affectedBlocks) {
             BlockState blockState = this.world.getBlockState(blockPos);
             Block block = blockState.getBlock();
+
+            if (!this.world.getBlockState(blockPos).isOpaqueFullCube(this.world, blockPos)) {
+                world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+                continue;
+            }
+
             if ((block.getClass() == ExplosiveBlock.class) || (block.getClass() == TntBlock.class)) {
                 block.onDestroyedByExplosion(this.world, blockPos, null);
                 world.setBlockState(blockPos, Blocks.AIR.getDefaultState()); // Delete a explosion block
             }
 
-            // randint was 3
-            if (this.random.nextInt(6) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
-            //this.world.setBlockState(blockPos3, AbstractFireBlock.getState(this.world, blockPos3));
 
-            for (int x = -6; x < 6; x++) {
-                for (int z = -6; z < 6; z++) {
-                    if (this.random.nextInt(11) < 6) {
-                        if (this.world.getBlockState(blockPos.add(x, -1, z)).isOpaqueFullCube(this.world,
-                                blockPos.add(x, -1, z))) {
-                            this.world.setBlockState(blockPos.add(x, 0, z),
-                                    Blocks.SNOW.getDefaultState());
-                        }
+            if (random.nextBetween(0, 2) == 0) {
+                FallingBlockEntity fallingBlock = FallingBlockEntity.spawnFromBlock(world, blockPos,
+                        block.getDefaultState());
+                final double FALLING_BLOCK_VERTICAL_VELOCITY = 1.5;
+                final int FALLING_BLOCK_MINIMUM_VERTICAL_MODIFIER = 0; // Divided by 100
+                final int FALLING_BLOCK_MAXIMUM_VERTICAL_MODIFIER = 100; // Divided by 100
+                float xModify = (float)random.nextBetween(80, 100) / 100;
+                float zModify = (float)random.nextBetween(80, 100) / 100;
 
-                    }
-                }
+                double yVelocity =
+                        (FALLING_BLOCK_VERTICAL_VELOCITY + ((double)random.nextBetween(FALLING_BLOCK_MINIMUM_VERTICAL_MODIFIER, FALLING_BLOCK_MAXIMUM_VERTICAL_MODIFIER) / 100));
+
+                Vec3d fallingBlockVector = new Vec3d(((blockPos.getX() - this.x) / (2 * power)) * xModify, yVelocity,
+                        ((blockPos.getZ() - this.z) / (2 * power)) * zModify);
+
+                fallingBlock.dropItem = false;
+                fallingBlock.setVelocity(fallingBlockVector);
+                world.spawnEntity(fallingBlock);
+            } else {
+                world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
             }
-            final int minBaseHeight = 1;
-            final int maxBaseHeight = 2;
-            int height = 2 * (random.nextInt(maxBaseHeight - minBaseHeight) + minBaseHeight);
-            for (int i = 0; i < height / 2; i++) {
-                Block icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos, icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.east(), icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.north(), icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.west(), icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.south(), icyBlock.getDefaultState());
-                blockPos = blockPos.up();
-                if (i == ((height / 2) - 1)) {
-                    for (int j = height / 2; j < height + random.nextInt(10); j++) {
-                        icyBlock = this.calculateIcyBlock(height, j);
-                        this.world.setBlockState(blockPos, icyBlock.getDefaultState());
-                        blockPos = blockPos.up();
-                    }
-                }
 
-            }
+
         }
 
-        Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
-        float q = this.power * 2.0f; // This is the "damage-radius" for entities
         for (int v = 0; v < affectedEntities.size(); ++v) {
-            double z;
-            double y;
-            double x;
-            double aa;
-            double w;
+
             Entity entity = affectedEntities.get(v);
-            if (entity.isImmuneToExplosion() || !((w = Math.sqrt(entity.squaredDistanceTo(vec3d)) / (double)q) <= 1.0) || (aa = Math.sqrt((x = entity.getX() - this.x) * x + (y = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - this.y) * y + (z = entity.getZ() - this.z) * z)) == 0.0) continue;
-            x /= aa;
-            y /= aa;
-            z /= aa;
-            double ab = IceExplosion.getExposure(vec3d, entity);
-            double ac = (1.0 - w) * ab;
-
-            double ad = ac;
-            if (entity instanceof LivingEntity) {
-                ad = ProtectionEnchantment.transformExplosionKnockback((LivingEntity)entity, ac);
-                ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 300, 1,
-                        false, true, true));
+            if (entity instanceof LivingEntity livingEntity) {
+                livingEntity.setVelocity(livingEntity.getVelocity().x, livingEntity.getVelocity().y + 2,
+                        livingEntity.getVelocity().z);
+                livingEntity.velocityModified = true;
             }
-
-            entity.setVelocity(entity.getVelocity().add(x * ad, y * ad, z * ad));
-
         }
-    }
-
-    Block calculateIcyBlock(int maxHeight, int currentHeight) {
-        float percentage = ((float)currentHeight / (float)maxHeight);
-        System.out.println(percentage);
-        if (percentage < 0.3 + (float)random.nextInt(15) / 100) {
-            if (random.nextInt(10) < 7) {
-                return Blocks.PACKED_ICE;
-            } else if (random.nextInt(10) < 7) {
-                return Blocks.SNOW_BLOCK;
-            } else return Blocks.ICE;
-        } else if (percentage < 0.5 + (float)random.nextInt(15) / 100) {
-            if (random.nextInt(2) == 0) {
-                return Blocks.ICE;
-            } else return Blocks.SNOW_BLOCK;
-        } else if (percentage < 0.7){
-            if (random.nextInt(10) < 7) {
-                return Blocks.ICE;
-            } else return Blocks.SNOW_BLOCK;
-        } else return Blocks.ICE;
     }
 }

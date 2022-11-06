@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "projectcataclysm:block/silver_block",
+    "side": "projectcataclysm:block/silver_block",
+    "top": "projectcataclysm:block/silver_block"
+  }
+}

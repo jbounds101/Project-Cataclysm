@@ -1,0 +1,27 @@
+{
+  "type": "projectcataclysm:fabricating",
+  "key": {
+    "S": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "Q": {
+      "item": "minecraft:quartz_block"
+    },
+    "C": {
+      "item": "minecraft:compass"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "pattern": [
+    "  S  ",
+    " SRS ",
+    "SRCRS",
+    "SQQQS",
+    "SSSSS"
+  ],
+  "result": {
+    "item": "projectcataclysm:missile_head"
+  }
+}

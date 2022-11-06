@@ -234,7 +234,7 @@ public class FabricatingRecipe implements Recipe<CraftingInventory> {
         Iterator var2 = json.entrySet().iterator();
 
         while(var2.hasNext()) {
-            Map.Entry<String, JsonElement> entry = (Map.Entry)var2.next();
+            Map.Entry entry = (Map.Entry)var2.next();
             if (((String)entry.getKey()).length() != 1) {
                 throw new JsonSyntaxException("Invalid key entry: '" + (String)entry.getKey() + "' is an invalid symbol (must be 1 character only).");
             }

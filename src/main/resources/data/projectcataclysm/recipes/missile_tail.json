@@ -1,0 +1,30 @@
+{
+  "type": "projectcataclysm:fabricating",
+  "key": {
+    "S": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "E": {
+      "item": "projectcataclysm:soul_essence"
+    },
+    "N": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "B": {
+      "item": "minecraft:blackstone"
+    }
+  },
+  "pattern": [
+    "SSSSS",
+    "STTTS",
+    "SSSSS",
+    " BNB ",
+    "BEEEB"
+  ],
+  "result": {
+    "item": "projectcataclysm:missile_tail"
+  }
+}
