@@ -32,8 +32,8 @@ public class MasterWand extends Item {
                 wandLifeSwap.useOnEntity(stack, user, entity, hand);
                 break;
             case SWITCH:
-                WandItem wandItem = new WandItem(settings);
-                wandItem.useOnEntity(stack, user, entity, hand);
+
+
                 break;
             case WEBTRAP:
 
