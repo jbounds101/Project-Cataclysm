@@ -2,25 +2,29 @@ package net.bird.projectcataclysm.block;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.block.custom.*;
-import net.bird.projectcataclysm.entity.custom.BigExplosiveEntity;
-import net.bird.projectcataclysm.entity.custom.FireExplosiveEntity;
-import net.bird.projectcataclysm.entity.custom.MassiveExplosiveEntity;
+import net.bird.projectcataclysm.entity.custom.*;
 import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.function.ToIntFunction;
 
 
 public class ModBlocks {
+    private static ToIntFunction<BlockState> getLaunchPlatformLuminance() {
+        return (state) -> state.get(LaunchPlatformBlock.TYPE) == LaunchPlatformType.CONTROL_PANEL ? 15 : 5;
+    }
 
     /* Every block needs (in assets folder):
        1. en_us.json translation
@@ -67,6 +71,22 @@ public class ModBlocks {
     public static final Block FIRE_EXPLOSIVE = registerBlock("fire_explosive",
             new ExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS),
                     FireExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block LIGHTNING_EXPLOSIVE = registerBlock("lightning_explosive",
+            new ExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS),
+                    LightningExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block ICE_EXPLOSIVE = registerBlock("ice_explosive",
+            new ExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS),
+                    IceExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block AIR_EXPLOSIVE = registerBlock("air_explosive",
+            new ExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS),
+                    AirExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block FLASH_EXPLOSIVE = registerBlock("flash_explosive",
+            new ExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS),
+                    FlashExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
     // ------------------
 
     public static final Block SOUL_ESSENCE = registerBlock("soul_essence",
@@ -77,8 +97,11 @@ public class ModBlocks {
             new FabricatorBlock(FabricBlockSettings.of(Material.METAL).luminance(10).hardness(50f).resistance(12000f).requiresTool().sounds(BlockSoundGroup.METAL)),
             ModItemGroup.PROJECT_CATACLYSM);
 
-    public static final Block PROTECTIVE_BARRIER_BLOCK = registerBlock("protective_barrier_block",
-            new Block(FabricBlockSettings.of(Material.STONE).luminance(15).hardness(-1.0f).resistance(3600000.0f).dropsNothing()), ModItemGroup.PROJECT_CATACLYSM);
+    public static final Block PROTECTIVE_BARRIER_BLOCK = Registry.register(Registry.BLOCK, new Identifier(ProjectCataclysmMod.MOD_ID, "protective_barrier_block"),
+            new Block(FabricBlockSettings.of(Material.STONE).luminance(15).hardness(-1.0f).resistance(3600000.0f).dropsNothing()));
+
+    public static final Block LAUNCH_PLATFORM = Registry.register(Registry.BLOCK, new Identifier(ProjectCataclysmMod.MOD_ID, "launch_platform"),
+            new LaunchPlatformBlock(FabricBlockSettings.of(Material.METAL).luminance(getLaunchPlatformLuminance()).hardness(-1.0f).resistance(12000f).sounds(BlockSoundGroup.ANVIL)));
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);

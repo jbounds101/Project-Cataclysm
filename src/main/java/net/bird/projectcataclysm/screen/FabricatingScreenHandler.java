@@ -21,6 +21,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class FabricatingScreenHandler extends AbstractRecipeScreenHandler<CraftingInventory> {
@@ -65,9 +66,9 @@ public class FabricatingScreenHandler extends AbstractRecipeScreenHandler<Crafti
         if (!world.isClient) {
             ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
             ItemStack itemStack = ItemStack.EMPTY;
-            Optional<FabricatingRecipe> optional = world.getServer().getRecipeManager().getFirstMatch(ProjectCataclysmMod.FABRICATING, craftingInventory, world);
+            Optional<FabricatingRecipe> optional = Objects.requireNonNull(world.getServer()).getRecipeManager().getFirstMatch(ProjectCataclysmMod.FABRICATING, craftingInventory, world);
             if (optional.isPresent()) {
-                FabricatingRecipe fabricatingRecipe = (FabricatingRecipe)optional.get();
+                FabricatingRecipe fabricatingRecipe = optional.get();
                 if (resultInventory.shouldCraftRecipe(world, serverPlayerEntity, fabricatingRecipe)) {
                     itemStack = fabricatingRecipe.craft(craftingInventory);
                 }
@@ -80,9 +81,7 @@ public class FabricatingScreenHandler extends AbstractRecipeScreenHandler<Crafti
     }
 
     public void onContentChanged(Inventory inventory) {
-        this.context.run((world, pos) -> {
-            updateResult(this, world, this.player, this.input, this.result);
-        });
+        this.context.run((world, pos) -> updateResult(this, world, this.player, this.input, this.result));
     }
 
     public void populateRecipeFinder(RecipeMatcher finder) {
@@ -100,9 +99,7 @@ public class FabricatingScreenHandler extends AbstractRecipeScreenHandler<Crafti
 
     public void close(PlayerEntity player) {
         super.close(player);
-        this.context.run((world, pos) -> {
-            this.dropInventory(player, this.input);
-        });
+        this.context.run((world, pos) -> this.dropInventory(player, this.input));
     }
 
     public boolean canUse(PlayerEntity player) {
@@ -111,14 +108,12 @@ public class FabricatingScreenHandler extends AbstractRecipeScreenHandler<Crafti
 
     public ItemStack transferSlot(PlayerEntity player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
-        Slot slot = (Slot)this.slots.get(index);
-        if (slot != null && slot.hasStack()) {
+        Slot slot = this.slots.get(index);
+        if (slot.hasStack()) {
             ItemStack itemStack2 = slot.getStack();
             itemStack = itemStack2.copy();
             if (index == 0) {
-                this.context.run((world, pos) -> {
-                    itemStack2.getItem().onCraft(itemStack2, world, player);
-                });
+                this.context.run((world, pos) -> itemStack2.getItem().onCraft(itemStack2, world, player));
                 if (!this.insertItem(itemStack2, 10, 46, true)) {
                     return ItemStack.EMPTY;
                 }

@@ -1,8 +1,10 @@
 package net.bird.projectcataclysm.item;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
+import net.bird.projectcataclysm.block.ModBlocks;
 import net.bird.projectcataclysm.item.custom.*;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ToolItem;
 import net.minecraft.util.Identifier;
@@ -61,7 +63,7 @@ public class ModItems {
             new MachineGunItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxDamage(16)));
 
     public static final Item WAND = registerItem("wand",
-            new WandItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new WandItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM), 2));
 
     public static final Item WALL_WAND = registerItem("wall_wand",
             new WallWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
@@ -79,6 +81,25 @@ public class ModItems {
 
     public static final Item PROTECTIVE_BARRIER = registerItem("protective_barrier",
             new ProtectiveBarrierItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final BlockItem LAUNCH_PLATFORM = Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, "launch_platform"),
+            new BlockItem(ModBlocks.LAUNCH_PLATFORM, new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+    public static final Item CONTROL_PANEL = registerItem("control_panel",
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+    public static final Item MISSILE_HEAD = registerItem("missile_head",
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+    public static final Item MISSILE_TAIL = registerItem("missile_tail",
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
+    public static final Item WEB_WAND = registerItem("web_wand",
+            new WebWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item BLINK_WAND = registerItem("blink_wand",
+            new BlinkWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item MAGIC_WAND = registerItem("magic_wand",
+            new MagicWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);
         /* Identifier acts as a namespace:object pair, for example, minecraft:iron_ingot, or in this case,

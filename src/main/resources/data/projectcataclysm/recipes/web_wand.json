@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "c": {
+      "item": "minecraft:cobweb"
+    }
+  },
+  "pattern": [
+    "c",
+    "s",
+    "s"
+  ],
+  "result": {
+    "item": "projectcataclysm:web_wand"
+  }
+}

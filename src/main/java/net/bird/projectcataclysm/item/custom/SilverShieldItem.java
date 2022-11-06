@@ -1,5 +1,6 @@
 package net.bird.projectcataclysm.item.custom;
 
+import net.bird.projectcataclysm.item.ModItems;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -30,6 +31,6 @@ public class SilverShieldItem extends Item {
     }
 
     public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-        return ingredient.isIn(ItemTags.PLANKS) || super.canRepair(stack, ingredient);
+        return ingredient.isOf(ModItems.SILVER_INGOT) || super.canRepair(stack, ingredient);
     }
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "projectcataclysm:block/launch_platform_base",
+    "side": "projectcataclysm:block/launch_platform_base",
+    "top": "projectcataclysm:block/launch_platform_base"
+  }
+}

@@ -19,6 +19,9 @@
   "item.projectcataclysm.master_wand": "Master Wand",
   "item.projectcataclysm.silver_shield": "Silver Shield",
   "item.projectcataclysm.protective_barrier": "Protective Barrier",
+  "item.projectcataclysm.missile_head": "Missile Head",
+  "item.projectcataclysm.missile_tail": "Missile Tail",
+  "item.projectcataclysm.control_panel": "Control Panel",
 
   "block.projectcataclysm.silver_block": "Block of Silver",
   "block.projectcataclysm.silver_ore": "Silver Ore",
@@ -28,16 +31,30 @@
   "block.projectcataclysm.big_explosive": "Big TNT",
   "block.projectcataclysm.massive_explosive": "Massive TNT",
   "block.projectcataclysm.fire_explosive": "Fire Explosive",
+  "block.projectcataclysm.lightning_explosive": "Lightning Explosive",
+  "block.projectcataclysm.ice_explosive": "Ice Explosive",
+  "block.projectcataclysm.air_explosive": "Air Explosive",
+  "block.projectcataclysm.flash_explosive": "Flash Explosive",
   "block.projectcataclysm.soul_essence": "Soul Essence",
   "block.projectcataclysm.fabricator": "Fabricator",
-  "block.projectcataclysm.protective_barrier": "Protective Barrier Block",
+  "block.projectcataclysm.protective_barrier_block": "Protective Barrier Block",
+  "block.projectcataclysm.launch_platform": "Launch Platform",
 
   "container.fabricating": "Fabricating",
+  "container.control_panel": "Control Panel",
 
   "itemGroup.projectcataclysm.project_cataclysm_group": "Project Cataclysm",
 
   "item.projectcataclysm.dowsing_rod.no_valuables": "No valuables found!",
+  "block.projectcataclysm.launch_platform.failed_placement": "Not enough space!",
+  "block.projectcataclysm.control_panel.launch": "Launch",
+  "block.projectcataclysm.control_panel.dismantle": "Dismantle",
+
   "item.projectcataclysm.machine_gun": "Machine Gun",
   "item.projectcataclysm.wand": "Wand",
-  "item.projectcataclysm.wall_wand": "Wall Wand"
+  "item.projectcataclysm.wall_wand": "Wall Wand",
+  "item.projectcataclysm.web_wand": "Web Wand",
+  "item.projectcataclysm.blink_wand": "Blink Wand",
+  "item.projectcataclysm.magic_wand": "Magic Wand",
+  "item.projectcataclysm.spell_switcher": "Spell Switcher"
 }

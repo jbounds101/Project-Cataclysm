@@ -1,0 +1,27 @@
+{
+  "type": "projectcataclysm:fabricating",
+  "key": {
+    "S": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "G": {
+      "item": "projectcataclysm:soul_gem"
+    },
+    "C": {
+      "item": "minecraft:compass"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "pattern": [
+    "SSSSS",
+    "SRCRS",
+    "SSSSS",
+    " SGS ",
+    "SSSSS"
+  ],
+  "result": {
+    "item": "projectcataclysm:control_panel"
+  }
+}

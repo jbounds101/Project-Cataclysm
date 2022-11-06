@@ -1,0 +1,27 @@
+{
+  "type": "projectcataclysm:fabricating",
+  "key": {
+    "S": {
+      "item": "projectcataclysm:silver_block"
+    },
+    "C": {
+      "item": "projectcataclysm:control_panel"
+    },
+    "G": {
+      "item": "projectcataclysm:soul_gem"
+    },
+    "B": {
+      "item": "minecraft:blackstone"
+    }
+  },
+  "pattern": [
+    "     ",
+    "    C",
+    " BBBG",
+    "SSSSS",
+    "SSSSS"
+  ],
+  "result": {
+    "item": "projectcataclysm:launch_platform"
+  }
+}
