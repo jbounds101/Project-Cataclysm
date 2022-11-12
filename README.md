@@ -7,6 +7,10 @@ This is a mod that adds many new weapons to Minecraft
 - Big TNT can be crafted and used (~2x larger explosion radius)
 - Massive TNT can be crafted and used (~8x larger explosion radius)
 - Fire explosives can be crafted and used (2x radius of TNT and summons fire instead of directly damaging blocks)
+- Lightning explosives can be used to strike lighnting on surrounding players/mobs
+- Ice explosives can be used to spawn ice spires and slow surrounding players/mobs
+- Air explosives can be used to launch nearby blocks and players/mobs into the sky
+- Flash explosives can be used to blind players for a short duration
 
 ### Silver
 - End Silver Ore generates in the End dimension in small blobs
