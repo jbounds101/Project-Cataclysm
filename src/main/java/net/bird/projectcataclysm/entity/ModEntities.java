@@ -37,10 +37,22 @@ public class ModEntities implements ModInitializer {
     public static final EntityType<AirExplosiveEntity> AIR_EXPLOSIVE =
             (EntityType<AirExplosiveEntity>) registerExplosive(
                     "air_explosive_entity", AirExplosiveEntity::new);
+
     public static final EntityType<FlashExplosiveEntity> FLASH_EXPLOSIVE =
             (EntityType<FlashExplosiveEntity>) registerExplosive(
                     "flash_explosive_entity", FlashExplosiveEntity::new);
 
+    public static final EntityType<WaterExplosiveEntity> WATER_EXPLOSIVE =
+            (EntityType<WaterExplosiveEntity>) registerExplosive(
+                    "water_explosive_entity", WaterExplosiveEntity::new);
+
+    public static final EntityType<NatureExplosiveEntity> NATURE_EXPLOSIVE =
+            (EntityType<NatureExplosiveEntity>) registerExplosive(
+                    "nature_explosive_entity", NatureExplosiveEntity::new);
+
+    public static final EntityType<ClusterExplosiveEntity> CLUSTER_EXPLOSIVE =
+            (EntityType<ClusterExplosiveEntity>) registerExplosive(
+                    "cluster_explosive_entity", ClusterExplosiveEntity::new);
 
     private static EntityType<? extends ExplosiveEntity> registerExplosive(String name,
                                                    EntityType.EntityFactory<? extends ExplosiveEntity> factory) {
