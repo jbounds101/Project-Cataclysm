@@ -118,9 +118,9 @@ public class ProjectCataclysmMod implements ModInitializer {
 				player.closeHandledScreen();
 			}
 			MissileEntity missile = new MissileEntity(player.world, sourcePos.getX() + 0.5F, sourcePos.getY() + 2, sourcePos.getZ() + 0.5F);
-			missile.setVelocityRotation(-89.99F, (float)(MathHelper.atan2(targetPos.getX() - sourcePos.getX(), targetPos.getZ() - sourcePos.getZ()) * 57.2957763671875), 0.0F, 0.001F);
-			missile.setLaunchPhase(0);
+			missile.setVelocityRotation(-89F, (float)(MathHelper.atan2(targetPos.getX() - sourcePos.getX(), targetPos.getZ() - sourcePos.getZ()) * 57.2957763671875), 0F, 0.01F);
 			missile.setTarget(targetPos);
+			missile.setSource(sourcePos);
 			//((ExplosiveBlock)(Block.getBlockFromItem(payload.getItem()))).getExplosiveEntity();
 
 			player.world.spawnEntity(missile);

@@ -33,7 +33,7 @@ public class MissileEntity extends Entity {
     protected ExplosiveEntity payload;
     protected int launchPhase;
     private static final TrackedData<BlockPos> TARGET = DataTracker.registerData(MissileEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
-    //protected BlockPos target;
+    private static final TrackedData<BlockPos> SOURCE = DataTracker.registerData(MissileEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private int explosionPower = 5;
     @Nullable
     private BlockState inBlockState;
@@ -44,6 +44,7 @@ public class MissileEntity extends Entity {
     public MissileEntity(World world, double x, double y, double z) {
         this(ModEntities.MISSILE, world);
         this.setPosition(x, y, z);
+        this.launchPhase = 0;
         this.prevX = x;
         this.prevY = y;
         this.prevZ = z;
@@ -94,36 +95,26 @@ public class MissileEntity extends Entity {
         double posZ = this.getZ() + velZ;
         double l = currentVelocity.horizontalLength();
         this.setYaw((float)(MathHelper.atan2(velX, velZ) * 57.2957763671875));
-        //if (launchPhase == 1) {
-            this.setPitch((float) (MathHelper.atan2(velY, l) * 57.2957763671875));
-            this.setPitch(MissileEntity.updateRotation(this.prevPitch, this.getPitch()));
-        //}
+        this.setPitch((float) (MathHelper.atan2(velY, l) * 57.2957763671875));
+        this.setPitch(MissileEntity.updateRotation(this.prevPitch, this.getPitch()));
         this.setYaw(MissileEntity.updateRotation(this.prevYaw, this.getYaw()));
-        Vec3d vec3d4 = this.getVelocity();
+        if (launchPhase == 0 && posY >= this.dataTracker.get(SOURCE).getY() + 128) {
+            launchPhase = 1;
+        }
+        if (launchPhase == 1 && inRange(posX, posZ)) {
+            currentVelocity = currentVelocity.multiply(0);
+            launchPhase = 2;
+        }
         if (launchPhase == 0) {
-            if (posY >= 200) {
-                launchPhase = 1;
-                this.setVelocityRotation(0.0F, this.prevYaw, 0.0F, (float) vec3d4.length());
-                if (inRange(posX, posZ)) {
-                    this.setVelocity(0, 0, 0);
-                    launchPhase = 2;
-                }
-            } else {
-                this.setVelocity(vec3d4.x, vec3d4.y - (double) 0.05f, vec3d4.z);
-                if (vec3d4.y < 2) {
-                    this.setVelocity(vec3d4.x, vec3d4.y + (double) 0.06f, vec3d4.z);
-                }
+            if (currentVelocity.y < 2) {
+                this.setVelocity(currentVelocity.x, currentVelocity.y + (double) 0.04f, currentVelocity.z);
             }
         }
         else if (launchPhase == 1) {
-            this.setVelocityRotation(0.0F, this.prevYaw, 0.0F, (float) vec3d4.length());
-            if (inRange(posX, posZ)) {
-                this.setVelocity(0, 0, 0);
-                launchPhase = 2;
-            }
+            this.setVelocityRotation(0.0F, (float)(MathHelper.atan2(this.dataTracker.get(TARGET).getX() - posX, this.dataTracker.get(TARGET).getZ() - posZ) * 57.2957763671875), 0.0F, (float) currentVelocity.length());
         }
-        else {
-            this.setVelocity(vec3d4.x, vec3d4.y - (double) 0.05f, vec3d4.z);
+        else if (launchPhase == 2){
+            this.setVelocity(currentVelocity.x, currentVelocity.y - (double) 0.05f, currentVelocity.z);
         }
         this.setPosition(posX, posY, posZ);
         this.checkBlockCollision();
@@ -156,12 +147,9 @@ public class MissileEntity extends Entity {
 
     public void setTarget(BlockPos target) {
         this.dataTracker.set(TARGET, target);
-        //this.target = target;
     }
 
-    public void setLaunchPhase(int launchPhase) {
-        this.launchPhase = launchPhase;
-    }
+    public void setSource(BlockPos source) { this.dataTracker.set(SOURCE, source); }
 
     public void setVelocity(double x, double y, double z, float speed) {
         Vec3d vec3d = new Vec3d(x, y, z).normalize().multiply(speed);
@@ -217,6 +205,7 @@ public class MissileEntity extends Entity {
     @Override
     protected void initDataTracker() {
         this.dataTracker.startTracking(TARGET, null);
+        this.dataTracker.startTracking(SOURCE, new BlockPos(0,60,0));
     }
 
     @Override
