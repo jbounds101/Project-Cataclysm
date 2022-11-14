@@ -42,7 +42,7 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
     private static final Text DISMANTLE_TEXT = Text.translatable("block.projectcataclysm.control_panel.dismantle");
     private final List<ControlPanelScreen.ControlPanelButtonWidget> buttons = Lists.newArrayList();
 
-    private int[] target;
+    private int[] target = new int[2];
 
     public ControlPanelScreen(ControlPanelScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -52,6 +52,8 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
         this.titleY = 6;
         this.playerInventoryTitleX = 36;
         this.playerInventoryTitleY = this.backgroundHeight - 94;
+        this.target[0] = handler.propertyDelegate.get(0);
+        this.target[1] = handler.propertyDelegate.get(1);
     }
 
     private <T extends ClickableWidget & ControlPanelScreen.ControlPanelButtonWidget> void addButton(T button) {
@@ -136,6 +138,10 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
             }
             target[0] = (int)(mouseX - this.x);
             target[1] = (int)(mouseY - this.y);
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeInt(target[0]);
+            buf.writeInt(target[1]);
+            ClientPlayNetworking.send(ProjectCataclysmMod.TARGET_PACKET_ID, buf);
             return true;
         }
         else {

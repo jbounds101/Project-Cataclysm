@@ -85,6 +85,7 @@ public class ProjectCataclysmMod implements ModInitializer {
 	public static final TagKey<Item> MISSILE_PAYLOADS = TagKey.of(Registry.ITEM_KEY, new Identifier(ProjectCataclysmMod.MOD_ID, "missile_payloads"));
 	public static final Identifier DISMANTLE_PACKET_ID = new Identifier(MOD_ID, "dismantle");
 	public static final Identifier LAUNCH_PACKET_ID = new Identifier(MOD_ID, "launch");
+	public static final Identifier TARGET_PACKET_ID = new Identifier(MOD_ID, "target");
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -126,5 +127,11 @@ public class ProjectCataclysmMod implements ModInitializer {
 			player.world.spawnEntity(missile);
 			//ProjectCataclysmMod.LOGGER.info("Launching missile with payload " + payload.toString() + " from source " + sourcePos.toShortString() + " to target " + targetPos.toShortString());
 		}));
+		ServerPlayNetworking.registerGlobalReceiver(TARGET_PACKET_ID, (((server, player, handler, buf, responseSender) -> {
+			if (player.currentScreenHandler instanceof ControlPanelScreenHandler){
+				((ControlPanelScreenHandler) player.currentScreenHandler).propertyDelegate.set(0, buf.readInt());
+				((ControlPanelScreenHandler) player.currentScreenHandler).propertyDelegate.set(1, buf.readInt());
+			}
+		})));
 	}
 }

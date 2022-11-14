@@ -6,15 +6,15 @@ import net.bird.projectcataclysm.entity.custom.*;
 import net.bird.projectcataclysm.item.ModItemGroup;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -102,6 +102,9 @@ public class ModBlocks {
 
     public static final Block LAUNCH_PLATFORM = Registry.register(Registry.BLOCK, new Identifier(ProjectCataclysmMod.MOD_ID, "launch_platform"),
             new LaunchPlatformBlock(FabricBlockSettings.of(Material.METAL).luminance(getLaunchPlatformLuminance()).hardness(-1.0f).resistance(12000f).sounds(BlockSoundGroup.ANVIL)));
+
+    public static final BlockEntityType<LaunchPlatformBlockEntity> LAUNCH_PLATFORM_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(ProjectCataclysmMod.MOD_ID, "launch_platform_block_entity"),
+            FabricBlockEntityTypeBuilder.create(LaunchPlatformBlockEntity::new, LAUNCH_PLATFORM).build());
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);

@@ -9,66 +9,43 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.ArrayPropertyDelegate;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
 public class ControlPanelScreenHandler extends ScreenHandler {
-    private final ScreenHandlerContext context;
-    private final Inventory head;
-    private final Inventory tail;
-    private final Inventory payload;
+    private final Inventory inventory;
+    public final PropertyDelegate propertyDelegate;
     private final HeadSlot headSlot;
     private final TailSlot tailSlot;
     private final PayloadSlot payloadSlot;
     private BlockPos pos;
 
-    public ControlPanelScreenHandler(int syncId, PlayerInventory inventory, PacketByteBuf buf) {
-        this(syncId, inventory, ScreenHandlerContext.EMPTY);
+    public ControlPanelScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+        this(syncId, playerInventory, new SimpleInventory(3), new ArrayPropertyDelegate(2));
         this.pos = buf.readBlockPos();
     }
-    public ControlPanelScreenHandler(int syncId, PlayerInventory inventory, ScreenHandlerContext context) {
+    public ControlPanelScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
         super(ProjectCataclysmMod.CONTROL_PANEL_HANDLER, syncId);
-        this.context = context;
-
-        this.head = new SimpleInventory(1) {
-            public boolean isValid(int slot, ItemStack stack) {
-                return stack.isOf(ModItems.MISSILE_HEAD);
-            }
-            public int getMaxCountPerStack() {
-                return 1;
-            }
-        };
-        this.tail = new SimpleInventory(1) {
-            public boolean isValid(int slot, ItemStack stack) {
-                return stack.isOf(ModItems.MISSILE_TAIL);
-            }
-            public int getMaxCountPerStack() {
-                return 1;
-            }
-        };
-        this.payload = new SimpleInventory(1) {
-            public boolean isValid(int slot, ItemStack stack) {
-                return stack.isIn(ProjectCataclysmMod.MISSILE_PAYLOADS);
-            }
-            public int getMaxCountPerStack() {
-                return 64;
-            }
-        };
-        this.headSlot = new HeadSlot(this.head, 0, 47, 35);
-        this.payloadSlot = new PayloadSlot(this.payload, 0, 47, 64);
-        this.tailSlot = new TailSlot(this.tail, 0, 47, 93);
+        this.inventory = inventory;
+        this.propertyDelegate = propertyDelegate;
+        this.addProperties(propertyDelegate);
+        this.headSlot = new HeadSlot(this.inventory, 0, 47, 35);
+        this.payloadSlot = new PayloadSlot(this.inventory, 1, 47, 64);
+        this.tailSlot = new TailSlot(this.inventory, 2, 47, 93);
         this.addSlot(this.headSlot);
         this.addSlot(this.payloadSlot);
         this.addSlot(this.tailSlot);
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                this.addSlot(new Slot(inventory, j + i * 9 + 9, 36 + j * 18, 139 + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 36 + j * 18, 139 + i * 18));
             }
         }
         for (int i = 0; i < 9; i++) {
-            this.addSlot(new Slot(inventory, i, 36 + i * 18, 197));
+            this.addSlot(new Slot(playerInventory, i, 36 + i * 18, 197));
         }
     }
 
@@ -85,7 +62,7 @@ public class ControlPanelScreenHandler extends ScreenHandler {
                 }
                 slot.onQuickTransfer(itemStack2, itemStack);
             }
-            else if (!this.headSlot.hasStack() && this.headSlot.canInsert(itemStack2) && itemStack2.getCount() == 1) {
+            else if (!this.headSlot.hasStack() && this.headSlot.canInsert(itemStack2)) {
                 if (!this.insertItem(itemStack2, 0, 1, false)) {
                     return ItemStack.EMPTY;
                 }
@@ -95,7 +72,7 @@ public class ControlPanelScreenHandler extends ScreenHandler {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!this.tailSlot.hasStack() && this.tailSlot.canInsert(itemStack2) && itemStack2.getCount() == 1) {
+            else if (!this.tailSlot.hasStack() && this.tailSlot.canInsert(itemStack2)) {
                 if (!this.insertItem(itemStack2, 2, 3, false)) {
                     return ItemStack.EMPTY;
                 }
@@ -129,22 +106,19 @@ public class ControlPanelScreenHandler extends ScreenHandler {
 
     @Override
     public boolean canUse(PlayerEntity player) {
-        return canUse(this.context, player, ModBlocks.LAUNCH_PLATFORM);
-    }
-
-    public void close(PlayerEntity player) {
-        super.close(player);
-        this.context.run((world, pos) -> {
-            this.dropInventory(player, this.head);
-            this.dropInventory(player, this.tail);
-            this.dropInventory(player, this.payload);
-        });
+        return this.inventory.canPlayerUse(player);
     }
 
     public void launch() {
-        head.getStack(0).decrement(1);
-        tail.getStack(0).decrement(1);
-        payload.getStack(0).decrement(1);
+        inventory.getStack(0).decrement(1);
+        inventory.getStack(1).decrement(1);
+        inventory.getStack(2).decrement(1);
+        inventory.markDirty();
+    }
+
+    @Override
+    public void close(PlayerEntity player) {
+        super.close(player);
     }
 
     public boolean canLaunch() {
@@ -152,19 +126,19 @@ public class ControlPanelScreenHandler extends ScreenHandler {
     }
 
     public boolean hasHead() {
-        return !this.head.getStack(0).isEmpty();
+        return !this.inventory.getStack(0).isEmpty();
     }
 
     public boolean hasTail() {
-        return !this.tail.getStack(0).isEmpty();
+        return !this.inventory.getStack(2).isEmpty();
     }
 
     public boolean hasPayload() {
-        return !this.payload.getStack(0).isEmpty();
+        return !this.inventory.getStack(1).isEmpty();
     }
 
     public ItemStack getPayload() {
-        return this.payload.getStack(0);
+        return this.inventory.getStack(1);
     }
 
     private static class HeadSlot extends Slot {
@@ -176,9 +150,6 @@ public class ControlPanelScreenHandler extends ScreenHandler {
             return stack.isOf(ModItems.MISSILE_HEAD);
         }
 
-        public int getMaxItemCount() {
-            return 1;
-        }
     }
 
     private static class TailSlot extends Slot {
@@ -190,9 +161,6 @@ public class ControlPanelScreenHandler extends ScreenHandler {
             return stack.isOf(ModItems.MISSILE_TAIL);
         }
 
-        public int getMaxItemCount() {
-            return 1;
-        }
     }
 
     private static class PayloadSlot extends Slot {

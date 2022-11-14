@@ -87,9 +87,9 @@ public class ModItems {
     public static final Item CONTROL_PANEL = registerItem("control_panel",
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
     public static final Item MISSILE_HEAD = registerItem("missile_head",
-            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     public static final Item MISSILE_TAIL = registerItem("missile_tail",
-            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item WEB_WAND = registerItem("web_wand",
             new WebWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
