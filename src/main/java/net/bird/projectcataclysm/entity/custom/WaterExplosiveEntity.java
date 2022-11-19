@@ -2,6 +2,7 @@ package net.bird.projectcataclysm.entity.custom;
 
 import net.bird.projectcataclysm.entity.ModEntities;
 import net.bird.projectcataclysm.explosion.AirExplosion;
+import net.bird.projectcataclysm.explosion.WaterExplosion;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
@@ -15,16 +16,16 @@ public class WaterExplosiveEntity extends ExplosiveEntity {
     }
 
     public WaterExplosiveEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter) {
-        super(world, x, y, z, igniter, ModEntities.AIR_EXPLOSIVE);
+        super(world, x, y, z, igniter, ModEntities.WATER_EXPLOSIVE);
     }
 
     @Override
     public void explode() {
         BlockPos position = new BlockPos(this.getPos());
-        /*AirExplosion explosion = new AirExplosion(this.world, this,
+        WaterExplosion explosion = new WaterExplosion(this.world, this,
                 null, position.getX(), position. getY(), position.getZ(), 6);
         explosion.collectBlocksAndGetEntities();
-        explosion.affectWorld();*/
+        explosion.affectWorld();
     }
 
 }
