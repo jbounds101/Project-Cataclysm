@@ -67,7 +67,13 @@ public class ModEntities implements ModInitializer {
             new Identifier(ProjectCataclysmMod.MOD_ID, "slug"),
             FabricEntityTypeBuilder.<SlugEntity>create(SpawnGroup.MISC, SlugEntity::new)
                     .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
-                    .trackRangeBlocks(10).trackedUpdateRate(10).build());
+                    .trackRangeBlocks(100).trackedUpdateRate(10).build());
+
+    public static final EntityType<ExplosiveProjectileEntity> ExplosiveProjectileEntityType = Registry.register(Registry.ENTITY_TYPE,
+            new Identifier(ProjectCataclysmMod.MOD_ID, "explosive_projectile"),
+            FabricEntityTypeBuilder.<ExplosiveProjectileEntity>create(SpawnGroup.MISC, ExplosiveProjectileEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
+                    .trackRangeBlocks(100).trackedUpdateRate(10).build());
 
 
     @Override

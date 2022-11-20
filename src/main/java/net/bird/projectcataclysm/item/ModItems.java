@@ -50,11 +50,17 @@ public class ModItems {
     public static final Item SPRAY_GUN = registerItem("spray_gun",
             new SprayNPrayGun(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
+    public static final Item BAZOOKA = registerItem("bazooka",
+            new BazookaItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
     public static final Item BULLET = registerItem("bullet",
             new BulletItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item SLUG = registerItem("slug",
             new SlugItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item RPG = registerItem("rpg",
+            new RPGItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",
             new DowsingRodItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));

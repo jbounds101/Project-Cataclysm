@@ -1,5 +1,6 @@
 package net.bird.projectcataclysm.entity.custom;
 
+import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.entity.ModEntities;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -15,7 +16,7 @@ public class BulletEntityRenderer extends ProjectileEntityRenderer<BulletEntity>
     public BulletEntityRenderer(EntityRendererFactory.Context context) { super(context); }
     @Override
     public Identifier getTexture(BulletEntity entity) {
-        return new Identifier("src/main/resources/assets/projectcataclysm/textures/item/bullet.png");
+        return new Identifier(ProjectCataclysmMod.MOD_ID, "textures/entity/bullet.png");
     }
 
 

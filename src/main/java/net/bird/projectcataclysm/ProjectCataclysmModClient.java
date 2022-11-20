@@ -2,13 +2,9 @@ package net.bird.projectcataclysm;
 
 import net.bird.projectcataclysm.block.ModBlocks;
 import net.bird.projectcataclysm.entity.ModEntities;
-import net.bird.projectcataclysm.entity.custom.BulletEntityRenderer;
-import net.bird.projectcataclysm.entity.custom.ExplosiveRenderer;
+import net.bird.projectcataclysm.entity.custom.*;
 import net.bird.projectcataclysm.item.ModItems;
 import net.bird.projectcataclysm.screen.ControlPanelScreen;
-import net.bird.projectcataclysm.entity.custom.MissileEntityModel;
-import net.bird.projectcataclysm.entity.custom.MissileEntityRenderer;
-import net.bird.projectcataclysm.entity.custom.SlugEntityRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -47,10 +43,11 @@ public class ProjectCataclysmModClient implements ClientModInitializer {
 
         // --------------------------
 
-        EntityRendererRegistry.register(ModEntities.BulletEntityType,
-                (context) -> new BulletEntityRenderer(context));
-        EntityRendererRegistry.register(ModEntities.SlugEntityType,
-                SlugEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.BulletEntityType, BulletEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.SlugEntityType, SlugEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.ExplosiveProjectileEntityType, ExplosiveProjectileEntityRenderer::new);
+
+
         HandledScreens.register(ProjectCataclysmMod.FABRICATING_HANDLER, FabricatingScreen::new);
         HandledScreens.register(ProjectCataclysmMod.CONTROL_PANEL_HANDLER, ControlPanelScreen::new);
         EntityRendererRegistry.register(ModEntities.MISSILE, MissileEntityRenderer::new);

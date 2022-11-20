@@ -9,10 +9,12 @@
   "item.projectcataclysm.pistol": "Pistol",
   "item.projectcataclysm.bullet": "Bullet",
   "item.projectcataclysm.slug": "Slug",
+  "item.projectcataclysm.rpg": "RPG",
   "item.projectcataclysm.sniper": "Sniper",
   "item.projectcataclysm.shotgun": "Shotgun",
   "item.projectcataclysm.recoil_gun": "Recoil Gun",
   "item.projectcataclysm.spray_gun": "Spray Gun",
+  "item.projectcataclysm.bazooka": "Bazooka",
   "item.projectcataclysm.life_swap": "Life Swap",
   "item.projectcataclysm.wand_life_swap": "Life Swap Wand",
   "item.projectcataclysm.water_trap_wand": "Water Trap Wand",
@@ -56,6 +58,5 @@
   "item.projectcataclysm.wall_wand": "Wall Wand",
   "item.projectcataclysm.web_wand": "Web Wand",
   "item.projectcataclysm.blink_wand": "Blink Wand",
-  "item.projectcataclysm.magic_wand": "Magic Wand",
-  "item.projectcataclysm.spell_switcher": "Spell Switcher"
+  "item.projectcataclysm.magic_wand": "Magic Wand"
 }
