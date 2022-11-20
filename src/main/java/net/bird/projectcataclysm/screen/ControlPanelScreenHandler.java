@@ -109,13 +109,6 @@ public class ControlPanelScreenHandler extends ScreenHandler {
         return this.inventory.canPlayerUse(player);
     }
 
-    public void launch() {
-        inventory.getStack(0).decrement(1);
-        inventory.getStack(1).decrement(1);
-        inventory.getStack(2).decrement(1);
-        inventory.markDirty();
-    }
-
     @Override
     public void close(PlayerEntity player) {
         super.close(player);

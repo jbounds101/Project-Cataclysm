@@ -3,6 +3,7 @@ package net.bird.projectcataclysm;
 import net.bird.projectcataclysm.block.ModBlocks;
 import net.bird.projectcataclysm.block.custom.ExplosiveBlock;
 import net.bird.projectcataclysm.block.custom.LaunchPlatformBlock;
+import net.bird.projectcataclysm.block.custom.LaunchPlatformBlockEntity;
 import net.bird.projectcataclysm.entity.custom.MissileEntity;
 import net.bird.projectcataclysm.item.ModItems;
 import net.bird.projectcataclysm.recipe.FabricatingRecipe;
@@ -18,6 +19,7 @@ import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.entity.projectile.ArrowEntity;
@@ -49,6 +51,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ProjectCataclysmMod implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -111,21 +114,15 @@ public class ProjectCataclysmMod implements ModInitializer {
 			LaunchPlatformBlock.breakAndDrop(state, world, pos.offset(state.get(LaunchPlatformBlock.FACING).getOpposite(), 3));
 		}));
 		ServerPlayNetworking.registerGlobalReceiver(LAUNCH_PACKET_ID, ((server, player, handler, buf, responseSender) -> {
-			BlockPos sourcePos = buf.readBlockPos();
-			BlockPos targetPos =  buf.readBlockPos();
-			ItemStack payload = buf.readItemStack();
-			if (player.currentScreenHandler instanceof ControlPanelScreenHandler) {
-				((ControlPanelScreenHandler) player.currentScreenHandler).launch();
-				player.closeHandledScreen();
+			BlockPos padPos = buf.readBlockPos();
+			if (player.world.getBlockState(padPos).isOf(ModBlocks.LAUNCH_PLATFORM)) {
+				BlockPos sourcePos = padPos.offset(player.world.getBlockState(padPos).get(LaunchPlatformBlock.FACING).getOpposite(), 3);
+				server.execute(() -> {
+					if (player.world.getBlockEntity(sourcePos) != null) {
+						((LaunchPlatformBlockEntity) Objects.requireNonNull(player.world.getBlockEntity(sourcePos))).launch();
+					}
+				});
 			}
-			MissileEntity missile = new MissileEntity(player.world, sourcePos.getX() + 0.5F, sourcePos.getY() + 2, sourcePos.getZ() + 0.5F);
-			missile.setVelocityRotation(-89F, (float)(MathHelper.atan2(targetPos.getX() - sourcePos.getX(), targetPos.getZ() - sourcePos.getZ()) * 57.2957763671875), 0F, 0.01F);
-			missile.setTarget(targetPos);
-			missile.setSource(sourcePos);
-			//((ExplosiveBlock)(Block.getBlockFromItem(payload.getItem()))).getExplosiveEntity();
-
-			player.world.spawnEntity(missile);
-			//ProjectCataclysmMod.LOGGER.info("Launching missile with payload " + payload.toString() + " from source " + sourcePos.toShortString() + " to target " + targetPos.toShortString());
 		}));
 		ServerPlayNetworking.registerGlobalReceiver(TARGET_PACKET_ID, (((server, player, handler, buf, responseSender) -> {
 			if (player.currentScreenHandler instanceof ControlPanelScreenHandler){

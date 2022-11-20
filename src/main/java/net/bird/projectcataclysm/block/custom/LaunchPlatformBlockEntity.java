@@ -2,9 +2,11 @@ package net.bird.projectcataclysm.block.custom;
 
 import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.block.ModBlocks;
+import net.bird.projectcataclysm.entity.custom.MissileEntity;
 import net.bird.projectcataclysm.item.ModItems;
 import net.bird.projectcataclysm.screen.ControlPanelScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,6 +24,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -76,6 +79,50 @@ public class LaunchPlatformBlockEntity extends BlockEntity implements ExtendedSc
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
         return new ControlPanelScreenHandler(syncId, inv, this, this.propertyDelegate);
+    }
+
+    public boolean canLaunch() {
+        return hasHead() && hasTail() && hasPayload();
+    }
+
+    public boolean hasHead() {
+        return !this.inventory.get(0).isEmpty();
+    }
+
+    public boolean hasTail() {
+        return !this.inventory.get(2).isEmpty();
+    }
+
+    public boolean hasPayload() {
+        return !this.inventory.get(1).isEmpty();
+    }
+
+    public ItemStack getPayload() {
+        return this.inventory.get(1);
+    }
+
+    public void launch() {
+        if (canLaunch()) {
+            inventory.get(0).decrement(1);
+            inventory.get(1).decrement(1);
+            inventory.get(2).decrement(1);
+            BlockPos sourcePos = pos.offset(state.get(LaunchPlatformBlock.FACING), 3);
+            assert world != null;
+            BlockPos targetPos = new BlockPos(4 * (targetX - 169) + sourcePos.getX(), world.getTopY(), 4 * (targetZ - 71) + sourcePos.getZ());
+            for (int i = world.getTopY(); i > world.getBottomY(); i--) {
+                if (!(world.getBlockState(targetPos).getBlock() instanceof AirBlock)) {
+                    break;
+                }
+                targetPos = targetPos.down();
+            }
+            MissileEntity missile = new MissileEntity(world, sourcePos.getX() + 0.5F, sourcePos.getY() + 2, sourcePos.getZ() + 0.5F);
+            missile.setVelocityRotation(-89F, (float) (MathHelper.atan2(targetPos.getX() - sourcePos.getX(), targetPos.getZ() - sourcePos.getZ()) * 57.2957763671875), 0F, 0.01F);
+            missile.setTarget(targetPos);
+            missile.setSource(sourcePos);
+            //((ExplosiveBlock)(Block.getBlockFromItem(payload.getItem()))).getExplosiveEntity();
+            world.spawnEntity(missile);
+            //ProjectCataclysmMod.LOGGER.info("Launching missile with payload " + payload.toString() + " from source " + sourcePos.toShortString() + " to target " + targetPos.toShortString());
+        }
     }
 
     public void readNbt(NbtCompound nbt) {

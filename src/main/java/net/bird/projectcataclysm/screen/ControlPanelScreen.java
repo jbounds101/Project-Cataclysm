@@ -152,6 +152,7 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
     public BlockPos getTargetPos(int x, int y) {
         return new BlockPos(4*(x-169) + this.handler.getPos().getX(), 0, 4*(y-71) + this.handler.getPos().getZ());
     }
+
     @Environment(EnvType.CLIENT)
     interface ControlPanelButtonWidget {
         boolean shouldRenderTooltip();
@@ -168,22 +169,10 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
         }
 
         public void onPress() {
-            assert ControlPanelScreen.this.client != null;
-            assert ControlPanelScreen.this.client.player != null;
-            World world = ControlPanelScreen.this.client.world;
-            assert world != null;
-            BlockPos topPos = getTargetPos(target[0], target[1]).offset(Direction.UP, world.getTopY());;
-            for (int i = world.getTopY(); i > world.getBottomY(); i--) {
-                if (!(world.getBlockState(topPos).getBlock() instanceof AirBlock)) {
-                    break;
-                }
-                topPos = topPos.down();
-            }
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeBlockPos(ControlPanelScreen.this.handler.getPos());
-            buf.writeBlockPos(topPos);
-            buf.writeItemStack(ControlPanelScreen.this.handler.getPayload());
             ClientPlayNetworking.send(ProjectCataclysmMod.LAUNCH_PACKET_ID, buf);
+            ControlPanelScreen.this.close();
         }
 
         public void tick() {
