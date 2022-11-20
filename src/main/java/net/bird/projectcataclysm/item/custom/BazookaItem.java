@@ -40,7 +40,7 @@ public class BazookaItem extends RangedWeaponItem {
                 ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
                 PersistentProjectileEntity persistentProjectileEntity = rpgItem.createRPG(world, itemStack, playerEntity);
-                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 8.0F, 1.0F);
+                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 4F, 1F);
                 persistentProjectileEntity.setCritical(true);
                 double damage = persistentProjectileEntity.getDamage();
                 persistentProjectileEntity.setDamage(damage * 1);
@@ -61,7 +61,7 @@ public class BazookaItem extends RangedWeaponItem {
                     if (currAmmo == 0) {
                         ((PlayerEntity) user).getItemCooldownManager().set(this, 40);
                         playerEntity.sendMessage(Text.literal("Reloading"));
-                        executorService.schedule(PistolItem::reload, 2, TimeUnit.SECONDS);
+                        executorService.schedule(BazookaItem::reload, 2, TimeUnit.SECONDS);
                         playerEntity.addExhaustion(4);
                     }
                 }
