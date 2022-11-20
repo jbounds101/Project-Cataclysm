@@ -41,7 +41,9 @@ public class ModEntities implements ModInitializer {
             (EntityType<FlashExplosiveEntity>) registerExplosive(
                     "flash_explosive_entity", FlashExplosiveEntity::new);
 
-
+    public static final EntityType<PoisonExplosiveEntity> POISON_EXPLOSIVE =
+            (EntityType<PoisonExplosiveEntity>) registerExplosive(
+                    "poison_explosive_entity", PoisonExplosiveEntity::new);
     private static EntityType<? extends ExplosiveEntity> registerExplosive(String name,
                                                    EntityType.EntityFactory<? extends ExplosiveEntity> factory) {
         return Registry.register(Registry.ENTITY_TYPE, new Identifier(ProjectCataclysmMod.MOD_ID, name),
