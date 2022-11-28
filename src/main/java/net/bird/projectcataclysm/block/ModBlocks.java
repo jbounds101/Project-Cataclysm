@@ -91,6 +91,10 @@ public class ModBlocks {
     public static final Block POISON_EXPLOSIVE = registerBlock("poison_explosive",
             new ExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS),
                     PoisonExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block EARTH_EXPLOSIVE = registerBlock("earth_explosive",
+            new ExplosiveBlock(FabricBlockSettings.of(Material.TNT).sounds(BlockSoundGroup.GRASS),
+                    EarthExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
     // ------------------
 
     public static final Block SOUL_ESSENCE = registerBlock("soul_essence",

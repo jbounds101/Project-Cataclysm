@@ -47,6 +47,9 @@ public class ProjectCataclysmModClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.POISON_EXPLOSIVE,
                 (a) -> new ExplosiveRenderer(a, ModBlocks.POISON_EXPLOSIVE));
 
+        EntityRendererRegistry.register(ModEntities.EARTH_EXPLOSIVE,
+                (a) -> new ExplosiveRenderer(a, ModBlocks.EARTH_EXPLOSIVE));
+
         // --------------------------
 
         EntityRendererRegistry.register(ModEntities.BulletEntityType, BulletEntityRenderer::new);

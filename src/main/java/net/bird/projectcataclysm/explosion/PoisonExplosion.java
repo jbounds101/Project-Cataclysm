@@ -4,6 +4,7 @@ package net.bird.projectcataclysm.explosion;
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -154,6 +155,7 @@ public class PoisonExplosion {
         }
         this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
 
+        //this.world.setBlockState(this.entity.getBlockPos(), Blocks.DIRT.getDefaultState());
         /*if (bl) {
             ObjectArrayList objectArrayList = new ObjectArrayList();
             boolean bl22 = this.getCausingEntity() instanceof PlayerEntity;
