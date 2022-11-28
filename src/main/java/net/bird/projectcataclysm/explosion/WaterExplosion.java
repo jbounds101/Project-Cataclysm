@@ -119,11 +119,7 @@ public class WaterExplosion {
                         BlockState blockState = this.world.getBlockState(blockPos);
                         FluidState fluidState = this.world.getFluidState(blockPos);
                         if (!this.world.isInBuildLimit(blockPos)) continue block2;
-                        /*Optional<Float> optional = this.behavior.getBlastResistance(this, this.world, blockPos,
-                                blockState, fluidState);
-                        if (optional.isPresent()) {
-                            h -= (optional.get().floatValue() + 0.3f) * 0.3f;
-                        }*/
+
                         if (h > 0.0f) { // && this.behavior.canDestroyBlock(this, this.world, blockPos, blockState, h)
                             set.add(blockPos);
                         }
@@ -144,21 +140,31 @@ public class WaterExplosion {
         int u = MathHelper.floor(this.z + (double)q + 1.0);
         affectedEntities = this.world.getOtherEntities(this.entity, new Box(k, r, t, l, s, u));
 
-        // TODO separate this entities list from being acted upon immediately, I want to store a list of affected
-        //  entities
 
     }
 
     public void affectWorld() {
-        if (this.world.isClient) {
-            this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
+        if (!this.world.isClient) {
+            this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,
+                    4.0f, 1);
+
         }
-        this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
+        this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x + random.nextBetween(-3, 3), this.y,
+                this.z + random.nextBetween(-3, 3), 0.0, 0.0, 0.0);
 
 
 
+
+        ArrayList<EntityType> seaCreatures = new ArrayList<>();
+        seaCreatures.add(EntityType.TROPICAL_FISH);
+        seaCreatures.add(EntityType.PUFFERFISH);
+        seaCreatures.add(EntityType.DOLPHIN);
+        seaCreatures.add(EntityType.TURTLE);
+        seaCreatures.add(EntityType.SQUID);
+        seaCreatures.add(EntityType.GLOW_SQUID);
         // This loops through the "affectedBlocks" from the explosion
         for (BlockPos blockPos : this.affectedBlocks) {
+            if (blockPos.getY() > this.y) continue;
             BlockState blockState = this.world.getBlockState(blockPos);
             Block block = blockState.getBlock();
             if ((block.getClass() == ExplosiveBlock.class) || (block.getClass() == TntBlock.class)) {
@@ -171,18 +177,12 @@ public class WaterExplosion {
 
             world.setBlockState(blockPos, Blocks.WATER.getDefaultState());
 
-            ArrayList<EntityType> seaCreatures = new ArrayList<>();
-            seaCreatures.add(EntityType.TROPICAL_FISH);
-            seaCreatures.add(EntityType.PUFFERFISH);
-            seaCreatures.add(EntityType.DOLPHIN);
-            seaCreatures.add(EntityType.TURTLE);
-            seaCreatures.add(EntityType.SQUID);
-            seaCreatures.add(EntityType.GLOW_SQUID);
-            if (this.random.nextInt(5) == 0) {
-                //Entity entity = seaCreatures.get(random.nextBetween(0, seaCreatures.size()) - 1).create(world);
-                //assert entity != null;
-                //entity.refreshPositionAfterTeleport(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-                //world.spawnEntity(entity);
+            if (this.random.nextInt(70) == 0) {
+                // Decides if a sea-creature should be spawned at this position
+                Entity entity = seaCreatures.get(random.nextBetween(0, seaCreatures.size() - 1)).create(world);
+                assert entity != null;
+                entity.refreshPositionAfterTeleport(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                world.spawnEntity(entity);
             }
         }
     }

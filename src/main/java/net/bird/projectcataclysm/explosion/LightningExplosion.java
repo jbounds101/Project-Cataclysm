@@ -153,7 +153,8 @@ public class LightningExplosion {
         if (this.world.isClient) {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
         }
-        this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
+        this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x + random.nextBetween(-3, 3), this.y,
+                this.z + random.nextBetween(-3, 3), 0.0, 0.0, 0.0);
 
         /*if (bl) {
             ObjectArrayList objectArrayList = new ObjectArrayList();
