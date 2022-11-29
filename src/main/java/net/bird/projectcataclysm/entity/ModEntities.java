@@ -68,6 +68,14 @@ public class ModEntities implements ModInitializer {
             new Identifier(ProjectCataclysmMod.MOD_ID, "missile"),
             FabricEntityTypeBuilder.<MissileEntity>create(SpawnGroup.MISC, MissileEntity::new).dimensions(EntityDimensions.fixed(1,3)).build()
     );
+
+    public static final EntityType<SlugEntity> SlugEntityType = Registry.register(Registry.ENTITY_TYPE,
+            new Identifier(ProjectCataclysmMod.MOD_ID, "slug"),
+            FabricEntityTypeBuilder.<SlugEntity>create(SpawnGroup.MISC, SlugEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
+                    .trackRangeBlocks(10).trackedUpdateRate(10).build());
+
+
     @Override
     public void onInitialize() {
     }

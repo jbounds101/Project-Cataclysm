@@ -1,14 +1,16 @@
 package net.bird.projectcataclysm.item.custom;
 
+import net.bird.projectcataclysm.entity.custom.SlugEntity;
 import net.bird.projectcataclysm.item.ModItems;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.BowAttackGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.*;
-import net.minecraft.tag.ItemTags;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.RangedWeaponItem;
+import net.minecraft.item.Vanishable;
 import net.minecraft.tag.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -17,6 +19,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -25,38 +28,34 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-public class PistolItem extends RangedWeaponItem implements Vanishable {
-    public static final int maxAmmo = 10;
-    public static int currAmmo = 10;
-
-    public PistolItem(Settings settings) {
+public class ShotgunItem extends RangedWeaponItem implements Vanishable {
+    public ShotgunItem(Settings settings) {
         super(settings);
     }
+    public static final int maxAmmo = 5;
 
-
+    public static int currAmmo = 5;
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
         if (user instanceof PlayerEntity playerEntity) {
-            //ItemStack itemStack = playerEntity.getArrowType(stack);
             ItemStack itemStack;
-            itemStack = new ItemStack(ModItems.BULLET);
-            /*if (itemStack.isEmpty()) {
-                itemStack = new ItemStack(Items.ARROW);
-            }*/
+            itemStack = new ItemStack(ModItems.SLUG);
+
             if (!world.isClient) {
-                BulletItem bulletItem = (BulletItem) (itemStack.getItem() instanceof BulletItem ? itemStack.getItem() : ModItems.BULLET);
+
+                SlugItem slugItem = (SlugItem) (itemStack.getItem() instanceof SlugItem ? itemStack.getItem() : ModItems.SLUG);
                 ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-                //ArrowItem arrowItem = (ArrowItem) (itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
-                //PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack, playerEntity);
-                PersistentProjectileEntity persistentProjectileEntity = bulletItem.createBullet(world, itemStack, playerEntity);
-                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 8.0F, 1.0F);
+
+                PersistentProjectileEntity persistentProjectileEntity = slugItem.createSlug(world, itemStack, playerEntity);
+                persistentProjectileEntity.setOwner(user);
+                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 5F, 1.0F);
                 persistentProjectileEntity.setCritical(true);
                 double damage = persistentProjectileEntity.getDamage();
-                persistentProjectileEntity.setDamage(damage * 1);
+                persistentProjectileEntity.setDamage(damage * 3);
+                persistentProjectileEntity.setPunch(3);
 
                 if (currAmmo == 0) {
-                    ((PlayerEntity) user).getItemCooldownManager().set(this, 40);
                     playerEntity.sendMessage(Text.literal("Reloading"));
                     executorService.schedule(PistolItem::reload, 2, TimeUnit.SECONDS);
                     playerEntity.addExhaustion(4);
@@ -64,15 +63,14 @@ public class PistolItem extends RangedWeaponItem implements Vanishable {
 
                 if (currAmmo > 0) {
                     world.spawnEntity(persistentProjectileEntity);
-                    ((PlayerEntity) user).getItemCooldownManager().set(this, 5);
+                    ((PlayerEntity) user).getItemCooldownManager().set(this, 40);
                     currAmmo--;
                     playerEntity.sendMessage(Text.literal("You have:" + currAmmo));
-
                     //playerEntity.sendMessage(Text.literal("Damage: " + persistentProjectileEntity.getDamage()));
                     if (currAmmo == 0) {
-                        ((PlayerEntity) user).getItemCooldownManager().set(this, 40);
+                        ((PlayerEntity) user).getItemCooldownManager().set(this, 20);
                         playerEntity.sendMessage(Text.literal("Reloading"));
-                        executorService.schedule(PistolItem::reload, 2, TimeUnit.SECONDS);
+                        executorService.schedule(ShotgunItem::reload, 1, TimeUnit.SECONDS);
                         playerEntity.addExhaustion(4);
                     }
                 }
@@ -102,7 +100,6 @@ public class PistolItem extends RangedWeaponItem implements Vanishable {
             tooltip.add(Text.literal("Press Shift for Ammo Count").formatted(Formatting.YELLOW));
         }
     }
-
     public static final TagKey<Item> BULLET = TagKey.of(Registry.ITEM_KEY, new Identifier("bullet"));
 
     public static final Predicate<ItemStack> BULLETS = (stack) -> stack.isIn(BULLET);

@@ -41,8 +41,17 @@ public class ModItems {
     public static final Item SNIPER = registerItem("sniper",
             new SniperItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
+    public static final Item SHOTGUN = registerItem("shotgun",
+            new ShotgunItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
+    public static final Item RECOIL_GUN = registerItem("recoil_gun",
+            new PropelItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
     public static final Item BULLET = registerItem("bullet",
             new BulletItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item SLUG = registerItem("slug",
+            new SlugItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",
             new DowsingRodItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
@@ -58,6 +67,17 @@ public class ModItems {
 
     public static final Item WALL_WAND = registerItem("wall_wand",
             new WallWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item WATER_TRAP_WAND = registerItem("water_trap_wand",
+            new WaterTrapWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item MASTER_WAND = registerItem("master_wand",
+            new MasterWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item SPELL_SWITCHER = registerItem("spell_switcher",
+            new SpellSwitcher(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+
 
     public static final Item PROTECTIVE_BARRIER = registerItem("protective_barrier",
             new ProtectiveBarrierItem(new FabricItemSettings().maxCount(1).group(ModItemGroup.PROJECT_CATACLYSM)));
