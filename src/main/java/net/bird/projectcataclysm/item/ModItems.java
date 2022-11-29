@@ -77,6 +77,9 @@ public class ModItems {
     public static final Item BLINK_WAND = registerItem("blink_wand",
             new BlinkWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
+    public static final Item PULL_WAND = registerItem("pull_wand",
+            new PullWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
     public static final Item MAGIC_WAND = registerItem("magic_wand",
             new MagicWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
