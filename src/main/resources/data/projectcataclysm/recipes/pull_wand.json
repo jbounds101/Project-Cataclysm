@@ -4,12 +4,12 @@
     "s": {
       "item": "minecraft:stick"
     },
-    "d": {
-      "item": "minecraft:packed_mud"
+    "b": {
+      "item": "minecraft:slime_ball"
     }
   },
   "pattern": [
-    "d",
+    "b",
     "s",
     "s"
   ],
