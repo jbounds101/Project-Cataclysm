@@ -147,7 +147,15 @@ public class NatureExplosion {
     public void affectWorld() {
         if (this.world.isClient) {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
+        } else {
+            if (this.world.getRegistryKey() != World.OVERWORLD) {
+                this.world.playSound(null, new BlockPos(this.x, this.y, this.z), SoundEvents.BLOCK_LAVA_EXTINGUISH,
+                        SoundCategory.BLOCKS, 4.0f, 1.2F);
+                return;
+            }
         }
+
+
 
 
 
@@ -194,15 +202,15 @@ public class NatureExplosion {
             }
 
             if (!possibleFlowerBlocks.contains(this.world.getBlockState(blockPos.down()).getBlock())) continue;
+
+            if (this.random.nextInt(5) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
+            // This block isn't a possible candidate for flower placing
+
             if (!beeHiveCreated) {
                 world.setBlockState(blockPos, Blocks.BEE_NEST.getDefaultState());
                 beeHiveCreated = true;
                 continue;
             }
-            if (this.random.nextInt(5) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
-            // This block isn't a possible candidate for flower placing
-
-
 
             // Decides if a flower should be spawned at this position
             world.setBlockState(blockPos, plants.get(random.nextBetween(0, plants.size() - 1)).getDefaultState());

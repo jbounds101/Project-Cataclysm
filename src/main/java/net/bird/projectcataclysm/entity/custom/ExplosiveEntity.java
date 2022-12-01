@@ -117,6 +117,10 @@ public abstract class ExplosiveEntity extends TntEntity {
             if (this.world.isClient) {
                 this.world.playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_LAVA_EXTINGUISH,
                         SoundCategory.BLOCKS, 4.0f, 1.2F, false);
+                for (int i = 0; i < 10; i++) {
+                    this.world.addParticle(ParticleTypes.POOF, false, this.getX(),
+                            this.getY() + ((float)random.nextBetween(0, 100) / 100), this.getZ(), 0, 0.1 + ((float)random.nextBetween(0, 10) / 100), 0);
+                }
             } else {
                 player.getStackInHand(hand).damage(1, player, (p) -> {
                     p.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
@@ -125,7 +129,7 @@ public abstract class ExplosiveEntity extends TntEntity {
             this.kill();
             return ActionResult.SUCCESS;
             }
-        return ActionResult.FAIL;
+        return ActionResult.PASS;
     }
 
     public void explode() {

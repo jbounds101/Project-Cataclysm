@@ -3,6 +3,7 @@ package net.bird.projectcataclysm.explosion;
 
 import com.google.common.collect.Sets;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.block.custom.ExplosiveBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,7 +16,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -24,6 +27,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.EntityExplosionBehavior;
 import net.minecraft.world.explosion.ExplosionBehavior;
@@ -146,6 +151,12 @@ public class WaterExplosion {
     public void affectWorld() {
         if (this.world.isClient) {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
+        } else {
+            if (this.world.getRegistryKey() == World.NETHER) {
+                this.world.playSound(null, new BlockPos(this.x, this.y, this.z), SoundEvents.BLOCK_LAVA_EXTINGUISH,
+                        SoundCategory.BLOCKS, 4.0f, 1.2F);
+                return;
+            }
         }
 
         ArrayList<EntityType> seaCreatures = new ArrayList<>();
@@ -170,7 +181,7 @@ public class WaterExplosion {
 
             world.setBlockState(blockPos, Blocks.WATER.getDefaultState());
 
-            if (this.random.nextInt(70) == 0) {
+            if (this.random.nextInt(120) == 0) {
                 // Decides if a sea-creature should be spawned at this position
                 Entity entity = seaCreatures.get(random.nextBetween(0, seaCreatures.size() - 1)).create(world);
                 assert entity != null;
