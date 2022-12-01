@@ -15,7 +15,7 @@ public class NatureExplosiveEntity extends ExplosiveEntity {
     }
 
     public NatureExplosiveEntity(World world, double x, double y, double z, @Nullable LivingEntity igniter) {
-        super(world, x, y, z, igniter, ModEntities.AIR_EXPLOSIVE);
+        super(world, x, y, z, igniter, ModEntities.NATURE_EXPLOSIVE);
     }
 
     @Override
