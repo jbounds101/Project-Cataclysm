@@ -63,19 +63,19 @@ public class ModItems {
             new MachineGunItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxDamage(16)));
 
     public static final Item WAND = registerItem("wand",
-            new WandItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM), 2));
+            new WandItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1), 2));
 
     public static final Item WALL_WAND = registerItem("wall_wand",
-            new WallWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new WallWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
     public static final Item WATER_TRAP_WAND = registerItem("water_trap_wand",
-            new WaterTrapWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new WaterTrapWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
     public static final Item MASTER_WAND = registerItem("master_wand",
-            new MasterWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new MasterWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
     public static final Item SPELL_SWITCHER = registerItem("spell_switcher",
-            new SpellSwitcher(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new SpellSwitcher(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
 
 
@@ -99,6 +99,9 @@ public class ModItems {
 
     public static final Item MAGIC_WAND = registerItem("magic_wand",
             new MagicWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item DEFUSER = registerItem("defuser",
+            new DefuserItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1).maxDamage(35)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);

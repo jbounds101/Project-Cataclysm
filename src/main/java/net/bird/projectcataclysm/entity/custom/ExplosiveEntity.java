@@ -1,13 +1,19 @@
 package net.bird.projectcataclysm.entity.custom;
 
+import net.bird.projectcataclysm.item.ModItems;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
@@ -104,6 +110,22 @@ public abstract class ExplosiveEntity extends TntEntity {
 
     public Packet<?> createSpawnPacket() {
         return new EntitySpawnS2CPacket(this);
+    }
+
+    public ActionResult interact(PlayerEntity player, Hand hand) {
+        if (player.getStackInHand(hand).getItem() == ModItems.DEFUSER) {
+            if (this.world.isClient) {
+                this.world.playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.BLOCK_LAVA_EXTINGUISH,
+                        SoundCategory.BLOCKS, 4.0f, 1.2F, false);
+            } else {
+                player.getStackInHand(hand).damage(1, player, (p) -> {
+                    p.sendEquipmentBreakStatus(EquipmentSlot.MAINHAND);
+                });
+            }
+            this.kill();
+            return ActionResult.SUCCESS;
+            }
+        return ActionResult.FAIL;
     }
 
     public void explode() {
