@@ -150,43 +150,9 @@ public class LightningExplosion {
     }
 
     public void affectWorld() {
-        if (this.world.isClient) {
+        /*if (this.world.isClient) {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
-        }
-        this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x + random.nextBetween(-3, 3), this.y,
-                this.z + random.nextBetween(-3, 3), 0.0, 0.0, 0.0);
-
-        /*if (bl) {
-            ObjectArrayList objectArrayList = new ObjectArrayList();
-            boolean bl22 = this.getCausingEntity() instanceof PlayerEntity;
-            Util.shuffle(this.affectedBlocks, this.world.random);
-            for (BlockPos blockPos : this.affectedBlocks) {
-                World world;
-                BlockState blockState = this.world.getBlockState(blockPos);
-                Block block = blockState.getBlock();
-                if (blockState.isAir()) continue;
-                BlockPos blockPos2 = blockPos.toImmutable();
-                this.world.getProfiler().push("explosion_blocks");
-                if (block.shouldDropItemsOnExplosion(this) && (world = this.world) instanceof ServerWorld) {
-                    ServerWorld serverWorld = (ServerWorld)world;
-                    BlockEntity blockEntity = blockState.hasBlockEntity() ? this.world.getBlockEntity(blockPos) : null;
-                    LootContext.Builder builder = new LootContext.Builder(serverWorld).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos)).parameter(LootContextParameters.TOOL, ItemStack.EMPTY).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                    if (this.destructionType == Explosion.DestructionType.DESTROY) {
-                        builder.parameter(LootContextParameters.EXPLOSION_RADIUS, Float.valueOf(this.power));
-                    }
-                    blockState.onStacksDropped(serverWorld, blockPos, ItemStack.EMPTY, bl22);
-                    blockState.getDroppedStacks(builder).forEach(stack -> CustomExplosion.tryMergeStack(objectArrayList, stack,
-                            blockPos2));
-                }
-                this.world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
-                block.onDestroyedByExplosion(this.world, blockPos, this);
-                this.world.getProfiler().pop();
-            }
-            for (Pair pair : objectArrayList) {
-                Block.dropStack(this.world, (BlockPos)pair.getSecond(), (ItemStack)pair.getFirst());
-            }
         }*/
-        //if (this.createFire) {
 
         // This loops through the "affectedBlocks" from the explosion
         for (BlockPos blockPos : this.affectedBlocks) {

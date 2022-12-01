@@ -144,16 +144,9 @@ public class WaterExplosion {
     }
 
     public void affectWorld() {
-        if (!this.world.isClient) {
-            this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,
-                    4.0f, 1);
-
+        if (this.world.isClient) {
+            this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
         }
-        this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x + random.nextBetween(-3, 3), this.y,
-                this.z + random.nextBetween(-3, 3), 0.0, 0.0, 0.0);
-
-
-
 
         ArrayList<EntityType> seaCreatures = new ArrayList<>();
         seaCreatures.add(EntityType.TROPICAL_FISH);

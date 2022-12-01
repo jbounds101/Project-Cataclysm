@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 public class ClusterExplosiveEntity extends ExplosiveEntity {
@@ -21,6 +22,8 @@ public class ClusterExplosiveEntity extends ExplosiveEntity {
 
     @Override
     public void explode() {
+        this.world.createExplosion(this, this.getX(), this.getBodyY(0.0625), this.getZ(), 8.0f,
+                Explosion.DestructionType.BREAK);
         BlockPos position = new BlockPos(this.getPos());
         ClusterExplosion explosion = new ClusterExplosion(this.world, this,
                 null, position.getX(), position. getY(), position.getZ(), 6);

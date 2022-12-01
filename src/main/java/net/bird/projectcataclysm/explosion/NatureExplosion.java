@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.EntityExplosionBehavior;
 import net.minecraft.world.explosion.ExplosionBehavior;
+import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -144,34 +145,32 @@ public class NatureExplosion {
     }
 
     public void affectWorld() {
-        if (!this.world.isClient) {
-            this.world.playSound(null, this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS,
-                    4.0f, 1);
-
+        if (this.world.isClient) {
+            this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
         }
-        this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x + random.nextBetween(-3, 3), this.y,
-                this.z + random.nextBetween(-3, 3), 0.0, 0.0, 0.0);
 
 
 
 
-        ArrayList<Block> flowers = new ArrayList<>();
-        flowers.add(Blocks.DANDELION);
-        flowers.add(Blocks.POPPY);
-        flowers.add(Blocks.BLUE_ORCHID);
-        flowers.add(Blocks.ALLIUM);
-        flowers.add(Blocks.AZURE_BLUET);
-        flowers.add(Blocks.ORANGE_TULIP);
-        flowers.add(Blocks.PINK_TULIP);
-        flowers.add(Blocks.RED_TULIP);
-        flowers.add(Blocks.WHITE_TULIP);
-        flowers.add(Blocks.OXEYE_DAISY);
-        flowers.add(Blocks.CORNFLOWER);
-        flowers.add(Blocks.LILY_OF_THE_VALLEY);
-        flowers.add(Blocks.SUNFLOWER);
-        flowers.add(Blocks.LILAC);
-        flowers.add(Blocks.ROSE_BUSH);
-        flowers.add(Blocks.PEONY);
+        ArrayList<Block> plants = new ArrayList<>();
+        plants.add(Blocks.DANDELION);
+        plants.add(Blocks.POPPY);
+        plants.add(Blocks.BLUE_ORCHID);
+        plants.add(Blocks.ALLIUM);
+        plants.add(Blocks.AZURE_BLUET);
+        plants.add(Blocks.ORANGE_TULIP);
+        plants.add(Blocks.PINK_TULIP);
+        plants.add(Blocks.RED_TULIP);
+        plants.add(Blocks.WHITE_TULIP);
+        plants.add(Blocks.OXEYE_DAISY);
+        plants.add(Blocks.CORNFLOWER);
+        plants.add(Blocks.LILY_OF_THE_VALLEY);
+        plants.add(Blocks.SUNFLOWER);
+        plants.add(Blocks.LILAC);
+        plants.add(Blocks.ROSE_BUSH);
+        plants.add(Blocks.PEONY);
+        plants.add(Blocks.OAK_SAPLING);
+        plants.add(Blocks.BIRCH_SAPLING);
 
         HashSet<Block> possibleFlowerBlocks = new HashSet<>();
         possibleFlowerBlocks.add(Blocks.GRASS_BLOCK);
@@ -180,11 +179,12 @@ public class NatureExplosion {
         possibleFlowerBlocks.add(Blocks.MOSS_BLOCK);
         possibleFlowerBlocks.add(Blocks.MUD);
 
+        boolean beeHiveCreated = false;
+        int beesRemaining = 2;
+
         // This loops through the "affectedBlocks" from the explosion
         for (BlockPos blockPos : this.affectedBlocks) {
-            if (this.random.nextInt(5) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
-            if (!possibleFlowerBlocks.contains(this.world.getBlockState(blockPos.down()).getBlock())) continue; // This block
-            // isn't a possible candidate for flower placing
+
             BlockState blockState = this.world.getBlockState(blockPos);
             Block block = blockState.getBlock();
 
@@ -193,19 +193,26 @@ public class NatureExplosion {
                 world.setBlockState(blockPos, Blocks.AIR.getDefaultState()); // Delete a explosion block
             }
 
-            // Decides if a flower should be spawned at this position
-            world.setBlockState(blockPos, flowers.get(random.nextBetween(0, flowers.size() - 1)).getDefaultState());
+            if (!possibleFlowerBlocks.contains(this.world.getBlockState(blockPos.down()).getBlock())) continue;
+            if (!beeHiveCreated) {
+                world.setBlockState(blockPos, Blocks.BEE_NEST.getDefaultState());
+                beeHiveCreated = true;
+                continue;
+            }
+            if (this.random.nextInt(5) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
+            // This block isn't a possible candidate for flower placing
 
-            if (random.nextInt(20) == 0) {
+
+
+            // Decides if a flower should be spawned at this position
+            world.setBlockState(blockPos, plants.get(random.nextBetween(0, plants.size() - 1)).getDefaultState());
+            if (beesRemaining > 0) {
                 BeeEntity beeEntity = EntityType.BEE.create(world);
                 assert beeEntity != null;
                 beeEntity.refreshPositionAfterTeleport(blockPos.getX(), blockPos.getY(), blockPos.getZ());
                 world.spawnEntity(beeEntity);
-            } else if (random.nextInt(100) == 0) {
-                world.setBlockState(blockPos, Blocks.BEE_NEST.getDefaultState());
+                beesRemaining--;
             }
-
-
         }
     }
 

@@ -156,96 +156,7 @@ public class FlashExplosion {
         if (this.world.isClient) {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
         }
-        this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
 
-        /*if (bl) {
-            ObjectArrayList objectArrayList = new ObjectArrayList();
-            boolean bl22 = this.getCausingEntity() instanceof PlayerEntity;
-            Util.shuffle(this.affectedBlocks, this.world.random);
-            for (BlockPos blockPos : this.affectedBlocks) {
-                World world;
-                BlockState blockState = this.world.getBlockState(blockPos);
-                Block block = blockState.getBlock();
-                if (blockState.isAir()) continue;
-                BlockPos blockPos2 = blockPos.toImmutable();
-                this.world.getProfiler().push("explosion_blocks");
-                if (block.shouldDropItemsOnExplosion(this) && (world = this.world) instanceof ServerWorld) {
-                    ServerWorld serverWorld = (ServerWorld)world;
-                    BlockEntity blockEntity = blockState.hasBlockEntity() ? this.world.getBlockEntity(blockPos) : null;
-                    LootContext.Builder builder = new LootContext.Builder(serverWorld).random(this.world.random).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(blockPos)).parameter(LootContextParameters.TOOL, ItemStack.EMPTY).optionalParameter(LootContextParameters.BLOCK_ENTITY, blockEntity).optionalParameter(LootContextParameters.THIS_ENTITY, this.entity);
-                    if (this.destructionType == Explosion.DestructionType.DESTROY) {
-                        builder.parameter(LootContextParameters.EXPLOSION_RADIUS, Float.valueOf(this.power));
-                    }
-                    blockState.onStacksDropped(serverWorld, blockPos, ItemStack.EMPTY, bl22);
-                    blockState.getDroppedStacks(builder).forEach(stack -> CustomExplosion.tryMergeStack(objectArrayList, stack,
-                            blockPos2));
-                }
-                this.world.setBlockState(blockPos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
-                block.onDestroyedByExplosion(this.world, blockPos, this);
-                this.world.getProfiler().pop();
-            }
-            for (Pair pair : objectArrayList) {
-                Block.dropStack(this.world, (BlockPos)pair.getSecond(), (ItemStack)pair.getFirst());
-            }
-        }*/
-        //if (this.createFire) {
-
-        // This loops through the "affectedBlocks" from the explosion
-        /*
-        for (BlockPos blockPos : this.affectedBlocks) {
-            BlockState blockState = this.world.getBlockState(blockPos);
-            Block block = blockState.getBlock();
-            if ((block.getClass() == ExplosiveBlock.class) || (block.getClass() == TntBlock.class)) {
-                block.onDestroyedByExplosion(this.world, blockPos, null);
-                world.setBlockState(blockPos, Blocks.AIR.getDefaultState()); // Delete a explosion block
-            }
-
-            // randint was 3
-            if (this.random.nextInt(6) != 0 || !this.world.getBlockState(blockPos).isAir() || !this.world.getBlockState(blockPos.down()).isOpaqueFullCube(this.world, blockPos.down())) continue;
-            //this.world.setBlockState(blockPos3, AbstractFireBlock.getState(this.world, blockPos3));
-
-            for (int x = -6; x < 6; x++) {
-                for (int z = -6; z < 6; z++) {
-                    if (this.random.nextInt(11) < 6) {
-                        if (this.world.getBlockState(blockPos.add(x, -1, z)).isOpaqueFullCube(this.world,
-                                blockPos.add(x, -1, z))) {
-                            this.world.setBlockState(blockPos.add(x, 0, z),
-                                    Blocks.SNOW.getDefaultState());
-                        }
-
-                    }
-                }
-            }
-            final int minBaseHeight = 1;
-            final int maxBaseHeight = 2;
-            int height = 2 * (random.nextInt(maxBaseHeight - minBaseHeight) + minBaseHeight);
-            for (int i = 0; i < height / 2; i++) {
-                Block icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos, icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.east(), icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.north(), icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.west(), icyBlock.getDefaultState());
-                icyBlock = this.calculateIcyBlock(height, i);
-                this.world.setBlockState(blockPos.south(), icyBlock.getDefaultState());
-                blockPos = blockPos.up();
-                if (i == ((height / 2) - 1)) {
-                    for (int j = height / 2; j < height + random.nextInt(10); j++) {
-                        icyBlock = this.calculateIcyBlock(height, j);
-                        this.world.setBlockState(blockPos, icyBlock.getDefaultState());
-                        blockPos = blockPos.up();
-                    }
-                }
-
-            }
-
-
-
-            //this.world.setBlockState(blockPos,
-        }
-        */
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);
         float q = this.power * 2.0f; // This is the "damage-radius" for entities
         for (int v = 0; v < affectedEntities.size(); ++v) {
@@ -268,17 +179,9 @@ public class FlashExplosion {
                 ad = ProtectionEnchantment.transformExplosionKnockback((LivingEntity)entity, ac);
                 ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 1,
                         false, true, true));
-                entity.sendMessage(Text.literal("You have been blinded!"));
+                //entity.sendMessage(Text.literal("You have been blinded!"));
             }
-            /*
-            entity.setVelocity(entity.getVelocity().add(x * ad, y * ad, z * ad));
-            //if (!(entity instanceof PlayerEntity) || (playerEntity = (PlayerEntity)entity).isSpectator() ||
-            // playerEntity.isCreative() && playerEntity.getAbilities().flying) continue;
-            //this.affectedPlayers.put(playerEntity, new Vec3d(x * ac, y * ac, z * ac));
-        }
-        //}
 
-         */
     }
 /*
     Block calculateIcyBlock(int maxHeight, int currentHeight) {
@@ -303,23 +206,6 @@ public class FlashExplosion {
         } else return Blocks.ICE;*/
     }
 
-    /*@Nullable
-    public LivingEntity getCausingEntity() {
-        Entity entity;
-        if (this.entity == null) {
-            return null;
-        }
-        if (this.entity instanceof TntEntity) {
-            return ((TntEntity)this.entity).getCausingEntity();
-        }
-        if (this.entity instanceof LivingEntity) {
-            return (LivingEntity)this.entity;
-        }
-        if (this.entity instanceof ProjectileEntity && (entity = ((ProjectileEntity)this.entity).getOwner()) instanceof LivingEntity) {
-            return (LivingEntity)entity;
-        }
-        return null;
-    }*/
 
     public void clearAffectedBlocks() {
         this.affectedBlocks.clear();

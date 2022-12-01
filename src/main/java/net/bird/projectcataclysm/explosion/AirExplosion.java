@@ -143,21 +143,21 @@ public class AirExplosion {
         if (this.world.isClient) {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
         }
-        this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0, 0.0, 0.0);
 
         for (BlockPos blockPos : this.affectedBlocks) {
             BlockState blockState = this.world.getBlockState(blockPos);
             Block block = blockState.getBlock();
+            if ((block.getClass() == ExplosiveBlock.class) || (block.getClass() == TntBlock.class)) {
+                block.onDestroyedByExplosion(this.world, blockPos, null);
+                world.setBlockState(blockPos, Blocks.AIR.getDefaultState()); // Delete a explosion block
+            }
 
             if (!this.world.getBlockState(blockPos).isOpaqueFullCube(this.world, blockPos)) {
                 world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
                 continue;
             }
 
-            if ((block.getClass() == ExplosiveBlock.class) || (block.getClass() == TntBlock.class)) {
-                block.onDestroyedByExplosion(this.world, blockPos, null);
-                world.setBlockState(blockPos, Blocks.AIR.getDefaultState()); // Delete a explosion block
-            }
+
 
 
             if (random.nextBetween(0, 2) == 0) {
