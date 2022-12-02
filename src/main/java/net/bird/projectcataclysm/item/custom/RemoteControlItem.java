@@ -48,7 +48,6 @@ public class RemoteControlItem extends Item implements ExtendedScreenHandlerFact
             BlockState blockState = world.getBlockState(blockPos);
             Block block = blockState.getBlock();
             if (block instanceof LaunchPlatformBlock && blockState.get(LaunchPlatformBlock.TYPE) == LaunchPlatformType.CONTROL_PANEL) {
-                user.sendMessage(Text.translatable("text"), true);
                 user.openHandledScreen(this);
                 return TypedActionResult.success(stack, world.isClient());
             }

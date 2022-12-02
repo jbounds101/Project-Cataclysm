@@ -101,7 +101,7 @@ public class ModItems {
             new MagicWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item REMOTE_CONTROL = registerItem("remote_control",
-            new RemoteControlItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new RemoteControlItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);
