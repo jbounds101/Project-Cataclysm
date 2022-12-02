@@ -138,8 +138,9 @@ public class IceExplosion {
     }
 
     public void affectWorld() {
-        if (this.world.isClient) {
-            this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
+        if (!this.world.isClient) {
+            this.world.playSound(null, new BlockPos(this.x, this.y, this.z), SoundEvents.BLOCK_GLASS_BREAK,
+                    SoundCategory.BLOCKS, 4.0f, 2F);
         }
 
 

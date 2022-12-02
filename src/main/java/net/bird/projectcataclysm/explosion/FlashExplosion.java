@@ -153,8 +153,9 @@ public class FlashExplosion {
     }
 
     public void affectWorld() {
-        if (this.world.isClient) {
-            this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
+        if (!this.world.isClient) {
+            this.world.playSound(null, new BlockPos(this.x, this.y, this.z), SoundEvents.ENTITY_SQUID_SQUIRT,
+                    SoundCategory.BLOCKS, 4.0f, 4F);
         }
 
         Vec3d vec3d = new Vec3d(this.x, this.y, this.z);

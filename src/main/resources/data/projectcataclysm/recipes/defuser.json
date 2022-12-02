@@ -1,21 +1,22 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "projectcataclysm:fabricating",
   "key": {
     "1": {
-      "item": "minecraft:redstone"
+      "item": "projectcataclysm:silver_ingot"
     },
     "2": {
-      "item": "projectcataclysm:silver_block"
+      "item": "minecraft:obsidian"
     },
     "3": {
-      "item": "minecraft:obsidian"
+      "item": "minecraft:redstone_block"
     }
-
   },
   "pattern": [
-    " 1 ",
-    "323",
-    " 3 "
+    "22222",
+    "22122",
+    "21312",
+    "22122",
+    "22222"
   ],
   "result": {
     "item": "projectcataclysm:defuser"
