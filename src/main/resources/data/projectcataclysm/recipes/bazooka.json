@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "i": {
+      "item": "projectcataclysm:big_explosive"
+    },
+    "j": {
+      "item": "projectcatclysm:silver_block"
+    }
+
+  },
+  "pattern": [
+    "III",
+    "jii",
+    "III"
+  ],
+  "result": {
+    "item": "projectcataclysm:pistol"
+  }
+}

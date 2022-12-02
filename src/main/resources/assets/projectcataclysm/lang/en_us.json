@@ -10,14 +10,17 @@
   "item.projectcataclysm.bullet": "Bullet",
   "item.projectcataclysm.slug": "Slug",
   "item.projectcataclysm.rpg": "RPG",
+  "item.projectcataclysm.portal_projectile": "Portal Projectile",
   "item.projectcataclysm.sniper": "Sniper",
   "item.projectcataclysm.shotgun": "Shotgun",
   "item.projectcataclysm.recoil_gun": "Recoil Gun",
   "item.projectcataclysm.spray_gun": "Spray Gun",
   "item.projectcataclysm.bazooka": "Bazooka",
+  "item.projectcataclysm.portal_gun": "Portal Gun",
   "item.projectcataclysm.life_swap": "Life Swap",
   "item.projectcataclysm.wand_life_swap": "Life Swap Wand",
   "item.projectcataclysm.water_trap_wand": "Water Trap Wand",
+  "item.projectcataclysm.almighty_push_wand": "Almighty Push Wand",
   "item.projectcataclysm.spell_switcher": "Spell Switcher",
   "item.projectcataclysm.master_wand": "Master Wand",
   "item.projectcataclysm.silver_shield": "Silver Shield",
@@ -42,6 +45,8 @@
   "block.projectcataclysm.fabricator": "Fabricator",
   "block.projectcataclysm.protective_barrier_block": "Protective Barrier Block",
   "block.projectcataclysm.launch_platform": "Launch Platform",
+  "block.projectcataclysm.blue_portal_block": "Blue Portal Block",
+  "block.projectcataclysm.orange_portal_block": "Orange Portal Block",
 
   "container.fabricating": "Fabricating",
   "container.control_panel": "Control Panel",
@@ -58,5 +63,11 @@
   "item.projectcataclysm.wall_wand": "Wall Wand",
   "item.projectcataclysm.web_wand": "Web Wand",
   "item.projectcataclysm.blink_wand": "Blink Wand",
-  "item.projectcataclysm.magic_wand": "Magic Wand"
+  "item.projectcataclysm.magic_wand": "Magic Wand",
+
+
+  "key.category.projectcataclysm.portal": "Portal Gun Keybindings",
+  "key.projectcataclysm.blue_portal": "Select Blue Portal",
+  "key.projectcataclysm.orange_portal": "Select Orange Portal",
+  "key.projectcataclysm.clear_portals": "Clear Portals"
 }

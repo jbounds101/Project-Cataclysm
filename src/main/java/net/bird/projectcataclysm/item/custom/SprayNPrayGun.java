@@ -84,7 +84,7 @@ public class SprayNPrayGun extends RangedWeaponItem {
                             randR2, randS2, randD2);
                     persistentProjectileEntity2.setCritical(true);
                     double damage2 = persistentProjectileEntity2.getDamage();
-                    persistentProjectileEntity2.setDamage(damage2 * 1.25);
+                    persistentProjectileEntity2.setDamage(damage2 * 1.5);
 
 
                     if (currAmmo > 0) {

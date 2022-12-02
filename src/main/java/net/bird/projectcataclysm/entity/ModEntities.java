@@ -75,6 +75,12 @@ public class ModEntities implements ModInitializer {
                     .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
                     .trackRangeBlocks(100).trackedUpdateRate(10).build());
 
+    public static final EntityType<PortalProjectileEntity> PortalProjectileEntityType = Registry.register(Registry.ENTITY_TYPE,
+            new Identifier(ProjectCataclysmMod.MOD_ID, "portal_projectile"),
+            FabricEntityTypeBuilder.<PortalProjectileEntity>create(SpawnGroup.MISC, PortalProjectileEntity::new)
+                    .dimensions(EntityDimensions.fixed(0.5F, 0.5F))
+                    .trackRangeBlocks(100).trackedUpdateRate(10).build());
+
 
     @Override
     public void onInitialize() {

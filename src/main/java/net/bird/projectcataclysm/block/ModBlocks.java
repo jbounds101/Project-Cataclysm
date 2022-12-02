@@ -89,6 +89,7 @@ public class ModBlocks {
                     FlashExplosiveEntity.class), ModItemGroup.PROJECT_CATACLYSM);
     // ------------------
 
+
     public static final Block SOUL_ESSENCE = registerBlock("soul_essence",
             new Block(FabricBlockSettings.of(Material.AGGREGATE).breakInstantly().luminance(13).noCollision().nonOpaque().sounds(BlockSoundGroup.SCULK_SHRIEKER)),
             ModItemGroup.PROJECT_CATACLYSM);
@@ -102,6 +103,14 @@ public class ModBlocks {
 
     public static final Block LAUNCH_PLATFORM = Registry.register(Registry.BLOCK, new Identifier(ProjectCataclysmMod.MOD_ID, "launch_platform"),
             new LaunchPlatformBlock(FabricBlockSettings.of(Material.METAL).luminance(getLaunchPlatformLuminance()).hardness(-1.0f).resistance(12000f).sounds(BlockSoundGroup.ANVIL)));
+
+    public static final Block BLUE_PORTAL_BLOCK = registerBlock("blue_portal_block",
+            new PortalBlock(FabricBlockSettings.of(Material.PORTAL).luminance(10).hardness(-1.0F).resistance(3600000.0F).dropsNothing()),
+            ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block ORANGE_PORTAL_BLOCK = registerBlock("orange_portal_block",
+            new PortalBlock(FabricBlockSettings.of(Material.PORTAL).luminance(10).hardness(-1.0F).resistance(3600000.0F).dropsNothing()),
+            ModItemGroup.PROJECT_CATACLYSM);
 
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);

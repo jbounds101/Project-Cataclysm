@@ -13,6 +13,6 @@ public class ExplosiveProjectileEntityRenderer extends ProjectileEntityRenderer<
 
     @Override
     public Identifier getTexture(ExplosiveProjectileEntity entity) {
-        return new Identifier(ProjectCataclysmMod.MOD_ID, "textures/entity/bullet.png");
+        return new Identifier(ProjectCataclysmMod.MOD_ID, "textures/entity/explosive_projectile.png");
     }
 }
