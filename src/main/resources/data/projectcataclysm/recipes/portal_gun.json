@@ -1,0 +1,27 @@
+{
+  "type": "projectcataclysm:fabricating",
+  "key": {
+    "S": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "Q": {
+      "item": "minecraft:nether_star"
+    },
+    "C": {
+      "item": "projectcataclysm:silver_block"
+    },
+    "R": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "pattern": [
+    "RS   ",
+    "SRRC ",
+    " RQR ",
+    " CRRS",
+    "   SR"
+  ],
+  "result": {
+    "item": "projectcataclysm:portal_gun"
+  }
+}

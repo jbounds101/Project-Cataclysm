@@ -9,7 +9,6 @@ import net.bird.projectcataclysm.screen.ControlPanelScreen;
 import net.bird.projectcataclysm.entity.custom.MissileEntityModel;
 import net.bird.projectcataclysm.entity.custom.MissileEntityRenderer;
 import net.bird.projectcataclysm.entity.custom.SlugEntityRenderer;
-import net.bird.projectcataclysm.screen.RemoteControlScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -64,10 +63,12 @@ public class ProjectCataclysmModClient implements ClientModInitializer {
 
         // --------------------------
 
-        EntityRendererRegistry.register(ModEntities.BulletEntityType,
-                (context) -> new BulletEntityRenderer(context));
-        EntityRendererRegistry.register(ModEntities.SlugEntityType,
-                SlugEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.BulletEntityType, BulletEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.SlugEntityType, SlugEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.ExplosiveProjectileEntityType, ExplosiveProjectileEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.PortalProjectileEntityType, PortalProjectileRenderer::new);
+
+
         HandledScreens.register(ProjectCataclysmMod.FABRICATING_HANDLER, FabricatingScreen::new);
         HandledScreens.register(ProjectCataclysmMod.CONTROL_PANEL_HANDLER, ControlPanelScreen::new);
         HandledScreens.register(ProjectCataclysmMod.REMOTE_CONTROL_HANDLER, RemoteControlScreen::new);
@@ -86,5 +87,8 @@ public class ProjectCataclysmModClient implements ClientModInitializer {
                 }
             });
         }));
+
+
+        KeyInputHandler.register();
     }
 }

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "i": {
+      "item": "minecraft:tnt"
+    },
+    "j": {
+      "item": "projectcataclysm:silver_block"
+    }
+
+  },
+  "pattern": [
+    "III",
+    "jii",
+    "III"
+  ],
+  "result": {
+    "item": "projectcataclysm:bazooka"
+  }
+}

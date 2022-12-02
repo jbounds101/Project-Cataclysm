@@ -47,11 +47,26 @@ public class ModItems {
     public static final Item RECOIL_GUN = registerItem("recoil_gun",
             new PropelItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
+    public static final Item SPRAY_GUN = registerItem("spray_gun",
+            new SprayNPrayGun(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
+    public static final Item BAZOOKA = registerItem("bazooka",
+            new BazookaItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
+    public static final Item PORTAL_GUN = registerItem("portal_gun",
+            new PortalGunItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
     public static final Item BULLET = registerItem("bullet",
             new BulletItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item SLUG = registerItem("slug",
             new SlugItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item RPG = registerItem("rpg",
+            new RPGItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item PORTAL_PROJECTILE = registerItem("portal_projectile",
+            new PortalProjectile(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item DOWSING_ROD = registerItem("dowsing_rod",
             new DowsingRodItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
@@ -70,6 +85,9 @@ public class ModItems {
 
     public static final Item WATER_TRAP_WAND = registerItem("water_trap_wand",
             new WaterTrapWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+
+    public static final Item ALMIGHTY_PUSH_WAND = registerItem("almighty_push_wand",
+            new AlmightyPush(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
     public static final Item MASTER_WAND = registerItem("master_wand",
             new MasterWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
@@ -92,13 +110,13 @@ public class ModItems {
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item WEB_WAND = registerItem("web_wand",
-            new WebWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new WebWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
     public static final Item BLINK_WAND = registerItem("blink_wand",
-            new BlinkWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new BlinkWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
     public static final Item MAGIC_WAND = registerItem("magic_wand",
-            new MagicWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+            new MagicWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
 
     public static final Item DEFUSER = registerItem("defuser",
             new DefuserItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1).maxDamage(35)));

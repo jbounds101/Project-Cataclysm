@@ -119,6 +119,14 @@ public class ModBlocks {
     public static final BlockEntityType<LaunchPlatformBlockEntity> LAUNCH_PLATFORM_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(ProjectCataclysmMod.MOD_ID, "launch_platform_block_entity"),
             FabricBlockEntityTypeBuilder.create(LaunchPlatformBlockEntity::new, LAUNCH_PLATFORM).build());
 
+    public static final Block BLUE_PORTAL_BLOCK = registerBlock("blue_portal_block",
+            new PortalBlock(FabricBlockSettings.of(Material.PORTAL).luminance(10).hardness(-1.0F).resistance(3600000.0F).dropsNothing()),
+            ModItemGroup.PROJECT_CATACLYSM);
+
+    public static final Block ORANGE_PORTAL_BLOCK = registerBlock("orange_portal_block",
+            new PortalBlock(FabricBlockSettings.of(Material.PORTAL).luminance(10).hardness(-1.0F).resistance(3600000.0F).dropsNothing()),
+            ModItemGroup.PROJECT_CATACLYSM);
+
     private static Block registerBlock(String name, Block block, ItemGroup group) {
         registerBlockItem(name, block, group);
         return Registry.register(Registry.BLOCK, new Identifier(ProjectCataclysmMod.MOD_ID, name), block);
