@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.TntBlock;
 import net.minecraft.entity.*;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
@@ -25,13 +26,16 @@ import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.EntityExplosionBehavior;
 import net.minecraft.world.explosion.ExplosionBehavior;
 import org.jetbrains.annotations.Nullable;
+import virtuoel.pehkui.api.ScaleData;
+import virtuoel.pehkui.api.ScaleModifier;
+import virtuoel.pehkui.api.ScaleType;
+import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 public class ClusterExplosion {
-
     private static final ExplosionBehavior DEFAULT_BEHAVIOR = new ExplosionBehavior();
     private static final int field_30960 = 16;
     private final Random random = Random.create();
@@ -145,7 +149,6 @@ public class ClusterExplosion {
         //  entities
 
     }
-
     public void affectWorld() {
         if (this.world.isClient) {
             this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0f, (1.0f + (this.world.random.nextFloat() - this.world.random.nextFloat()) * 0.2f) * 0.7f, false);
@@ -155,12 +158,25 @@ public class ClusterExplosion {
             TntEntity tntEntity = EntityType.TNT.create(world);
             assert tntEntity != null;
             tntEntity.refreshPositionAfterTeleport(entity.getX(), entity.getY(), entity.getZ());
-            tntEntity.setVelocity((double)random.nextBetween(-100, 100) / 100,
-                    (double)random.nextBetween(0, 50) / 100, (double)random.nextBetween(-100, 100) / 100);
+            tntEntity.setVelocity((double) random.nextBetween(-100, 100) / 100,
+                    (double) random.nextBetween(0, 50) / 100, (double) random.nextBetween(-100, 100) / 100);
             tntEntity.setFuse(random.nextBetween(20, 40));
             world.spawnEntity(tntEntity);
-        }
 
+            ScaleData scaleEntityWidth = ScaleData.Builder.create().entity(tntEntity).type(ScaleTypes.MODEL_WIDTH).build();
+            scaleEntityWidth.setScale(0.4F);
+            ScaleData scaleEntityHeight = ScaleData.Builder.create().entity(tntEntity).type(ScaleTypes.MODEL_HEIGHT).build();
+            scaleEntityHeight.setScale(0.4F);
+
+            //scaleEntity.setTargetScale(3F);
+            //scaleEntity.markForSync(true);
+
+            //ScaleModifier sm = new ScaleModifier(1000).modifyScale(scaleEntity, 3F, 1F);
+
+
+
+
+        }
 
     }
 
