@@ -3,6 +3,10 @@
     "minecraft:tnt",
     "projectcataclysm:big_explosive",
     "projectcataclysm:massive_explosive",
-    "projectcataclysm:fire_explosive"
+    "projectcataclysm:fire_explosive",
+    "projectcataclysm:air_explosive",
+    "projectcataclysm:flash_explosive",
+    "projectcataclysm:ice_explosive",
+    "projectcataclysm:lightning_explosive"
   ]
 }

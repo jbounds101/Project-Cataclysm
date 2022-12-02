@@ -22,6 +22,7 @@
   "item.projectcataclysm.missile_head": "Missile Head",
   "item.projectcataclysm.missile_tail": "Missile Tail",
   "item.projectcataclysm.control_panel": "Control Panel",
+  "item.projectcataclysm.remote_control": "Remote Control",
 
   "block.projectcataclysm.silver_block": "Block of Silver",
   "block.projectcataclysm.silver_ore": "Silver Ore",
@@ -52,6 +53,10 @@
   "block.projectcataclysm.launch_platform.failed_placement": "Not enough space!",
   "block.projectcataclysm.control_panel.launch": "Launch",
   "block.projectcataclysm.control_panel.dismantle": "Dismantle",
+  "block.projectcataclysm.remote_control.sync": "Synced with Control Panel",
+  "block.projectcataclysm.remote_control.unsync": "Unsynced with Control Panel",
+  "block.projectcataclysm.remote_control.open_unsynced": "Remote Control has not been Synced with a Control Panel!",
+  "block.projectcataclysm.remote_control.open_fail": "Control Panel is broken or too far away!",
 
   "item.projectcataclysm.machine_gun": "Machine Gun",
   "item.projectcataclysm.wand": "Swap Wand",
