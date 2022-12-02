@@ -76,9 +76,6 @@ public class PortalProjectileEntity extends PersistentProjectileEntity {
                             PortalGunItem.setBlockHitBlue(blockHitBlue);
                             PortalGunItem.setBlockHitBluePos(blockHitResult.getBlockPos());
 
-                            //PortalGunItem.clearPortal(PortalGunItem.BLUE);
-                            //executorService.schedule(PortalProjectileEntity::doNothing, 2, TimeUnit.SECONDS);
-
 
                             this.world.setBlockState(blockHitResult.getBlockPos(), ModBlocks.BLUE_PORTAL_BLOCK.getDefaultState());
                             bluePortalPos = blockHitResult.getBlockPos();
@@ -102,9 +99,6 @@ public class PortalProjectileEntity extends PersistentProjectileEntity {
                             blockHitOrange = this.world.getBlockState(blockHitResult.getBlockPos()).getBlock();
                             PortalGunItem.setBlockHitOrange(blockHitOrange);
                             PortalGunItem.setBlockHitOrangePos(blockHitResult.getBlockPos());
-
-                            //PortalGunItem.clearPortal(PortalGunItem.ORANGE);
-                            //executorService.schedule(PortalProjectileEntity::doNothing, 2, TimeUnit.SECONDS);
 
 
                             this.world.setBlockState(blockHitResult.getBlockPos(), ModBlocks.ORANGE_PORTAL_BLOCK.getDefaultState());

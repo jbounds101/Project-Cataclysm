@@ -40,7 +40,7 @@ public class BazookaItem extends RangedWeaponItem {
                 ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
                 PersistentProjectileEntity persistentProjectileEntity = rpgItem.createRPG(world, itemStack, playerEntity);
-                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0F, 4F, 1F);
+                persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.75F, 1.85F, 1.5F);
                 persistentProjectileEntity.setCritical(true);
                 double damage = persistentProjectileEntity.getDamage();
                 persistentProjectileEntity.setDamage(damage * 1);

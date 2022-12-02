@@ -7,6 +7,10 @@ import net.bird.projectcataclysm.item.custom.PropelItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -26,6 +30,7 @@ public class PortalBlock extends Block {
     @Override
     public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
         if (!PortalGunItem.isOrangePortalExists() || !PortalGunItem.isBluePortalExists()) {
             return;
         }

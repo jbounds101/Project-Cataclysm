@@ -1,0 +1,27 @@
+{
+  "type": "projectcataclysm:fabricating",
+  "key": {
+    "S": {
+      "item": "projectcataclysm:silver_ingot"
+    },
+    "Q": {
+      "item": "minecraft:stick"
+    },
+    "C": {
+      "item": "minecraft:tnt"
+    },
+    "R": {
+      "item": "minecraft:fire_charge"
+    }
+  },
+  "pattern": [
+    " CRC ",
+    " CQC ",
+    " SQS ",
+    " SQS ",
+    " SQS "
+  ],
+  "result": {
+    "item": "projectcataclysm:almighty_push_wand"
+  }
+}

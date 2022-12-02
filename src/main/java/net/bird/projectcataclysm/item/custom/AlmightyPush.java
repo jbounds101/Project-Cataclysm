@@ -37,12 +37,13 @@ public class AlmightyPush extends Item {
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-
-        AlmightyExplosionSpell explosionSpell = new AlmightyExplosionSpell(world, null, null,
-                user.getX(), user.getY(), user.getZ(), 20);
-        ((PlayerEntity) user).getItemCooldownManager().set(this, (20 * 5));
-        user.sendMessage(Text.literal("Cooldown: 5 seconds"));
-        explosionSpell.collectBlocksAndGetEntities(user);
+        if (!world.isClient()) {
+            AlmightyExplosionSpell explosionSpell = new AlmightyExplosionSpell(world, null, null,
+                    user.getX(), user.getY(), user.getZ(), 20);
+            ((PlayerEntity) user).getItemCooldownManager().set(this, (20 * 5));
+            user.sendMessage(Text.literal("Cooldown: 5 seconds"));
+            explosionSpell.collectBlocksAndGetEntities(user);
+        }
     }
 
     @Override
