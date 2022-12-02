@@ -1,9 +1,14 @@
 package net.bird.projectcataclysm.block.custom;
 
+import net.bird.projectcataclysm.ProjectCataclysmMod;
 import net.bird.projectcataclysm.block.ModBlocks;
+import net.bird.projectcataclysm.screen.ControlPanelScreen;
 import net.bird.projectcataclysm.screen.ControlPanelScreenHandler;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -14,23 +19,30 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class LaunchPlatformBlock extends HorizontalFacingBlock {
+public class LaunchPlatformBlock extends BlockWithEntity {
     public static final EnumProperty<LaunchPlatformType> TYPE;
+    public static final DirectionProperty FACING;
+    public static final BooleanProperty TRIGGERED;
     protected static final VoxelShape BOTTOM_SHAPE;
     protected static final VoxelShape NORTH_WEST_CORNER_SHAPE;
     protected static final VoxelShape SOUTH_WEST_CORNER_SHAPE;
@@ -46,9 +58,9 @@ public class LaunchPlatformBlock extends HorizontalFacingBlock {
     protected static final VoxelShape WEST_SHAPE;
     protected static final VoxelShape EAST_SHAPE;
     protected static final VoxelShape BASE_SHAPE;
-    private static final Text TITLE = Text.translatable("container.control_panel");
     public LaunchPlatformBlock(AbstractBlock.Settings settings) {
         super(settings);
+        this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(TRIGGERED, false));
     }
 
     public static void breakAndDrop(BlockState state, World world, BlockPos blockPos) {
@@ -74,30 +86,30 @@ public class LaunchPlatformBlock extends HorizontalFacingBlock {
                 return ActionResult.SUCCESS;
             }
             else {
-                player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
+                if (world.getBlockEntity(pos) instanceof LaunchPlatformBlockEntity) {
+                    player.openHandledScreen((NamedScreenHandlerFactory) world.getBlockEntity(pos));
+                }
                 return ActionResult.CONSUME;
             }
         }
         return ActionResult.PASS;
     }
 
-    public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-        return new ExtendedScreenHandlerFactory() {
-            @Override
-            public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-                buf.writeBlockPos(pos.offset(state.get(FACING), 3));
+    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        if (state.get(TYPE) == LaunchPlatformType.CONTROL_PANEL) {
+            if (world.isReceivingRedstonePower(pos) && !state.get(TRIGGERED)) {
+                world.createAndScheduleBlockTick(pos, this, 4);
+                world.setBlockState(pos, state.with(TRIGGERED, true), Block.NO_REDRAW);
+            } else if (!world.isReceivingRedstonePower(pos) && state.get(TRIGGERED)) {
+                world.setBlockState(pos, state.with(TRIGGERED, false), Block.NO_REDRAW);
             }
+        }
+    }
 
-            @Override
-            public Text getDisplayName() {
-                return TITLE;
-            }
-
-            @Override
-            public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-                return new ControlPanelScreenHandler(syncId, inv, ScreenHandlerContext.create(world, pos));
-            }
-        };
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        LaunchPlatformBlockEntity launchPlatformBlockEntity = (LaunchPlatformBlockEntity) world.getBlockEntity(pos);
+        assert launchPlatformBlockEntity != null;
+        launchPlatformBlockEntity.launch();
     }
 
     public boolean hasSidedTransparency(BlockState state) {
@@ -218,12 +230,23 @@ public class LaunchPlatformBlock extends HorizontalFacingBlock {
         blockPos = blockPos.offset(forwards);
         world.setBlockState(blockPos, state.with(FACING, forwards).with(TYPE, LaunchPlatformType.BASE), 3);
     }
+
+    public BlockState rotate(BlockState state, BlockRotation rotation) {
+        return state.with(FACING, rotation.rotate(state.get(FACING)));
+    }
+
+    public BlockState mirror(BlockState state, BlockMirror mirror) {
+        return state.rotate(mirror.getRotation(state.get(FACING)));
+    }
+
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(FACING, TYPE);
+        builder.add(FACING, TYPE, TRIGGERED);
     }
 
     static {
         TYPE = EnumProperty.of("type", LaunchPlatformType.class);
+        FACING = HorizontalFacingBlock.FACING;
+        TRIGGERED = Properties.TRIGGERED;
         BOTTOM_SHAPE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
         NORTH_WEST_CORNER_SHAPE = VoxelShapes.union(BOTTOM_SHAPE, Block.createCuboidShape(0.0, 8.0, 0.0, 8.0, 16.0, 8.0));
         SOUTH_WEST_CORNER_SHAPE = VoxelShapes.union(BOTTOM_SHAPE, Block.createCuboidShape(0.0, 8.0, 8.0, 8.0, 16.0, 16.0));
@@ -238,5 +261,16 @@ public class LaunchPlatformBlock extends HorizontalFacingBlock {
         SOUTH_SHAPE = VoxelShapes.union(Block.createCuboidShape(0.0, 10.0, 1.0, 16.0, 14.0, 5.333333), Block.createCuboidShape(0.0, 12.0, 5.333333, 16.0, 16.0, 9.666667), Block.createCuboidShape(0.0, 14.0, 9.666667, 16.0, 18.0, 14.0), BASE_SHAPE);
         WEST_SHAPE = VoxelShapes.union(Block.createCuboidShape(10.666667, 10.0, 0.0, 15.0, 14.0, 16.0), Block.createCuboidShape(6.333333, 12.0, 0.0, 10.666667, 16.0, 16.0), Block.createCuboidShape(2.0, 14.0, 0.0, 6.333333, 18.0, 16.0), BASE_SHAPE);
         NORTH_SHAPE = VoxelShapes.union(Block.createCuboidShape(0.0, 10.0, 10.666667, 16.0, 14.0, 15.0), Block.createCuboidShape(0.0, 12.0, 6.333333, 16.0, 16.0, 10.666667), Block.createCuboidShape(0.0, 14.0, 2.0, 16.0, 18.0, 6.333333), BASE_SHAPE);
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new LaunchPlatformBlockEntity(pos, state);
+    }
+
+    @Override
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
     }
 }

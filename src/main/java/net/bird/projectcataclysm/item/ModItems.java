@@ -87,9 +87,9 @@ public class ModItems {
     public static final Item CONTROL_PANEL = registerItem("control_panel",
             new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
     public static final Item MISSILE_HEAD = registerItem("missile_head",
-            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
     public static final Item MISSILE_TAIL = registerItem("missile_tail",
-            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM).maxCount(1)));
+            new Item(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     public static final Item WEB_WAND = registerItem("web_wand",
             new WebWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
@@ -99,6 +99,9 @@ public class ModItems {
 
     public static final Item MAGIC_WAND = registerItem("magic_wand",
             new MagicWand(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
+
+    public static final Item REMOTE_CONTROL = registerItem("remote_control",
+            new RemoteControlItem(new FabricItemSettings().group(ModItemGroup.PROJECT_CATACLYSM)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(ProjectCataclysmMod.MOD_ID, name), item);

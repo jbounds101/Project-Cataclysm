@@ -3,14 +3,14 @@ package net.bird.projectcataclysm.screen;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.bird.projectcataclysm.ProjectCataclysmMod;
+import net.bird.projectcataclysm.block.custom.LaunchPlatformBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -24,41 +24,35 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenTexts;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.server.PlayerManager;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
 
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier(ProjectCataclysmMod.MOD_ID,"textures/gui/control_panel.png");
-    private static final Text LAUNCH_TEXT = Text.translatable("block.projectcataclysm.control_panel.launch");
-    private static final Text DISMANTLE_TEXT = Text.translatable("block.projectcataclysm.control_panel.dismantle");
-    private final List<ControlPanelScreen.ControlPanelButtonWidget> buttons = Lists.newArrayList();
+public class RemoteControlScreen extends HandledScreen<RemoteControlScreenHandler> {
+    private static final Identifier TEXTURE = new Identifier(ProjectCataclysmMod.MOD_ID,"textures/gui/remote_control.png");
 
-    private int[] target = new int[2];
+    private static final Text LAUNCH_TEXT = Text.translatable("block.projectcataclysm.control_panel.launch");
+
+    private int[] target;
+
+    private final List<RemoteControlScreen.RemoteControlButtonWidget> buttons = Lists.newArrayList();
 
     public List<BlockPos> posList;
 
-    public ControlPanelScreen(ControlPanelScreenHandler handler, PlayerInventory inventory, Text title) {
+    public RemoteControlScreen(RemoteControlScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        this.backgroundHeight = 221;
-        this.backgroundWidth = 230;
-        this.titleX = 8;
-        this.titleY = 6;
-        this.playerInventoryTitleX = 36;
-        this.playerInventoryTitleY = this.backgroundHeight - 94;
-        this.target[0] = handler.propertyDelegate.get(0);
-        this.target[1] = handler.propertyDelegate.get(1);
+        this.backgroundHeight = 228;
+        this.backgroundWidth = 123;
     }
 
-    private <T extends ClickableWidget & ControlPanelScreen.ControlPanelButtonWidget> void addButton(T button) {
+    private <T extends ClickableWidget & RemoteControlScreen.RemoteControlButtonWidget> void addButton(T button) {
         this.addDrawableChild(button);
         this.buttons.add(button);
     }
@@ -66,8 +60,7 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
     protected void init() {
         super.init();
         this.buttons.clear();
-        this.addButton(new DoneButtonWidget(this.x + 79, this.y + 61));
-        this.addButton(new DismantleButtonWidget(this.x + 206, this.y + 4));
+        this.addButton(new RemoteControlScreen.DoneButtonWidget(this.x + 72, this.y + 155));
     }
 
     public void handledScreenTick() {
@@ -76,17 +69,16 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
     }
 
     void tickButtons() {
-        this.buttons.forEach(ControlPanelButtonWidget::tick);
+        this.buttons.forEach(RemoteControlScreen.RemoteControlButtonWidget::tick);
     }
 
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
-        super.drawForeground(matrices, mouseX, mouseY);
-        if (mouseX - this.x > 120 && mouseY - this.y > 22 && mouseX - this.x <= 217 && mouseY - this.y <= 119) {
+        if (mouseX - this.x > 13 && mouseY - this.y > 13 && mouseX - this.x <= 110 && mouseY - this.y <= 110) {
             this.renderTooltip(matrices, Text.literal("X: " + getTargetPos(mouseX - this.x, mouseY - this.y).getX() + " Z: " + getTargetPos(mouseX - this.x, mouseY - this.y).getZ()),mouseX - this.x, mouseY - this.y);
         }
-        for (ControlPanelButtonWidget controlPanelButtonWidget : this.buttons) {
-            if (controlPanelButtonWidget.shouldRenderTooltip()) {
-                controlPanelButtonWidget.renderTooltip(matrices, mouseX - this.x, mouseY - this.y);
+        for (RemoteControlScreen.RemoteControlButtonWidget remoteControlButtonWidget : this.buttons) {
+            if (remoteControlButtonWidget.shouldRenderTooltip()) {
+                remoteControlButtonWidget.renderTooltip(matrices, mouseX - this.x, mouseY - this.y);
                 break;
             }
         }
@@ -100,36 +92,37 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
         int i = this.x;
         int j = (this.height - this.backgroundHeight) / 2;
         this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
-        if (this.handler.hasHead()) {
-            this.drawTexture(matrices, 19 + this.x, 30 + this.y, 234, 0, 16, 24);
+        LaunchPlatformBlockEntity lpbe = this.handler.getControlPanel();
+        if (this.handler.getControlPanel().hasHead()) {
+            this.drawTexture(matrices, 31 + this.x, 126 + this.y, 127, 0, 16, 24);
         }
-        if (this.handler.hasTail()) {
-            this.drawTexture(matrices, 15 + this.x, 70 + this.y, 230, 40, 24, 44);
+        if (this.handler.getControlPanel().hasTail()) {
+            this.drawTexture(matrices, 27 + this.x, 166 + this.y, 123, 40, 24, 44);
         }
-        if (this.handler.hasPayload()) {
-            BlockState state = Block.getBlockFromItem(this.handler.getPayload().getItem()).getDefaultState();
+        if (this.handler.getControlPanel().hasPayload()) {
+            BlockState state = Block.getBlockFromItem(this.handler.getControlPanel().getPayload().getItem()).getDefaultState();
             ModelIdentifier modelIdentifier = BlockModels.getModelId(state);
             Sprite sprite = MinecraftClient.getInstance().getBakedModelManager().getModel(modelIdentifier).getQuads(state, Direction.EAST, Random.create()).get(0).getSprite();
             RenderSystem.setShaderTexture(0, new Identifier(sprite.getId().getNamespace(), "textures/" + sprite.getId().getPath() + ".png"));
-            drawTexture(matrices, 19 + this.x, 54 + this.y, 0, 0, 16, 16, 16, 16);
+            drawTexture(matrices, 31 + this.x, 150 + this.y, 0, 0, 16, 16, 16, 16);
             RenderSystem.setShaderTexture(0, TEXTURE);
-            this.drawTexture(matrices, 19 + this.x, 54 + this.y, 234, 24, 16, 16);
+            this.drawTexture(matrices, 31 + this.x, 150 + this.y, 127, 24, 16, 16);
         }
-        if (target != null && target[0] > 0 && target[1] > 0) {
-            this.drawTexture(matrices, target[0] + this.x - 3, target[1] + this.y - 3, 104, 221, 5, 5);
+        if (target != null) {
+            this.drawTexture(matrices, target[0] + this.x - 3, target[1] + this.y - 3, 104, 228, 5, 5);
             this.renderTooltip(matrices, Text.literal("X: " + getTargetPos(target[0], target[1]).getX() + " Z: " + getTargetPos(target[0], target[1]).getZ()), target[0] + this.x, target[1] + this.y);
         }
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        if (mouseX - this.x > 120 && mouseY - this.y > 22 && mouseX - this.x <= 217 && mouseY - this.y <= 119) {
-            this.drawTexture(matrices, mouseX - 3, mouseY - 3, 104, 221, 5, 5);
+        if (mouseX - this.x > 13 && mouseY - this.y > 13 && mouseX - this.x <= 110 && mouseY - this.y <= 110) {
+            this.drawTexture(matrices, mouseX - 3, mouseY - 3, 104, 228, 5, 5);
         }
         PacketByteBuf buf = PacketByteBufs.create();
         ClientPlayNetworking.send(ProjectCataclysmMod.GET_PLAYERS_PACKET_ID, buf);
         if (this.posList != null) {
             for (BlockPos blockPos : this.posList) {
-                this.drawTexture(matrices, (blockPos.getX() - this.handler.getPos().getX()) / 4 + 169 + this.x - 1, (blockPos.getZ() - this.handler.getPos().getZ()) / 4 + 71 + this.y - 1, 109, 221, 3, 3);
+                this.drawTexture(matrices, (blockPos.getX() - this.handler.getPos().getX()) / 4 + 62 + this.x - 1, (blockPos.getZ() - this.handler.getPos().getZ()) / 4 + 62 + this.y - 1, 109, 228, 3, 3);
             }
         }
     }
@@ -141,16 +134,17 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (mouseX - this.x > 120 && mouseY - this.y > 22 && mouseX - this.x <= 217 && mouseY - this.y <= 119) {
+        if (mouseX - this.x > 13 && mouseY - this.y > 13 && mouseX - this.x <= 110 && mouseY - this.y <= 110) {
             if (target == null) {
                 target = new int[2];
             }
             target[0] = (int)(mouseX - this.x);
             target[1] = (int)(mouseY - this.y);
             PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeBlockPos(this.handler.getSource());
             buf.writeInt(target[0]);
             buf.writeInt(target[1]);
-            ClientPlayNetworking.send(ProjectCataclysmMod.TARGET_PACKET_ID, buf);
+            ClientPlayNetworking.send(ProjectCataclysmMod.TRANSMIT_PACKET_ID, buf);
             return true;
         }
         else {
@@ -159,11 +153,11 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
     }
 
     public BlockPos getTargetPos(int x, int y) {
-        return new BlockPos(4*(x-169) + this.handler.getPos().getX(), 0, 4*(y-71) + this.handler.getPos().getZ());
+        return new BlockPos(4*(x-62) + this.handler.getPos().getX(), 0, 4*(y-62) + this.handler.getPos().getZ());
     }
 
     @Environment(EnvType.CLIENT)
-    interface ControlPanelButtonWidget {
+    interface RemoteControlButtonWidget {
         boolean shouldRenderTooltip();
 
         void renderTooltip(MatrixStack matrices, int mouseX, int mouseY);
@@ -171,26 +165,25 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
         void tick();
     }
 
-    @Environment(EnvType.CLIENT)
-    class DoneButtonWidget extends PressableWidget implements ControlPanelButtonWidget {
+    class DoneButtonWidget extends PressableWidget implements RemoteControlScreen.RemoteControlButtonWidget {
         protected DoneButtonWidget(int x, int y) {
             super(x, y, 22, 22, ScreenTexts.DONE);
         }
 
         public void onPress() {
             PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBlockPos(ControlPanelScreen.this.handler.getPos());
+            buf.writeBlockPos(RemoteControlScreen.this.handler.getPos());
             ClientPlayNetworking.send(ProjectCataclysmMod.LAUNCH_PACKET_ID, buf);
-            ControlPanelScreen.this.close();
+            RemoteControlScreen.this.close();
         }
 
         public void tick() {
-            this.active = ControlPanelScreen.this.handler.canLaunch() && target != null;
+            this.active = RemoteControlScreen.this.handler.getControlPanel().canLaunch() && target != null;
         }
 
         public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, ControlPanelScreen.TEXTURE);
+            RenderSystem.setShaderTexture(0, RemoteControlScreen.TEXTURE);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             int i = 0;
             if (!this.active) {
@@ -199,62 +192,16 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
                 i += this.width * 2;
             }
 
-            this.drawTexture(matrices, this.x, this.y, i, 221, this.width, this.height);
+            this.drawTexture(matrices, this.x, this.y, i, 228, this.width, this.height);
             this.renderExtra(matrices);
         }
 
         protected void renderExtra(MatrixStack matrices) {
-            this.drawTexture(matrices, this.x + 2, this.y + 2, 68, 222, 18, 18);
+            this.drawTexture(matrices, this.x + 2, this.y + 2, 68, 229, 18, 18);
         }
 
         public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
-            ControlPanelScreen.this.renderTooltip(matrices, LAUNCH_TEXT, mouseX, mouseY);
-        }
-
-        public boolean shouldRenderTooltip() {
-            return this.hovered;
-        }
-
-        public void appendNarrations(NarrationMessageBuilder builder) {
-            this.appendDefaultNarrations(builder);
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
-    class DismantleButtonWidget extends PressableWidget implements ControlPanelButtonWidget {
-        protected DismantleButtonWidget(int x, int y) {
-            super(x, y, 16, 11, ScreenTexts.CANCEL);
-        }
-
-        public void onPress() {
-            MinecraftClient client = ControlPanelScreen.this.client;
-            assert client != null;
-            assert client.player != null;
-            assert client.world != null;
-            client.world.playSound(client.player, ControlPanelScreen.this.handler.getPos(), SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeBlockPos(ControlPanelScreen.this.handler.getPos());
-            ClientPlayNetworking.send(ProjectCataclysmMod.DISMANTLE_PACKET_ID, buf);
-        }
-
-        public void tick() {
-        }
-
-        public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, ControlPanelScreen.TEXTURE);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            int j = 221;
-            if (this.isHovered()) {
-                j += this.height;
-            }
-
-            this.drawTexture(matrices, this.x, this.y, 88, j, this.width, this.height);
-
-        }
-
-        public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
-            ControlPanelScreen.this.renderTooltip(matrices, DISMANTLE_TEXT, mouseX, mouseY);
+            RemoteControlScreen.this.renderTooltip(matrices, LAUNCH_TEXT, mouseX, mouseY);
         }
 
         public boolean shouldRenderTooltip() {
