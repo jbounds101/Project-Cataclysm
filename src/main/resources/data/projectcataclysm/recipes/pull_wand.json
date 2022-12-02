@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "b": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  "pattern": [
+    "b",
+    "s",
+    "s"
+  ],
+  "result": {
+    "item": "projectcataclysm:pull_wand"
+  }
+}

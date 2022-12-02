@@ -190,6 +190,8 @@ public class AirExplosion {
 
             Entity entity = affectedEntities.get(v);
             if (entity instanceof LivingEntity livingEntity) {
+
+
                 livingEntity.setVelocity(livingEntity.getVelocity().x, livingEntity.getVelocity().y + 2,
                         livingEntity.getVelocity().z);
                 livingEntity.velocityModified = true;

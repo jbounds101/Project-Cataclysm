@@ -45,6 +45,9 @@
   "block.projectcataclysm.water_explosive": "Water Explosive",
   "block.projectcataclysm.nature_explosive": "Nature Explosive",
   "block.projectcataclysm.cluster_explosive": "Cluster Explosive",
+  "block.projectcataclysm.poison_explosive": "Poison Explosive",
+  "block.projectcataclysm.earth_explosive": "Earth Explosive",
+  "block.projectcataclysm.suction_explosive": "Suction Explosive",
   "block.projectcataclysm.soul_essence": "Soul Essence",
   "block.projectcataclysm.fabricator": "Fabricator",
   "block.projectcataclysm.protective_barrier_block": "Protective Barrier Block",
@@ -72,6 +75,8 @@
   "item.projectcataclysm.web_wand": "Web Wand",
   "item.projectcataclysm.blink_wand": "Blink Wand",
   "item.projectcataclysm.magic_wand": "Magic Wand",
+  "item.projectcataclysm.pull_wand": "Pull Wand",
+  "item.projectcataclysm.spell_switcher": "Spell Switcher",
   "item.projectcataclysm.defuser": "Disarming Device",
 
   "key.category.projectcataclysm.portal": "Portal Gun Keybindings",

@@ -54,6 +54,18 @@ public class ModEntities implements ModInitializer {
             (EntityType<ClusterExplosiveEntity>) registerExplosive(
                     "cluster_explosive_entity", ClusterExplosiveEntity::new);
 
+    public static final EntityType<PoisonExplosiveEntity> POISON_EXPLOSIVE =
+            (EntityType<PoisonExplosiveEntity>) registerExplosive(
+                    "poison_explosive_entity", PoisonExplosiveEntity::new);
+
+    public static final EntityType<EarthExplosiveEntity> EARTH_EXPLOSIVE =
+            (EntityType<EarthExplosiveEntity>) registerExplosive(
+                    "earth_explosive_entity", EarthExplosiveEntity::new);
+
+    public static final EntityType<SuctionExplosiveEntity> SUCTION_EXPLOSIVE =
+            (EntityType<SuctionExplosiveEntity>) registerExplosive(
+                    "suction_explosive_entity", SuctionExplosiveEntity::new);
+
     private static EntityType<? extends ExplosiveEntity> registerExplosive(String name,
                                                    EntityType.EntityFactory<? extends ExplosiveEntity> factory) {
         return Registry.register(Registry.ENTITY_TYPE, new Identifier(ProjectCataclysmMod.MOD_ID, name),
