@@ -2,13 +2,11 @@ package net.bird.projectcataclysm;
 
 import net.bird.projectcataclysm.block.ModBlocks;
 import net.bird.projectcataclysm.entity.ModEntities;
-import net.bird.projectcataclysm.entity.custom.BulletEntityRenderer;
-import net.bird.projectcataclysm.entity.custom.ExplosiveRenderer;
+import net.bird.projectcataclysm.entity.custom.*;
+import net.bird.projectcataclysm.event.KeyInputHandler;
 import net.bird.projectcataclysm.item.ModItems;
 import net.bird.projectcataclysm.screen.ControlPanelScreen;
-import net.bird.projectcataclysm.entity.custom.MissileEntityModel;
-import net.bird.projectcataclysm.entity.custom.MissileEntityRenderer;
-import net.bird.projectcataclysm.entity.custom.SlugEntityRenderer;
+import net.bird.projectcataclysm.screen.RemoteControlScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -60,6 +58,15 @@ public class ProjectCataclysmModClient implements ClientModInitializer {
 
         EntityRendererRegistry.register(ModEntities.CLUSTER_EXPLOSIVE,
                 (a) -> new ExplosiveRenderer(a, ModBlocks.CLUSTER_EXPLOSIVE));
+
+        EntityRendererRegistry.register(ModEntities.POISON_EXPLOSIVE,
+                (a) -> new ExplosiveRenderer(a, ModBlocks.POISON_EXPLOSIVE));
+
+        EntityRendererRegistry.register(ModEntities.EARTH_EXPLOSIVE,
+                (a) -> new ExplosiveRenderer(a, ModBlocks.EARTH_EXPLOSIVE));
+
+        EntityRendererRegistry.register(ModEntities.SUCTION_EXPLOSIVE,
+                (a) -> new ExplosiveRenderer(a, ModBlocks.SUCTION_EXPLOSIVE));
 
         // --------------------------
 
