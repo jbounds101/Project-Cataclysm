@@ -7,6 +7,7 @@ import net.bird.projectcataclysm.item.ModItems;
 import net.bird.projectcataclysm.screen.ControlPanelScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.AirBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -16,7 +17,10 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -35,7 +39,7 @@ public class LaunchPlatformBlockEntity extends BlockEntity implements ExtendedSc
     protected DefaultedList<ItemStack> inventory;
     protected int targetX;
     protected int targetZ;
-    protected final PropertyDelegate propertyDelegate = new PropertyDelegate(){
+    public final PropertyDelegate propertyDelegate = new PropertyDelegate(){
         @Override
         public int get(int index) {
             return switch (index) {
@@ -106,6 +110,7 @@ public class LaunchPlatformBlockEntity extends BlockEntity implements ExtendedSc
             inventory.get(0).decrement(1);
             inventory.get(1).decrement(1);
             inventory.get(2).decrement(1);
+            world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
             BlockPos sourcePos = pos.offset(state.get(LaunchPlatformBlock.FACING), 3);
             assert world != null;
             BlockPos targetPos = new BlockPos(4 * (targetX - 169) + sourcePos.getX(), world.getTopY(), 4 * (targetZ - 71) + sourcePos.getZ());
@@ -138,6 +143,7 @@ public class LaunchPlatformBlockEntity extends BlockEntity implements ExtendedSc
         Inventories.writeNbt(nbt, this.inventory);
         nbt.putInt("TargetX", this.targetX);
         nbt.putInt("TargetZ", this.targetZ);
+        world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
     }
 
     @Override
@@ -204,6 +210,17 @@ public class LaunchPlatformBlockEntity extends BlockEntity implements ExtendedSc
     @Override
     public void clear() {
         this.inventory.clear();
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        return createNbt();
     }
 
 }

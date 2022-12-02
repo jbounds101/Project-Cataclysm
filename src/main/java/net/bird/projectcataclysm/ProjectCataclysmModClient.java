@@ -9,6 +9,7 @@ import net.bird.projectcataclysm.screen.ControlPanelScreen;
 import net.bird.projectcataclysm.entity.custom.MissileEntityModel;
 import net.bird.projectcataclysm.entity.custom.MissileEntityRenderer;
 import net.bird.projectcataclysm.entity.custom.SlugEntityRenderer;
+import net.bird.projectcataclysm.screen.RemoteControlScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -53,6 +54,7 @@ public class ProjectCataclysmModClient implements ClientModInitializer {
                 SlugEntityRenderer::new);
         HandledScreens.register(ProjectCataclysmMod.FABRICATING_HANDLER, FabricatingScreen::new);
         HandledScreens.register(ProjectCataclysmMod.CONTROL_PANEL_HANDLER, ControlPanelScreen::new);
+        HandledScreens.register(ProjectCataclysmMod.REMOTE_CONTROL_HANDLER, RemoteControlScreen::new);
         EntityRendererRegistry.register(ModEntities.MISSILE, MissileEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(MODEL_MISSILE_LAYER, MissileEntityModel::getTexturedModelData);
         ModelPredicateProviderRegistry.register(ModItems.SILVER_SHIELD, new Identifier("blocking"), (itemStack, clientWorld, livingEntity, i) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1 : 0);

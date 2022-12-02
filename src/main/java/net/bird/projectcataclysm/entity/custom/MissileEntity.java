@@ -34,7 +34,7 @@ public class MissileEntity extends Entity {
     protected int launchPhase;
     private static final TrackedData<BlockPos> TARGET = DataTracker.registerData(MissileEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<BlockPos> SOURCE = DataTracker.registerData(MissileEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
-    private int explosionPower = 5;
+    private int explosionPower = 10;
     @Nullable
     private BlockState inBlockState;
     public MissileEntity(EntityType<? extends MissileEntity> entityType, World world) {
