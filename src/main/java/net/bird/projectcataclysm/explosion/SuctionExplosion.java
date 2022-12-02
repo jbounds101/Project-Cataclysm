@@ -162,17 +162,17 @@ public class SuctionExplosion {
                     livingEntity.setVelocity(livingEntity.getVelocity().add(-0.2 * (livingEntity.getX() - this.x), -0.15 * (livingEntity.getY() - this.y),
                             -0.2 * (livingEntity.getZ() - this.z)));
                     livingEntity.velocityModified = true;
-                    livingEntity.sendMessage(Text.literal("You were sucked."));
+                    livingEntity.sendMessage(Text.literal("You were sucked in."));
                 } else if (this.y + 2 < livingEntity.getY() ){
                     livingEntity.setVelocity(livingEntity.getVelocity().add(-0.3 * (livingEntity.getX() - this.x), 0.5,
                             -0.3 * (livingEntity.getZ() - this.z)));
                     livingEntity.velocityModified = true;
-                    livingEntity.sendMessage(Text.literal("You were sucked."));
+                    livingEntity.sendMessage(Text.literal("You were sucked in."));
                 } else {
                     livingEntity.setVelocity(livingEntity.getVelocity().add(-0.35 * (livingEntity.getX() - this.x), 0.4,
                             -0.35 * (livingEntity.getZ() - this.z)));
                     livingEntity.velocityModified = true;
-                    livingEntity.sendMessage(Text.literal("You were sucked."));
+                    livingEntity.sendMessage(Text.literal("You were sucked in."));
                 }
 
                 /*
