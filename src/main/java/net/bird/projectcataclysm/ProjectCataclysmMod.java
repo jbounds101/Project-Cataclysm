@@ -15,6 +15,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.block.Block;
@@ -26,9 +27,11 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.structure.rule.BlockMatchRuleTest;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
@@ -48,10 +51,12 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
 import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
 import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
+import org.apache.commons.compress.utils.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class ProjectCataclysmMod implements ModInitializer {
@@ -93,6 +98,8 @@ public class ProjectCataclysmMod implements ModInitializer {
 	public static final Identifier LAUNCH_PACKET_ID = new Identifier(MOD_ID, "launch");
 	public static final Identifier TARGET_PACKET_ID = new Identifier(MOD_ID, "target");
 	public static final Identifier TRANSMIT_PACKET_ID = new Identifier(MOD_ID, "transmit");
+
+	public static final Identifier GET_PLAYERS_PACKET_ID = new Identifier(MOD_ID, "get_players");
 	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
@@ -143,6 +150,17 @@ public class ProjectCataclysmMod implements ModInitializer {
 				assert launchPlatformBlockEntity != null;
 				launchPlatformBlockEntity.propertyDelegate.set(0, targetX);
 				launchPlatformBlockEntity.propertyDelegate.set(1, targetZ);
+			});
+		})));
+		ServerPlayNetworking.registerGlobalReceiver(GET_PLAYERS_PACKET_ID, (((server, player, handler, buf, responseSender) -> {
+			List<BlockPos> posList = Lists.newArrayList();
+			server.execute(() -> {
+				for (ServerPlayerEntity serverPlayer : server.getPlayerManager().getPlayerList()) {
+					posList.add(serverPlayer.getBlockPos());
+				}
+				PacketByteBuf buf2 = PacketByteBufs.create();
+				buf2.writeCollection(posList, PacketByteBuf::writeBlockPos);
+				ServerPlayNetworking.send(player, ProjectCataclysmModClient.SEND_POS_PACKET_ID, buf2);
 			});
 		})));
 	}

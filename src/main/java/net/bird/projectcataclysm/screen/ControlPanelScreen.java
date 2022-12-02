@@ -44,6 +44,8 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
 
     private int[] target = new int[2];
 
+    public List<BlockPos> posList;
+
     public ControlPanelScreen(ControlPanelScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
         this.backgroundHeight = 221;
@@ -113,15 +115,22 @@ public class ControlPanelScreen extends HandledScreen<ControlPanelScreenHandler>
             RenderSystem.setShaderTexture(0, TEXTURE);
             this.drawTexture(matrices, 19 + this.x, 54 + this.y, 234, 24, 16, 16);
         }
-        if (target != null) {
+        if (target != null && target[0] > 0 && target[1] > 0) {
             this.drawTexture(matrices, target[0] + this.x - 3, target[1] + this.y - 3, 104, 221, 5, 5);
             this.renderTooltip(matrices, Text.literal("X: " + getTargetPos(target[0], target[1]).getX() + " Z: " + getTargetPos(target[0], target[1]).getZ()), target[0] + this.x, target[1] + this.y);
         }
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, TEXTURE);
         if (mouseX - this.x > 120 && mouseY - this.y > 22 && mouseX - this.x <= 217 && mouseY - this.y <= 119) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShaderTexture(0, TEXTURE);
             this.drawTexture(matrices, mouseX - 3, mouseY - 3, 104, 221, 5, 5);
+        }
+        PacketByteBuf buf = PacketByteBufs.create();
+        ClientPlayNetworking.send(ProjectCataclysmMod.GET_PLAYERS_PACKET_ID, buf);
+        if (this.posList != null) {
+            for (BlockPos blockPos : this.posList) {
+                this.drawTexture(matrices, (blockPos.getX() - this.handler.getPos().getX()) / 4 + 169 + this.x - 1, (blockPos.getZ() - this.handler.getPos().getZ()) / 4 + 71 + this.y - 1, 109, 221, 3, 3);
+            }
         }
     }
 

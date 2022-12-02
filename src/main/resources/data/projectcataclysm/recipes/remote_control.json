@@ -11,15 +11,15 @@
       "item": "minecraft:compass"
     },
     "R": {
-      "item": "minecraft:redstone_dust"
+      "item": "minecraft:redstone"
     }
   },
   "pattern": [
-    " SSS ",
-    " SCS ",
-    " SRS ",
-    " SGS ",
-    " SSS "
+    "SSS  ",
+    "SCS  ",
+    "SRS  ",
+    "SGS  ",
+    "SSS  "
   ],
   "result": {
     "item": "projectcataclysm:remote_control"

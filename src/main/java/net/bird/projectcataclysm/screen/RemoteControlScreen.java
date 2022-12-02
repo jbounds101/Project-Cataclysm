@@ -24,6 +24,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenTexts;
+import net.minecraft.server.PlayerManager;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -41,6 +43,8 @@ public class RemoteControlScreen extends HandledScreen<RemoteControlScreenHandle
     private int[] target;
 
     private final List<RemoteControlScreen.RemoteControlButtonWidget> buttons = Lists.newArrayList();
+
+    public List<BlockPos> posList;
 
     public RemoteControlScreen(RemoteControlScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -90,7 +94,7 @@ public class RemoteControlScreen extends HandledScreen<RemoteControlScreenHandle
         this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
         LaunchPlatformBlockEntity lpbe = this.handler.getControlPanel();
         if (this.handler.getControlPanel().hasHead()) {
-            this.drawTexture(matrices, 30 + this.x, 127 + this.y, 127, 0, 16, 24);
+            this.drawTexture(matrices, 31 + this.x, 126 + this.y, 127, 0, 16, 24);
         }
         if (this.handler.getControlPanel().hasTail()) {
             this.drawTexture(matrices, 27 + this.x, 166 + this.y, 123, 40, 24, 44);
@@ -108,11 +112,18 @@ public class RemoteControlScreen extends HandledScreen<RemoteControlScreenHandle
             this.drawTexture(matrices, target[0] + this.x - 3, target[1] + this.y - 3, 104, 228, 5, 5);
             this.renderTooltip(matrices, Text.literal("X: " + getTargetPos(target[0], target[1]).getX() + " Z: " + getTargetPos(target[0], target[1]).getZ()), target[0] + this.x, target[1] + this.y);
         }
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, TEXTURE);
         if (mouseX - this.x > 13 && mouseY - this.y > 13 && mouseX - this.x <= 110 && mouseY - this.y <= 110) {
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShaderTexture(0, TEXTURE);
             this.drawTexture(matrices, mouseX - 3, mouseY - 3, 104, 228, 5, 5);
+        }
+        PacketByteBuf buf = PacketByteBufs.create();
+        ClientPlayNetworking.send(ProjectCataclysmMod.GET_PLAYERS_PACKET_ID, buf);
+        if (this.posList != null) {
+            for (BlockPos blockPos : this.posList) {
+                this.drawTexture(matrices, (blockPos.getX() - this.handler.getPos().getX()) / 4 + 62 + this.x - 1, (blockPos.getZ() - this.handler.getPos().getZ()) / 4 + 62 + this.y - 1, 109, 228, 3, 3);
+            }
         }
     }
 
