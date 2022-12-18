@@ -1,7 +1,5 @@
 # Project-Cataclysm
 
-This is a mod that adds many new weapons to Minecraft
-
 ## Current Features:
 ### Explosives
 - Big TNT can be crafted and used (~2x larger explosion radius)
